@@ -18,40 +18,43 @@
 
 	/* ── 1. Primitives ─────────────────────────────────────────────── */
 
-	/* Brand: acid lime on ink */
-	--ink-900: #07090a;
-	--ink-800: #0b0e0c; /* canvas */
-	--ink-700: #11150f;
-	--ink-600: #161b14;
-	--ink-500: #1d231a;
-	--ink-400: #2a3226;
-	--ink-300: #3b4435;
+	/* Brand: flare orange on ink. Ink is kept neutral (no hue tint) so the warm
+	   accent reads cleanly against it. */
+	--ink-900: #060708;
+	--ink-800: #0b0c0e; /* canvas */
+	--ink-700: #111316;
+	--ink-600: #16191d;
+	--ink-500: #1d2127;
+	--ink-400: #2a2f37;
+	--ink-300: #3a414b;
 
-	--paper-50: #e8ebe6; /* off-white text */
-	--paper-100: #d6dbd2;
-	--paper-300: #9aa394;
-	--paper-500: #6b7464;
+	--paper-50: #eceae6; /* off-white text */
+	--paper-100: #dad7d0;
+	--paper-300: #9a978f;
+	--paper-500: #6a6760;
 
-	--lime-300: #defd8c;
-	--lime-400: #c7f94e; /* signal */
-	--lime-500: #b2ec2f;
-	--lime-600: #93c81f;
+	--flare-300: #ff8a5c; /* light / hover */
+	--flare-400: #ff5b2e; /* signal */
+	--flare-500: #f2491c; /* press */
+	--flare-600: #c93a14; /* deep */
 
-	--danger-400: #ff6b5e;
-	--danger-500: #f04438;
-	--warn-400: #ffb627;
+	/* Status hues kept distinct from the warm accent. */
+	--danger-400: #ff7a93;
+	--danger-500: #f5375f; /* rose-red, reads as error next to orange */
+	--warn-400: #ffc24b;
 	--ok-400: #4ec77f;
 
-	/* Fluid type scale (1.20 minor third, 320 → 1240 viewport) */
-	--step--2: clamp(0.6944rem, 0.66rem + 0.17vw, 0.7901rem);
-	--step--1: clamp(0.8333rem, 0.78rem + 0.27vw, 0.9877rem);
-	--step-0: clamp(1rem, 0.93rem + 0.37vw, 1.2346rem);
-	--step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.5432rem);
-	--step-2: clamp(1.44rem, 1.3rem + 0.69vw, 1.929rem);
-	--step-3: clamp(1.728rem, 1.54rem + 0.94vw, 2.4112rem);
-	--step-4: clamp(2.0736rem, 1.81rem + 1.27vw, 3.014rem);
-	--step-5: clamp(2.4883rem, 2.13rem + 1.71vw, 3.7676rem);
-	--step-6: clamp(2.986rem, 2.49rem + 2.3vw, 4.7095rem);
+	/* Fluid type scale (~1.18 ratio, 320 → 1240 viewport). Tuned compact:
+	   step-0 lands at ~16px body. */
+	--step--2: clamp(0.6944rem, 0.67rem + 0.12vw, 0.7592rem);
+	--step--1: clamp(0.8333rem, 0.81rem + 0.11vw, 0.875rem);
+	--step-0: clamp(0.95rem, 0.93rem + 0.11vw, 1rem);
+	--step-1: clamp(1.0625rem, 1.02rem + 0.23vw, 1.1875rem);
+	--step-2: clamp(1.25rem, 1.19rem + 0.3vw, 1.4375rem);
+	--step-3: clamp(1.5rem, 1.4rem + 0.5vw, 1.8125rem);
+	--step-4: clamp(1.8125rem, 1.66rem + 0.76vw, 2.25rem);
+	--step-5: clamp(2.125rem, 1.9rem + 1.13vw, 2.8125rem);
+	--step-6: clamp(2.4375rem, 2.1rem + 1.68vw, 3.4375rem);
 
 	/* Fluid spacing scale */
 	--space-3xs: clamp(0.25rem, 0.24rem + 0.05vw, 0.31rem);
@@ -64,12 +67,14 @@
 	--space-2xl: clamp(4rem, 3.8rem + 0.87vw, 4.94rem);
 	--space-3xl: clamp(6rem, 5.7rem + 1.3vw, 7.4rem);
 
-	/* Radii */
-	--radius-xs: 4px;
-	--radius-sm: 8px;
-	--radius-md: 12px;
-	--radius-lg: 18px;
+	/* Radii + corner shape. `corner-shape: squircle` turns every border-radius
+	   into a superellipse; swap --corner here to change it everywhere at once. */
+	--radius-xs: 5px;
+	--radius-sm: 9px;
+	--radius-md: 13px;
+	--radius-lg: 20px;
 	--radius-full: 999px;
+	--corner: squircle;
 
 	/* Typography families */
 	--font-sans: 'Google Sans Flex Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -86,7 +91,7 @@
 	--shadow-1: 0 1px 2px rgb(0 0 0 / 0.4);
 	--shadow-2: 0 8px 30px -12px rgb(0 0 0 / 0.55);
 	--shadow-3: 0 24px 60px -20px rgb(0 0 0 / 0.7);
-	--glow-accent: 0 0 0 1px rgb(199 249 78 / 0.35), 0 8px 40px -8px rgb(199 249 78 / 0.35);
+	--glow-accent: 0 0 0 1px rgb(255 91 46 / 0.35), 0 8px 40px -8px rgb(255 91 46 / 0.4);
 
 	/* Motion — one place to tune the whole feel */
 	--dur-1: 120ms;
@@ -118,11 +123,11 @@
 	--border: color-mix(in oklab, var(--paper-50) 9%, transparent);
 	--border-strong: color-mix(in oklab, var(--paper-50) 18%, transparent);
 
-	--accent: var(--lime-400);
-	--accent-hover: var(--lime-300);
-	--accent-press: var(--lime-500);
+	--accent: var(--flare-400);
+	--accent-hover: var(--flare-300);
+	--accent-press: var(--flare-500);
 	--accent-contrast: var(--ink-900); /* text on an accent surface */
-	--accent-soft: color-mix(in oklab, var(--lime-400) 12%, transparent);
+	--accent-soft: color-mix(in oklab, var(--flare-400) 14%, transparent);
 
 	--danger: var(--danger-500);
 	--warn: var(--warn-400);

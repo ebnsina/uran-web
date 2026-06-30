@@ -6,6 +6,10 @@
 *::before,
 *::after {
 	box-sizing: border-box;
+	/* Every rounded corner in the app is a squircle (superellipse). Driven by
+	   one token so it can be changed globally; ignored by browsers without
+	   corner-shape support, which fall back to normal rounded corners. */
+	corner-shape: var(--corner);
 }
 
 * {

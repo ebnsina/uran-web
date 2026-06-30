@@ -189,9 +189,9 @@
 
 	/* Shared display type — oversized, tight. */
 	.display {
-		font-size: clamp(2.8rem, 1.6rem + 6vw, 6rem);
-		line-height: 0.98;
-		letter-spacing: -0.04em;
+		font-size: clamp(2.2rem, 1.5rem + 3.4vw, 4rem);
+		line-height: 1;
+		letter-spacing: -0.035em;
 	}
 	.display .thin {
 		color: var(--fg-subtle);
