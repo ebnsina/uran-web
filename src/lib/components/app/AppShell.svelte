@@ -41,6 +41,7 @@
 
 	const nav = [
 		{ href: '/app', label: 'Overview' },
+		{ href: '/app/settings', label: 'Settings' },
 		{ href: '/docs', label: 'Docs' }
 	];
 

@@ -19,12 +19,16 @@ import {
 	database,
 	dbConnection,
 	backupList,
+	apiTokenList,
+	apiTokenCreated,
+	auditList,
 	type Project,
 	type Service,
 	type Deploy,
 	type Domain,
 	type Database,
-	type DbConnection
+	type DbConnection,
+	type ApiTokenCreated
 } from '$lib/api/resources';
 import { apiGet, apiPost, apiDelete } from './fetcher';
 
@@ -45,7 +49,9 @@ export const qk = {
 	databases: (projectId: number) => ['projects', projectId, 'databases'] as const,
 	database: (id: number) => ['databases', id] as const,
 	dbConnection: (id: number) => ['databases', id, 'connection'] as const,
-	backups: (id: number) => ['databases', id, 'backups'] as const
+	backups: (id: number) => ['databases', id, 'backups'] as const,
+	tokens: ['tokens'] as const,
+	audit: ['audit'] as const
 };
 
 /* ── Projects ────────────────────────────────────────────────────────── */
@@ -139,3 +145,10 @@ export const scaleDatabase = (
 export const getBackups = (id: number) => apiGet(`${v1}/databases/${id}/backups`, backupList);
 export const triggerBackup = (id: number) => apiPost(`${v1}/databases/${id}/backups`);
 export const deleteDatabase = (id: number) => apiDelete(`${v1}/databases/${id}`);
+
+/* ── Account: API tokens + audit ─────────────────────────────────────── */
+export const getTokens = () => apiGet(`${v1}/tokens`, apiTokenList);
+export const createToken = (name: string): Promise<ApiTokenCreated> =>
+	apiPost(`${v1}/tokens`, { name }, apiTokenCreated);
+export const deleteToken = (id: number) => apiDelete(`${v1}/tokens/${id}`);
+export const getAudit = () => apiGet(`${v1}/audit`, auditList);

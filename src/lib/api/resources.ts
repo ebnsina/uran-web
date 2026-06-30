@@ -161,3 +161,28 @@ export const backupInfo = z.object({
 });
 export type BackupInfo = z.infer<typeof backupInfo>;
 export const backupList = list(backupInfo);
+
+/* ── Account: API tokens + audit ─────────────────────────────────────── */
+
+export const apiToken = z.object({
+	id: z.number(),
+	name: z.string(),
+	prefix: z.string(),
+	created_at: ts,
+	last_used_at: z.string().nullable()
+});
+export type ApiToken = z.infer<typeof apiToken>;
+export const apiTokenList = list(apiToken);
+/** Create response embeds the one-time plaintext token. */
+export const apiTokenCreated = apiToken.extend({ token: z.string() });
+export type ApiTokenCreated = z.infer<typeof apiTokenCreated>;
+
+export const auditEntry = z.object({
+	id: z.number(),
+	method: z.string(),
+	path: z.string(),
+	status: z.number(),
+	created_at: ts
+});
+export type AuditEntry = z.infer<typeof auditEntry>;
+export const auditList = list(auditEntry);
