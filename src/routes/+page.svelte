@@ -154,7 +154,7 @@
 				Connect a repository and Uran turns every push into a running, routed, TLS-terminated
 				service — with managed databases, autoscaling, and preview environments built in.
 			</p>
-			<form class="capture" onsubmit={startFree}>
+			<form class="capture u-squircle" onsubmit={startFree}>
 				<input
 					type="email"
 					name="email"
@@ -163,7 +163,7 @@
 					aria-label="Email address"
 					required
 				/>
-				<button type="submit">Start free</button>
+				<button class="u-squircle" type="submit">Start free</button>
 			</form>
 
 			<div class="proof">
@@ -324,9 +324,7 @@
 		background: color-mix(in oklab, var(--surface) 82%, transparent);
 		backdrop-filter: blur(12px);
 		border: 1px solid var(--border-strong);
-		border-radius: 1.6rem;
-		/* squircle here only — it looked great on the hero input */
-		corner-shape: squircle;
+		border-radius: 1.6rem; /* squircle via .u-squircle utility */
 		box-shadow: var(--shadow-2);
 		transition:
 			border-color var(--dur-2) var(--ease-out),
@@ -358,8 +356,7 @@
 		color: var(--accent-contrast);
 		background: var(--accent);
 		border: none;
-		border-radius: 1.15rem;
-		corner-shape: squircle;
+		border-radius: 1.15rem; /* squircle via .u-squircle utility */
 		cursor: pointer;
 		transition:
 			background var(--dur-2) var(--ease-out),

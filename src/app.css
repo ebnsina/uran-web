@@ -143,6 +143,11 @@ select:focus-visible {
 	font-feature-settings: normal;
 }
 
+/* Squircle (superellipse) corners — opt-in, used on the hero capture pill. */
+.u-squircle {
+	corner-shape: squircle;
+}
+
 .u-eyebrow {
 	font-family: var(--font-mono);
 	font-size: var(--step--1);
