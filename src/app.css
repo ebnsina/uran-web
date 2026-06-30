@@ -20,9 +20,6 @@ html {
 	-webkit-text-size-adjust: 100%;
 	text-size-adjust: 100%;
 	scroll-behavior: smooth;
-	/* Contain full-bleed elements (e.g. the hero preview running to the viewport
-	   edge) without a horizontal scrollbar. clip — not hidden — keeps sticky. */
-	overflow-x: clip;
 }
 
 body {
