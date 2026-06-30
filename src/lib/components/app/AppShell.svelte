@@ -212,16 +212,17 @@
 	}
 	/* The content area: a single white, rounded-xl panel floating on the canvas. */
 	.main {
+		--gap: var(--space-2xs);
 		min-width: 0;
-		width: calc(100% - 2 * var(--space-s));
+		width: calc(100% - 2 * var(--gap));
 		max-width: 82rem;
-		margin: var(--space-s) auto;
+		margin: var(--gap) auto;
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: var(--radius-lg);
 		box-shadow: var(--shadow-1);
 		overflow: hidden;
-		min-height: calc(100dvh - 2 * var(--space-s));
+		min-height: calc(100dvh - 2 * var(--gap));
 	}
 
 	.boot {
