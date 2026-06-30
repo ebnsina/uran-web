@@ -8,7 +8,7 @@
 	<div class="u-container inner">
 		<div class="brand">
 			<Logo tip={false} />
-			<p class="meaning"><span class="u-mono">uran</span> — <em>উড়ান</em>, to take flight.</p>
+			<p class="meaning"><span class="u-mono">uran</span> <em>(v.)</em> — to take flight.</p>
 			<p>Ship code, not infrastructure.</p>
 		</div>
 		<div class="cols">

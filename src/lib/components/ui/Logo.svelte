@@ -14,7 +14,7 @@
 	}
 	let { size = 28, href = '/', tip = true }: Props = $props();
 
-	const meaning = 'Uran · উড়ান — to take flight';
+	const meaning = 'uran (verb) — to take flight';
 </script>
 
 {#snippet mark()}
