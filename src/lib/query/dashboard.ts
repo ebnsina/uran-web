@@ -2,7 +2,7 @@
  * Client-side query/mutation definitions for the dashboard. Query keys live
  * here as a single source so invalidation stays consistent.
  */
-import { orgList, user, type Org, type User } from '$lib/api/schemas';
+import { org, orgList, user, type Org, type User } from '$lib/api/schemas';
 import { apiGet, apiPost } from './fetcher';
 
 export const keys = {
@@ -12,6 +12,7 @@ export const keys = {
 
 export const getMe = (): Promise<User> => apiGet('/api/v1/me', user);
 export const getOrgs = (): Promise<Org[]> => apiGet('/api/v1/orgs', orgList);
+export const createOrg = (name: string): Promise<Org> => apiPost('/api/v1/orgs', { name }, org);
 /** Logout is special: it must clear the httpOnly cookie, so it hits a dedicated
  *  endpoint rather than the generic proxy. */
 export const postLogout = (): Promise<void> => apiPost('/api/logout');

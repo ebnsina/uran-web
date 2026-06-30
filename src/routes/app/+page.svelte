@@ -1,16 +1,28 @@
 <script lang="ts">
-	import { createQuery } from '@tanstack/svelte-query';
+	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { fly } from 'svelte/transition';
 	import { expoOut } from 'svelte/easing';
-	import { Rocket, ArrowRight } from '@lucide/svelte';
-	import { Button, Reveal, motion } from '$lib';
-	import { getMe, getOrgs, keys } from '$lib/query/dashboard';
+	import { Building2, ArrowRight, Plus } from '@lucide/svelte';
+	import { Button, Reveal, motion, TextField, Dialog, Alert } from '$lib';
+	import { getMe, getOrgs, createOrg, keys } from '$lib/query/dashboard';
 
+	const client = useQueryClient();
 	const me = createQuery(() => ({ queryKey: keys.me, queryFn: getMe, staleTime: 60_000 }));
 	const orgs = createQuery(() => ({ queryKey: keys.orgs, queryFn: getOrgs }));
 
 	const firstName = $derived((me.data?.name || '').split(/\s+/)[0] || 'there');
 	const skeletons = [0, 1, 2];
+
+	let dialogOpen = $state(false);
+	let name = $state('');
+	const create = createMutation(() => ({
+		mutationFn: () => createOrg(name.trim()),
+		onSuccess: () => {
+			client.invalidateQueries({ queryKey: keys.orgs });
+			dialogOpen = false;
+			name = '';
+		}
+	}));
 </script>
 
 <svelte:head><title>Overview · Uran</title></svelte:head>
@@ -20,7 +32,7 @@
 		<p class="u-eyebrow">Overview</p>
 		<h1>Welcome back, {firstName}.</h1>
 	</div>
-	<Button href="/app/services/new" size="sm">New service</Button>
+	<Button size="sm" onclick={() => (dialogOpen = true)}><Plus size={16} /> New organization</Button>
 </header>
 
 <section class="body">
@@ -39,14 +51,14 @@
 	{:else if orgs.data.length === 0}
 		<Reveal>
 			<div class="empty">
-				<div class="empty-mark" aria-hidden="true"><Rocket size={28} strokeWidth={1.75} /></div>
-				<h2>Let's ship your first service</h2>
+				<div class="empty-mark" aria-hidden="true"><Building2 size={28} strokeWidth={1.75} /></div>
+				<h2>Create your first organization</h2>
 				<p>
-					Create an organization, connect a repository, and deploy — Uran handles the build,
-					routing, and TLS.
+					Organizations hold your projects, services, and databases. Create one to get started —
+					then add a project and deploy.
 				</p>
 				<div class="empty-cta">
-					<Button href="/app/services/new">Create a service</Button>
+					<Button onclick={() => (dialogOpen = true)}>New organization</Button>
 					<Button href="/docs" variant="secondary">Read the docs</Button>
 				</div>
 			</div>
@@ -70,6 +82,21 @@
 		</div>
 	{/if}
 </section>
+
+<Dialog bind:open={dialogOpen} title="New organization">
+	<form
+		class="u-stack"
+		style="--flow: var(--space-m)"
+		onsubmit={(e) => {
+			e.preventDefault();
+			if (name.trim()) create.mutate();
+		}}
+	>
+		{#if create.isError}<Alert>{create.error.message}</Alert>{/if}
+		<TextField label="Name" name="name" bind:value={name} placeholder="Acme Inc" required />
+		<Button type="submit" full loading={create.isPending}>Create organization</Button>
+	</form>
+</Dialog>
 
 <style>
 	.topbar {
