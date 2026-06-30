@@ -116,6 +116,16 @@ export const metricsList = list(podMetric);
 
 export const DB_ENGINES = ['postgres', 'redis'] as const;
 export const DB_TIERS = ['standard', 'autoscale'] as const;
+export const STORAGE_OPTIONS = [
+	'1Gi',
+	'5Gi',
+	'10Gi',
+	'25Gi',
+	'50Gi',
+	'100Gi',
+	'250Gi',
+	'500Gi'
+] as const;
 
 export const database = z.object({
 	id: z.number(),

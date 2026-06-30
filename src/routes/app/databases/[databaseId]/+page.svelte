@@ -4,7 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { Copy, Check, Eye, DatabaseBackup, Trash2 } from '@lucide/svelte';
-	import { Button, Select, TextField, StatusBadge, Alert } from '$lib';
+	import { Button, Select, Slider, StatusBadge, Alert } from '$lib';
 	import {
 		getDatabase,
 		getDbConnection,
@@ -14,7 +14,7 @@
 		deleteDatabase,
 		qk
 	} from '$lib/query/resources';
-	import { INSTANCE_SIZES } from '$lib/api/resources';
+	import { INSTANCE_SIZES, STORAGE_OPTIONS } from '$lib/api/resources';
 	import PageHead from '$lib/components/app/PageHead.svelte';
 
 	const dbId = $derived(Number(page.params.databaseId));
@@ -43,28 +43,30 @@
 	// Scale form (seeded once).
 	let size = $state('');
 	let storage = $state('');
-	let instances = $state('1');
+	let instances = $state(1);
 	$effect(() => {
 		const d = db.data;
 		if (d && !size) {
 			untrack(() => {
 				size = d.size;
 				storage = d.storage;
-				instances = String(d.instances || 1);
+				instances = d.instances || 1;
 			});
 		}
 	});
 
 	const sizeOptions = INSTANCE_SIZES.map((s) => ({ value: s, label: s }));
+	// Storage presets, including the current value if it's non-standard.
+	const storageOptions = $derived(
+		(STORAGE_OPTIONS.includes(storage as (typeof STORAGE_OPTIONS)[number]) || !storage
+			? STORAGE_OPTIONS
+			: [storage, ...STORAGE_OPTIONS]
+		).map((s) => ({ value: s, label: s }))
+	);
 	const invalidate = () => client.invalidateQueries({ queryKey: qk.database(dbId) });
 
 	const scale = createMutation(() => ({
-		mutationFn: () =>
-			scaleDatabase(dbId, {
-				instances: Number(instances) || 1,
-				size,
-				storage: storage.trim()
-			}),
+		mutationFn: () => scaleDatabase(dbId, { instances, size, storage }),
 		onSuccess: invalidate
 	}));
 	const backup = createMutation(() => ({
@@ -157,9 +159,9 @@
 				<h3>Scale</h3>
 				<div class="row">
 					<Select label="Size" name="size" bind:value={size} options={sizeOptions} />
-					<TextField label="Storage" name="storage" bind:value={storage} placeholder="10Gi" />
+					<Select label="Storage" name="storage" bind:value={storage} options={storageOptions} />
 					{#if !isRedis}
-						<TextField label="Instances" name="instances" type="number" bind:value={instances} />
+						<Slider label="Instances" name="instances" bind:value={instances} min={1} max={10} />
 					{/if}
 				</div>
 				{#if scale.isError}<Alert>{scale.error.message}</Alert>{/if}

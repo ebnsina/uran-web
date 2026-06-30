@@ -8,5 +8,6 @@ export { default as StatusBadge } from './components/ui/StatusBadge.svelte';
 export { default as Dialog } from './components/ui/Dialog.svelte';
 export { default as Select } from './components/ui/Select.svelte';
 export { default as Checkbox } from './components/ui/Checkbox.svelte';
+export { default as Slider } from './components/ui/Slider.svelte';
 
 export * as motion from './motion/transitions';

@@ -1,9 +1,9 @@
 <!-- Create-database dialog. Fields adapt to engine + tier. -->
 <script lang="ts">
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
-	import { Button, TextField, Select, Checkbox, Dialog, Alert } from '$lib';
+	import { Button, TextField, Select, Slider, Checkbox, Dialog, Alert } from '$lib';
 	import { createDatabase, qk, type CreateDatabaseInput } from '$lib/query/resources';
-	import { DB_ENGINES, DB_TIERS, INSTANCE_SIZES } from '$lib/api/resources';
+	import { DB_ENGINES, DB_TIERS, INSTANCE_SIZES, STORAGE_OPTIONS } from '$lib/api/resources';
 
 	interface Props {
 		open: boolean;
@@ -17,10 +17,10 @@
 	let engine = $state('postgres');
 	let tier = $state('standard');
 	let size = $state('small');
-	let storage = $state('1Gi');
-	let instances = $state('1');
-	let minInstances = $state('1');
-	let maxInstances = $state('3');
+	let storage = $state('10Gi');
+	let instances = $state(1);
+	let minInstances = $state(1);
+	let maxInstances = $state(3);
 	let pooling = $state(false);
 	let backups = $state(false);
 
@@ -30,6 +30,7 @@
 	const engineOptions = DB_ENGINES.map((e) => ({ value: e, label: e }));
 	const tierOptions = DB_TIERS.map((t) => ({ value: t, label: t }));
 	const sizeOptions = INSTANCE_SIZES.map((s) => ({ value: s, label: s }));
+	const storageOptions = STORAGE_OPTIONS.map((s) => ({ value: s, label: s }));
 
 	const create = createMutation(() => ({
 		mutationFn: () => {
@@ -38,15 +39,15 @@
 				engine,
 				tier: isPg ? tier : 'standard',
 				size,
-				storage: storage.trim() || '1Gi',
+				storage,
 				pooling: isPg && pooling,
 				backups: isPg && backups
 			};
 			if (isAutoscale) {
-				input.min_instances = Number(minInstances) || 1;
-				input.max_instances = Number(maxInstances) || 1;
+				input.min_instances = minInstances;
+				input.max_instances = Math.max(maxInstances, minInstances);
 			} else {
-				input.instances = engine === 'redis' ? 1 : Number(instances) || 1;
+				input.instances = engine === 'redis' ? 1 : instances;
 			}
 			return createDatabase(projectId, input);
 		},
@@ -76,16 +77,16 @@
 		</div>
 		<div class="row">
 			<Select label="Size" name="size" bind:value={size} options={sizeOptions} />
-			<TextField label="Storage" name="storage" bind:value={storage} placeholder="10Gi" />
+			<Select label="Storage" name="storage" bind:value={storage} options={storageOptions} />
 		</div>
 
 		{#if isAutoscale}
 			<div class="row">
-				<TextField label="Min instances" name="min" type="number" bind:value={minInstances} />
-				<TextField label="Max instances" name="max" type="number" bind:value={maxInstances} />
+				<Slider label="Min instances" name="min" bind:value={minInstances} min={1} max={10} />
+				<Slider label="Max instances" name="max" bind:value={maxInstances} min={1} max={10} />
 			</div>
 		{:else if engine !== 'redis'}
-			<TextField label="Instances" name="instances" type="number" bind:value={instances} />
+			<Slider label="Instances" name="instances" bind:value={instances} min={1} max={10} />
 		{/if}
 
 		{#if isPg}

@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
-	import { Button, Select, Checkbox, TextField, Alert } from '$lib';
+	import { Button, Select, Checkbox, Slider, TextField, Alert } from '$lib';
 	import {
 		scaleService,
 		setHealthPath,
@@ -20,9 +20,9 @@
 	// Scaling form, seeded once from the service (initial value is intentional).
 	let size = $state(untrack(() => service.instance_size));
 	let autoscale = $state(untrack(() => service.max_replicas > 0));
-	let replicas = $state(untrack(() => String(service.replicas || 1)));
-	let minR = $state(untrack(() => String(service.min_replicas || 1)));
-	let maxR = $state(untrack(() => String(service.max_replicas || 3)));
+	let replicas = $state(untrack(() => service.replicas || 1));
+	let minR = $state(untrack(() => service.min_replicas || 1));
+	let maxR = $state(untrack(() => service.max_replicas || 3));
 	let healthPath = $state(untrack(() => service.health_path ?? ''));
 
 	const sizeOptions = INSTANCE_SIZES.map((s) => ({ value: s, label: s }));
@@ -32,8 +32,8 @@
 			scaleService(id, {
 				instance_size: size,
 				...(autoscale
-					? { min_replicas: Number(minR) || 1, max_replicas: Number(maxR) || 1 }
-					: { replicas: Number(replicas) || 1, max_replicas: 0 })
+					? { min_replicas: minR, max_replicas: Math.max(maxR, minR) }
+					: { replicas, max_replicas: 0 })
 			}),
 		onSuccess: invalidate
 	}));
@@ -54,11 +54,11 @@
 		<Checkbox label="Autoscale on CPU" name="autoscale" bind:checked={autoscale} />
 		{#if autoscale}
 			<div class="two">
-				<TextField label="Min replicas" name="min" type="number" bind:value={minR} />
-				<TextField label="Max replicas" name="max" type="number" bind:value={maxR} />
+				<Slider label="Min replicas" name="min" bind:value={minR} min={1} max={10} />
+				<Slider label="Max replicas" name="max" bind:value={maxR} min={1} max={10} />
 			</div>
 		{:else}
-			<TextField label="Replicas" name="replicas" type="number" bind:value={replicas} />
+			<Slider label="Replicas" name="replicas" bind:value={replicas} min={1} max={10} />
 		{/if}
 		{#if scale.isError}<Alert>{scale.error.message}</Alert>{/if}
 		<Button loading={scale.isPending} onclick={() => scale.mutate()}>Apply scaling</Button>
