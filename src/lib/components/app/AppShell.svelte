@@ -107,7 +107,7 @@
 <style>
 	.layout {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 		min-height: 100dvh;
 	}
 	.side {
@@ -233,7 +233,7 @@
 
 	@media (min-width: 56rem) {
 		.layout {
-			grid-template-columns: 16rem 1fr;
+			grid-template-columns: 16rem minmax(0, 1fr);
 		}
 		.side {
 			display: flex;

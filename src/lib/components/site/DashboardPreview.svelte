@@ -91,7 +91,7 @@
 		min-width: 32rem;
 		background: var(--surface);
 		border: 1px solid var(--border-strong);
-		border-radius: var(--radius-lg);
+		border-radius: var(--radius-2xl);
 		box-shadow: var(--shadow-3);
 		overflow: hidden;
 		font-size: var(--step--1);

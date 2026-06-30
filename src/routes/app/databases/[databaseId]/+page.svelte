@@ -288,9 +288,10 @@
 		background: var(--surface-2);
 		border: 1px solid var(--border);
 		border-radius: var(--radius-sm);
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		/* wrap long URIs instead of overflowing — no horizontal scroll */
+		white-space: normal;
+		word-break: break-all;
+		line-height: 1.5;
 		font-size: var(--step--1);
 	}
 	.copy {

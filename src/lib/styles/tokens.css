@@ -66,14 +66,13 @@
 	--space-2xl: clamp(4rem, 3.8rem + 0.87vw, 4.94rem);
 	--space-3xl: clamp(6rem, 5.7rem + 1.3vw, 7.4rem);
 
-	/* Radii + corner shape. `corner-shape: squircle` turns every border-radius
-	   into a superellipse; swap --corner here to change it everywhere at once. */
-	--radius-xs: 5px;
-	--radius-sm: 9px;
-	--radius-md: 13px;
-	--radius-lg: 20px;
+	/* Radii — generous, rounded (2xl) feel. */
+	--radius-xs: 8px;
+	--radius-sm: 12px;
+	--radius-md: 16px;
+	--radius-lg: 24px;
+	--radius-2xl: 32px;
 	--radius-full: 999px;
-	--corner: squircle;
 
 	/* Typography families */
 	--font-sans: 'Mona Sans Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
