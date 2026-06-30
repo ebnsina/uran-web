@@ -8,6 +8,7 @@
 	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { LogOut } from '@lucide/svelte';
 	import { Logo } from '$lib';
 	import { getMe, postLogout, keys } from '$lib/query/dashboard';
 	import { FetchError } from '$lib/query/fetcher';
@@ -89,7 +90,7 @@
 					disabled={logout.isPending}
 					onclick={() => logout.mutate()}
 				>
-					⏻
+					<LogOut size={16} />
 				</button>
 			</div>
 		</aside>

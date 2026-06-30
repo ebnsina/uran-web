@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { Link2, ScanSearch, Rocket, TrendingUp, ArrowUpRight, ArrowRight } from '@lucide/svelte';
 	import { Button, Reveal } from '$lib';
 	import { smoothAnchor } from '$lib/scroll';
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
@@ -61,10 +62,10 @@
 	];
 
 	const flow = [
-		{ t: 'Connect', d: 'Link a repository and a branch.' },
-		{ t: 'Detect', d: 'Read your Dockerfile, or auto-detect the stack.' },
-		{ t: 'Deploy', d: 'Go live behind TLS, health-checked.' },
-		{ t: 'Scale', d: 'Add databases, replicas, domains.' }
+		{ t: 'Connect', d: 'Link a repository and a branch.', icon: Link2 },
+		{ t: 'Detect', d: 'Read your Dockerfile, or auto-detect the stack.', icon: ScanSearch },
+		{ t: 'Deploy', d: 'Go live behind TLS, health-checked.', icon: Rocket },
+		{ t: 'Scale', d: 'Add databases, replicas, domains.', icon: TrendingUp }
 	];
 
 	const marquee = [
@@ -131,7 +132,9 @@
 				<p>Join <strong>1,200+</strong> developers shipping on Uran</p>
 			</div>
 
-			<a class="browse" href="#index" onclick={smoothAnchor}>Browse capabilities →</a>
+			<a class="browse" href="#index" onclick={smoothAnchor}>
+				Browse capabilities <ArrowRight size={15} />
+			</a>
 		</div>
 		<div class="hero-panel">
 			<DashboardPreview />
@@ -163,7 +166,7 @@
 							<h3>{c.t}</h3>
 							<p>{c.d}</p>
 						</div>
-						<span class="row-arrow" aria-hidden="true">↗</span>
+						<span class="row-arrow" aria-hidden="true"><ArrowUpRight size={18} /></span>
 					</li>
 				</Reveal>
 			{/each}
@@ -177,11 +180,11 @@
 			<p class="block-note">Four moves. No YAML to babysit.</p>
 		</aside>
 		<ol class="flow">
-			<span class="flow-rail" aria-hidden="true"></span>
 			{#each flow as step, i (step.t)}
+				{@const Icon = step.icon}
 				<Reveal delay={i * 80} y={14}>
-					<li class="node">
-						<span class="node-dot" aria-hidden="true"></span>
+					<li class="step">
+						<span class="step-ico"><Icon size={20} strokeWidth={1.75} /></span>
 						<h3>{step.t}</h3>
 						<p>{step.d}</p>
 					</li>
@@ -362,14 +365,19 @@
 	}
 
 	.browse {
-		display: inline-block;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
 		margin-top: var(--space-m);
 		font-size: var(--step--1);
 		color: var(--fg-muted);
-		transition: color var(--dur-2) var(--ease-out);
+		transition:
+			color var(--dur-2) var(--ease-out),
+			gap var(--dur-2) var(--ease-out);
 	}
 	.browse:hover {
 		color: var(--accent);
+		gap: 0.6em;
 	}
 
 	.hero-panel {
@@ -475,8 +483,8 @@
 		font-size: var(--step-0);
 	}
 	.row-arrow {
+		display: inline-flex;
 		align-self: center;
-		font-size: var(--step-1);
 		color: var(--fg-subtle);
 		opacity: 0;
 		transform: translate(-6px, 6px);
@@ -491,9 +499,8 @@
 		color: var(--accent);
 	}
 
-	/* ── Flow line ────────────────────────────────────────────────────── */
+	/* ── Workflow steps (icon-led) ────────────────────────────────────── */
 	.flow {
-		position: relative;
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -501,32 +508,21 @@
 		grid-template-columns: 1fr;
 		gap: var(--space-l);
 	}
-	.flow-rail {
-		position: absolute;
-		left: 5px;
-		top: 8px;
-		bottom: 8px;
-		width: 1.5px;
-		background: linear-gradient(var(--accent), transparent);
+	.step-ico {
+		display: grid;
+		place-items: center;
+		width: 2.6rem;
+		height: 2.6rem;
+		margin-bottom: var(--space-s);
+		color: var(--accent);
+		background: var(--accent-soft);
+		border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+		border-radius: var(--radius-md);
 	}
-	.node {
-		position: relative;
-		padding-left: var(--space-l);
-	}
-	.node-dot {
-		position: absolute;
-		left: 0;
-		top: 6px;
-		width: 12px;
-		height: 12px;
-		border-radius: var(--radius-full);
-		background: var(--bg);
-		border: 2px solid var(--accent);
-	}
-	.node h3 {
+	.step h3 {
 		font-size: var(--step-1);
 	}
-	.node p {
+	.step p {
 		margin-top: var(--space-3xs);
 		color: var(--fg-muted);
 		font-size: var(--step--1);
@@ -594,24 +590,7 @@
 		}
 		.flow {
 			grid-template-columns: repeat(4, 1fr);
-			gap: var(--space-m);
-		}
-		.flow-rail {
-			left: 8px;
-			right: 8px;
-			top: 5px;
-			bottom: auto;
-			width: auto;
-			height: 1.5px;
-			background: linear-gradient(90deg, var(--accent), transparent);
-		}
-		.node {
-			padding-left: 0;
-			padding-top: var(--space-l);
-		}
-		.node-dot {
-			top: -1px;
-			left: 0;
+			gap: var(--space-l);
 		}
 
 		.closing {
