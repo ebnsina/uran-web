@@ -7,7 +7,8 @@
 <footer class="ft">
 	<div class="u-container inner">
 		<div class="brand">
-			<Logo />
+			<Logo tip={false} />
+			<p class="meaning"><span class="u-mono">uran</span> — <em>উড়ান</em>, to take flight.</p>
 			<p>Ship code, not infrastructure.</p>
 		</div>
 		<div class="cols">
@@ -50,6 +51,14 @@
 		margin-top: var(--space-s);
 		color: var(--fg-muted);
 		font-size: var(--step--1);
+	}
+	.brand .meaning {
+		margin-top: var(--space-s);
+		color: var(--fg-subtle);
+	}
+	.brand .meaning em {
+		font-style: normal;
+		color: var(--accent);
 	}
 	.cols {
 		display: flex;
