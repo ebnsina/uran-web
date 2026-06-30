@@ -1,10 +1,27 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { Link2, ScanSearch, Rocket, TrendingUp, ArrowUpRight, ArrowRight } from '@lucide/svelte';
+	import {
+		siGit,
+		siGithub,
+		siDocker,
+		siKubernetes,
+		siPostgresql,
+		siRedis,
+		siGo,
+		siTraefikproxy,
+		siCloudflare,
+		siNginx,
+		siPrometheus,
+		siLetsencrypt,
+		siLinux,
+		siNodedotjs
+	} from 'simple-icons';
 	import { Button, Reveal } from '$lib';
 	import { smoothAnchor } from '$lib/scroll';
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
 	import HeroGlow from '$lib/components/site/HeroGlow.svelte';
+	import BrandIcon from '$lib/components/site/BrandIcon.svelte';
 	import SiteFooter from '$lib/components/site/SiteFooter.svelte';
 	import DashboardPreview from '$lib/components/site/DashboardPreview.svelte';
 	import type { PageData } from './$types';
@@ -68,21 +85,22 @@
 		{ t: 'Scale', d: 'Add databases, replicas, domains.', icon: TrendingUp }
 	];
 
-	const marquee = [
-		'git push',
-		'nixpacks',
-		'buildkit',
-		'rolling deploys',
-		'postgres',
-		'redis',
-		'autoscale',
-		'preview envs',
-		'automatic tls',
-		'custom domains',
-		'live logs',
-		'metrics',
-		'rollback',
-		'zero yaml'
+	// Tech-stack logos for the marquee (the platform Uran is built on / integrates).
+	const brands = [
+		siGit,
+		siGithub,
+		siDocker,
+		siKubernetes,
+		siPostgresql,
+		siRedis,
+		siGo,
+		siTraefikproxy,
+		siCloudflare,
+		siNginx,
+		siPrometheus,
+		siLetsencrypt,
+		siLinux,
+		siNodedotjs
 	];
 </script>
 
@@ -144,9 +162,8 @@
 	<!-- ── Marquee: full-bleed, slow drift ──────────────────────────────── -->
 	<section class="marquee" aria-hidden="true">
 		<div class="track">
-			{#each [...marquee, ...marquee] as word, i (i)}
-				<span class="word u-mono">{word}</span>
-				<span class="sep">/</span>
+			{#each [...brands, ...brands] as brand, i (i)}
+				<BrandIcon icon={brand} />
 			{/each}
 		</div>
 	</section>
@@ -389,7 +406,7 @@
 	/* ── Marquee ──────────────────────────────────────────────────────── */
 	.marquee {
 		overflow: hidden;
-		padding-block: var(--space-m);
+		padding-block: var(--space-l);
 		border-bottom: 1px solid var(--border);
 		-webkit-mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
 		mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
@@ -397,20 +414,12 @@
 	.track {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--space-s);
+		gap: var(--space-2xl);
 		white-space: nowrap;
-		animation: drift 48s linear infinite;
+		animation: drift 52s linear infinite;
 	}
 	.marquee:hover .track {
 		animation-play-state: paused;
-	}
-	.track .word {
-		font-size: var(--step-1);
-		color: var(--fg-muted);
-	}
-	.track .sep {
-		color: var(--accent);
-		opacity: 0.5;
 	}
 	@keyframes drift {
 		to {
