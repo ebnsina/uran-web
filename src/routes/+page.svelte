@@ -214,9 +214,11 @@
 	.frame {
 		width: min(100% - 2 * var(--space-m), var(--container-wide));
 		margin-inline: auto;
-		/* clip the hero preview where it bleeds toward the edge
-		   (clip, not hidden, so sticky children keep working) */
+		/* Clip the hero preview where it bleeds toward the edge (clip, not hidden,
+		   so sticky children keep working). The clip-margin lets focus glows /
+		   shadows paint just past the edge so they aren't sliced off. */
 		overflow-x: clip;
+		overflow-clip-margin: 2rem;
 	}
 
 	/* Shared display type — oversized, tight. */
