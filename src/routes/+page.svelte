@@ -99,7 +99,6 @@
 	<!-- ── Hero: asymmetric, gutter-marked, panel breaks the grid ───────── -->
 	<section class="hero">
 		<HeroGlow />
-		<div class="gutter"><span class="marker">(00)</span></div>
 		<div class="hero-body">
 			<p class="define u-mono">
 				uran <span class="phon">/uˈraːn/</span> · <em>verb</em> — to take flight
@@ -151,8 +150,7 @@
 
 	<!-- ── Capabilities: a numbered index, not a card grid ──────────────── -->
 	<section id="index" class="block">
-		<aside class="gutter sticky">
-			<span class="marker">(01)</span>
+		<aside class="sticky">
 			<h2 class="block-title">Capabilities</h2>
 			<p class="block-note">Everything between <em>git push</em> and production.</p>
 		</aside>
@@ -174,8 +172,7 @@
 
 	<!-- ── Workflow: a connected flow line, not step cards ──────────────── -->
 	<section id="workflow" class="block">
-		<aside class="gutter sticky">
-			<span class="marker">(02)</span>
+		<aside class="sticky">
 			<h2 class="block-title">Workflow</h2>
 			<p class="block-note">Four moves. No YAML to babysit.</p>
 		</aside>
@@ -195,7 +192,6 @@
 
 	<!-- ── Closing: asymmetric statement, not a centered band ───────────── -->
 	<section class="closing">
-		<div class="gutter"><span class="marker">(03)</span></div>
 		<div class="closing-body">
 			<Reveal>
 				<h2 class="display closing-h">Your next deploy<br />is one push away.</h2>
@@ -211,21 +207,13 @@
 <SiteFooter />
 
 <style>
-	/* The whole page reads like a spec sheet: a persistent left rule and
-	   monospace markers in the gutter. */
+	/* Editorial spec-sheet layout: hairline rules + a sticky label column. */
 	.frame {
 		width: min(100% - 2 * var(--space-m), var(--container-wide));
 		margin-inline: auto;
 		/* clip the hero dashboard preview where it bleeds past the edge
 		   (clip, not hidden, so sticky children keep working) */
 		overflow-x: clip;
-	}
-
-	.marker {
-		font-family: var(--font-mono);
-		font-size: var(--step--1);
-		color: var(--accent);
-		letter-spacing: var(--tracking-wide);
 	}
 
 	/* Shared display type — oversized, tight. */
@@ -252,9 +240,6 @@
 	.hero > :not(:global(.glow)) {
 		position: relative;
 		z-index: 1;
-	}
-	.gutter {
-		grid-column: 1;
 	}
 	.define {
 		font-size: var(--step--1);
@@ -565,24 +550,20 @@
 	/* ── Editorial layout kicks in at wider widths ────────────────────── */
 	@media (min-width: 60rem) {
 		.hero {
-			grid-template-columns: 7rem minmax(0, 1.1fr) minmax(0, 0.9fr);
+			grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
 			grid-template-rows: auto auto;
 			column-gap: var(--space-xl);
 			align-items: start;
 			padding-block: var(--space-3xl) var(--space-2xl);
 		}
-		.gutter {
-			grid-column: 1;
-			grid-row: 1;
-		}
 		.hero-body {
-			grid-column: 2;
+			grid-column: 1;
 			grid-row: 1;
 		}
 		/* Panel sits in the right column, dips below the baseline, and bleeds
 		   off the right edge — a real dashboard cut off by the viewport. */
 		.hero-panel {
-			grid-column: 3;
+			grid-column: 2;
 			grid-row: 1 / span 2;
 			justify-self: start;
 			align-self: center;
@@ -592,7 +573,7 @@
 			z-index: 1;
 		}
 		.hero-panel :global(.win) {
-			width: 42rem;
+			width: 44rem;
 		}
 
 		.block {
@@ -627,8 +608,7 @@
 		}
 
 		.closing {
-			grid-template-columns: 7rem 1fr;
-			column-gap: var(--space-xl);
+			grid-template-columns: 1fr;
 		}
 	}
 
