@@ -1,0 +1,132 @@
+/*
+ * Design tokens — the SINGLE SOURCE OF TRUTH for the whole UI.
+ *
+ * Nothing in the app hard-codes a colour, font, size, radius, or timing.
+ * Every component reads these custom properties via var(). To re-skin Uran
+ * (new brand colour, light mode, tighter spacing) you change values *here*
+ * and only here.
+ *
+ * Layers:
+ *   1. Primitives   — raw, brand-agnostic values (the palette, the scales).
+ *   2. Semantic      — meaning-based aliases the components actually consume
+ *                      (--bg, --fg, --accent, --border …). Swap a theme by
+ *                      repointing these, never by touching components.
+ */
+
+:root {
+	color-scheme: dark;
+
+	/* ── 1. Primitives ─────────────────────────────────────────────── */
+
+	/* Brand: acid lime on ink */
+	--ink-900: #07090a;
+	--ink-800: #0b0e0c; /* canvas */
+	--ink-700: #11150f;
+	--ink-600: #161b14;
+	--ink-500: #1d231a;
+	--ink-400: #2a3226;
+	--ink-300: #3b4435;
+
+	--paper-50: #e8ebe6; /* off-white text */
+	--paper-100: #d6dbd2;
+	--paper-300: #9aa394;
+	--paper-500: #6b7464;
+
+	--lime-300: #defd8c;
+	--lime-400: #c7f94e; /* signal */
+	--lime-500: #b2ec2f;
+	--lime-600: #93c81f;
+
+	--danger-400: #ff6b5e;
+	--danger-500: #f04438;
+	--warn-400: #ffb627;
+	--ok-400: #4ec77f;
+
+	/* Fluid type scale (1.20 minor third, 320 → 1240 viewport) */
+	--step--2: clamp(0.6944rem, 0.66rem + 0.17vw, 0.7901rem);
+	--step--1: clamp(0.8333rem, 0.78rem + 0.27vw, 0.9877rem);
+	--step-0: clamp(1rem, 0.93rem + 0.37vw, 1.2346rem);
+	--step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.5432rem);
+	--step-2: clamp(1.44rem, 1.3rem + 0.69vw, 1.929rem);
+	--step-3: clamp(1.728rem, 1.54rem + 0.94vw, 2.4112rem);
+	--step-4: clamp(2.0736rem, 1.81rem + 1.27vw, 3.014rem);
+	--step-5: clamp(2.4883rem, 2.13rem + 1.71vw, 3.7676rem);
+	--step-6: clamp(2.986rem, 2.49rem + 2.3vw, 4.7095rem);
+
+	/* Fluid spacing scale */
+	--space-3xs: clamp(0.25rem, 0.24rem + 0.05vw, 0.31rem);
+	--space-2xs: clamp(0.5rem, 0.48rem + 0.11vw, 0.62rem);
+	--space-xs: clamp(0.75rem, 0.71rem + 0.16vw, 0.93rem);
+	--space-s: clamp(1rem, 0.95rem + 0.22vw, 1.23rem);
+	--space-m: clamp(1.5rem, 1.43rem + 0.33vw, 1.85rem);
+	--space-l: clamp(2rem, 1.9rem + 0.43vw, 2.47rem);
+	--space-xl: clamp(3rem, 2.85rem + 0.65vw, 3.7rem);
+	--space-2xl: clamp(4rem, 3.8rem + 0.87vw, 4.94rem);
+	--space-3xl: clamp(6rem, 5.7rem + 1.3vw, 7.4rem);
+
+	/* Radii */
+	--radius-xs: 4px;
+	--radius-sm: 8px;
+	--radius-md: 12px;
+	--radius-lg: 18px;
+	--radius-full: 999px;
+
+	/* Typography families */
+	--font-sans: 'Google Sans Flex Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+	--font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+	--tracking-tight: -0.02em;
+	--tracking-normal: 0em;
+	--tracking-wide: 0.04em;
+	--tracking-caps: 0.14em;
+	--leading-tight: 1.05;
+	--leading-snug: 1.25;
+	--leading-normal: 1.6;
+
+	/* Elevation & glow */
+	--shadow-1: 0 1px 2px rgb(0 0 0 / 0.4);
+	--shadow-2: 0 8px 30px -12px rgb(0 0 0 / 0.55);
+	--shadow-3: 0 24px 60px -20px rgb(0 0 0 / 0.7);
+	--glow-accent: 0 0 0 1px rgb(199 249 78 / 0.35), 0 8px 40px -8px rgb(199 249 78 / 0.35);
+
+	/* Motion — one place to tune the whole feel */
+	--dur-1: 120ms;
+	--dur-2: 220ms;
+	--dur-3: 360ms;
+	--dur-4: 600ms;
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* expo-ish, decisive */
+	--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+	--ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* gentle overshoot */
+
+	/* Layout */
+	--container: 72rem;
+	--container-narrow: 30rem;
+	--container-wide: 84rem;
+	--header-h: 4.5rem;
+
+	/* ── 2. Semantic aliases (components consume ONLY these) ────────── */
+
+	--bg: var(--ink-800);
+	--bg-elevated: var(--ink-700);
+	--surface: var(--ink-700);
+	--surface-2: var(--ink-600);
+	--surface-hover: var(--ink-500);
+
+	--fg: var(--paper-50);
+	--fg-muted: var(--paper-300);
+	--fg-subtle: var(--paper-500);
+
+	--border: color-mix(in oklab, var(--paper-50) 9%, transparent);
+	--border-strong: color-mix(in oklab, var(--paper-50) 18%, transparent);
+
+	--accent: var(--lime-400);
+	--accent-hover: var(--lime-300);
+	--accent-press: var(--lime-500);
+	--accent-contrast: var(--ink-900); /* text on an accent surface */
+	--accent-soft: color-mix(in oklab, var(--lime-400) 12%, transparent);
+
+	--danger: var(--danger-500);
+	--warn: var(--warn-400);
+	--ok: var(--ok-400);
+
+	--focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+}
