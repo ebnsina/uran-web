@@ -264,25 +264,28 @@
 		font-size: var(--step-1);
 		color: var(--fg-muted);
 	}
-	/* Email capture pill */
+	/* Email capture pill — the hero's primary action, so it carries weight. */
 	.capture {
 		display: flex;
 		align-items: center;
 		gap: var(--space-2xs);
 		margin-top: var(--space-l);
-		max-width: 30rem;
-		padding: 0.4rem 0.4rem 0.4rem 1rem;
-		background: color-mix(in oklab, var(--surface) 70%, transparent);
-		backdrop-filter: blur(10px);
+		max-width: 34rem;
+		padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+		background: color-mix(in oklab, var(--surface) 82%, transparent);
+		backdrop-filter: blur(12px);
 		border: 1px solid var(--border-strong);
 		border-radius: var(--radius-full);
+		box-shadow: var(--shadow-2);
 		transition:
 			border-color var(--dur-2) var(--ease-out),
 			box-shadow var(--dur-2) var(--ease-out);
 	}
 	.capture:focus-within {
 		border-color: var(--accent);
-		box-shadow: 0 0 0 3px var(--accent-soft);
+		box-shadow:
+			0 0 0 4px var(--accent-soft),
+			var(--glow-accent);
 	}
 	.capture input {
 		flex: 1;
@@ -290,7 +293,7 @@
 		background: transparent;
 		border: none;
 		color: var(--fg);
-		font-size: var(--step-0);
+		font-size: var(--step-1);
 	}
 	.capture input::placeholder {
 		color: var(--fg-subtle);
@@ -300,7 +303,8 @@
 	}
 	.capture button {
 		flex-shrink: 0;
-		padding: 0.6em 1.1em;
+		padding: 0.7em 1.35em;
+		font-size: var(--step-0);
 		font-weight: 600;
 		color: var(--accent-contrast);
 		background: var(--accent);
