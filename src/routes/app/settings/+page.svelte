@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { Plus, Trash2, Copy, Check, KeyRound } from '@lucide/svelte';
-	import { Button, TextField, Dialog, Alert, StatusBadge } from '$lib';
+	import { Button, TextField, Dialog, ConfirmDialog, Alert, StatusBadge } from '$lib';
 	import { getMe, keys } from '$lib/query/dashboard';
 	import { getTokens, createToken, deleteToken, getAudit, qk } from '$lib/query/resources';
 	import type { ApiTokenCreated } from '$lib/api/resources';
@@ -29,6 +29,9 @@
 		mutationFn: (id: number) => deleteToken(id),
 		onSuccess: () => client.invalidateQueries({ queryKey: qk.tokens })
 	}));
+	let confirmRevoke = $state(false);
+	let revokeId = $state<number | null>(null);
+	const revokeName = $derived(tokens.data?.find((t) => t.id === revokeId)?.name ?? 'this token');
 
 	async function copyToken() {
 		if (!created) return;
@@ -90,8 +93,10 @@
 							class="del"
 							type="button"
 							aria-label="Revoke {t.name}"
-							disabled={revoke.isPending && revoke.variables === t.id}
-							onclick={() => revoke.mutate(t.id)}
+							onclick={() => {
+								revokeId = t.id;
+								confirmRevoke = true;
+							}}
 						>
 							<Trash2 size={15} />
 						</button>
@@ -152,6 +157,18 @@
 		</form>
 	{/if}
 </Dialog>
+
+<ConfirmDialog
+	bind:open={confirmRevoke}
+	title="Revoke token"
+	message="Revoke {revokeName}? Any CLI or CI using it will stop working immediately."
+	confirmLabel="Revoke"
+	loading={revoke.isPending}
+	onconfirm={() => {
+		if (revokeId !== null) revoke.mutate(revokeId);
+		confirmRevoke = false;
+	}}
+/>
 
 <style>
 	.body {

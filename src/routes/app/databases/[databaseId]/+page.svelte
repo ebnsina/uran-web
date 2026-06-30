@@ -18,7 +18,7 @@
 		Link2,
 		SlidersHorizontal
 	} from '@lucide/svelte';
-	import { Button, Select, Slider, StatusBadge, Alert } from '$lib';
+	import { Button, Select, Slider, StatusBadge, Alert, ConfirmDialog } from '$lib';
 	import {
 		getDatabase,
 		getDbConnection,
@@ -92,6 +92,7 @@
 		onSuccess: () => goto(db.data ? `/app/projects/${db.data.project_id}` : '/app')
 	}));
 
+	let confirmDelete = $state(false);
 	let copied = $state('');
 	async function copy(uri: string) {
 		await navigator.clipboard.writeText(uri);
@@ -238,10 +239,19 @@
 				<h3><Trash2 size={16} /> Delete database</h3>
 				<p class="muted">Permanently deprovisions the database. This cannot be undone.</p>
 				{#if remove.isError}<Alert>{remove.error.message}</Alert>{/if}
-				<Button variant="secondary" loading={remove.isPending} onclick={() => remove.mutate()}>
+				<Button variant="danger" onclick={() => (confirmDelete = true)}>
 					<Trash2 size={15} /> Delete {d.name}
 				</Button>
 			</section>
+
+			<ConfirmDialog
+				bind:open={confirmDelete}
+				title="Delete database"
+				message="This permanently deprovisions {d.name} and all its data. This cannot be undone."
+				confirmLabel="Delete {d.name}"
+				loading={remove.isPending}
+				onconfirm={() => remove.mutate()}
+			/>
 		{/if}
 	</div>
 {/if}

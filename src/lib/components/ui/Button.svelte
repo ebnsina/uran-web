@@ -6,7 +6,7 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes, HTMLAnchorAttributes } from 'svelte/elements';
 
-	type Variant = 'primary' | 'secondary' | 'ghost';
+	type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 	type Size = 'sm' | 'md' | 'lg';
 
 	interface Props {
@@ -138,6 +138,15 @@
 	.ghost:hover {
 		--_fg: var(--fg);
 		--_bg: var(--surface);
+	}
+
+	.danger {
+		--_bg: var(--danger);
+		--_fg: #ffffff;
+		font-weight: 600;
+	}
+	.danger:hover {
+		--_bg: color-mix(in oklab, var(--danger) 88%, black);
 	}
 
 	.label {

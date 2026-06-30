@@ -2,7 +2,7 @@
 <script lang="ts">
 	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { Plus, Trash2, Users } from '@lucide/svelte';
-	import { Button, TextField, Select, Dialog, Alert, StatusBadge } from '$lib';
+	import { Button, TextField, Select, Dialog, ConfirmDialog, Alert, StatusBadge } from '$lib';
 	import { getMembers, addMember, setMemberRole, removeMember, qk } from '$lib/query/resources';
 	import { ORG_ROLES } from '$lib/api/resources';
 
@@ -38,6 +38,8 @@
 		mutationFn: (userId: number) => removeMember(orgId, userId),
 		onSuccess: invalidate
 	}));
+	let confirmRemove = $state(false);
+	let removeTarget = $state<{ id: number; email: string } | null>(null);
 
 	function initials(m: { name: string; email: string }) {
 		return (m.name || m.email || '?')
@@ -90,8 +92,10 @@
 							class="del"
 							type="button"
 							aria-label="Remove {m.email}"
-							disabled={remove.isPending && remove.variables === m.user_id}
-							onclick={() => remove.mutate(m.user_id)}
+							onclick={() => {
+								removeTarget = { id: m.user_id, email: m.email };
+								confirmRemove = true;
+							}}
 						>
 							<Trash2 size={15} />
 						</button>
@@ -126,6 +130,18 @@
 		<Button type="submit" full loading={add.isPending}>Add member</Button>
 	</form>
 </Dialog>
+
+<ConfirmDialog
+	bind:open={confirmRemove}
+	title="Remove member"
+	message="Remove {removeTarget?.email ?? 'this member'} from the organization?"
+	confirmLabel="Remove"
+	loading={remove.isPending}
+	onconfirm={() => {
+		if (removeTarget) remove.mutate(removeTarget.id);
+		confirmRemove = false;
+	}}
+/>
 
 <style>
 	.sec-head {
