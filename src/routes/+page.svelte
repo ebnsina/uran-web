@@ -2,6 +2,7 @@
 	import { Button, Reveal } from '$lib';
 	import { smoothAnchor } from '$lib/scroll';
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
+	import HeroGlow from '$lib/components/site/HeroGlow.svelte';
 	import SiteFooter from '$lib/components/site/SiteFooter.svelte';
 	import DeployPanel from '$lib/components/site/DeployPanel.svelte';
 	import type { PageData } from './$types';
@@ -80,6 +81,7 @@
 <main class="frame">
 	<!-- ── Hero: asymmetric, gutter-marked, panel breaks the grid ───────── -->
 	<section class="hero">
+		<HeroGlow />
 		<div class="gutter"><span class="marker">(00)</span></div>
 		<div class="hero-body">
 			<p class="define u-mono">
@@ -203,11 +205,17 @@
 
 	/* ── Hero ─────────────────────────────────────────────────────────── */
 	.hero {
+		position: relative;
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: var(--space-m);
 		padding-block: var(--space-2xl) var(--space-xl);
 		border-bottom: 1px solid var(--border);
+	}
+	/* Lift hero content above the decorative glow layer. */
+	.hero > :not(:global(.glow)) {
+		position: relative;
+		z-index: 1;
 	}
 	.gutter {
 		grid-column: 1;
