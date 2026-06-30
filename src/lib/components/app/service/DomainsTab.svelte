@@ -97,6 +97,7 @@
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: var(--radius-md);
 		overflow: hidden;
