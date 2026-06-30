@@ -41,9 +41,7 @@
 
 	const nav = [
 		{ href: '/app', label: 'Overview' },
-		{ href: '/app/services', label: 'Services' },
-		{ href: '/app/databases', label: 'Databases' },
-		{ href: '/app/settings', label: 'Settings' }
+		{ href: '/docs', label: 'Docs' }
 	];
 
 	function isActive(href: string): boolean {
