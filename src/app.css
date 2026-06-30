@@ -85,6 +85,15 @@ pre {
 	border-radius: var(--radius-xs);
 }
 
+/* Form fields provide their own focus styling (their container or border),
+   so they opt out of the generic ring to avoid an ugly double border. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	box-shadow: none;
+	border-radius: revert;
+}
+
 ::selection {
 	background: var(--accent);
 	color: var(--accent-contrast);
