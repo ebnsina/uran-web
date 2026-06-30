@@ -578,6 +578,10 @@
 		}
 		.hero-panel :global(.win) {
 			width: 44rem;
+			/* Dissolve the right edge into the background for a premium,
+			   bleeding-off-the-screen look instead of a hard rectangular cut. */
+			-webkit-mask-image: linear-gradient(90deg, #000 68%, transparent 97%);
+			mask-image: linear-gradient(90deg, #000 68%, transparent 97%);
 		}
 
 		.block {
