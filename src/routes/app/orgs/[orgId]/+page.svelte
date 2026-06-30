@@ -7,6 +7,7 @@
 	import { getProjects, createProject, qk } from '$lib/query/resources';
 	import ResourceList from '$lib/components/app/ResourceList.svelte';
 	import PageHead from '$lib/components/app/PageHead.svelte';
+	import MembersSection from '$lib/components/app/MembersSection.svelte';
 
 	const orgId = $derived(Number(page.params.orgId));
 	const client = useQueryClient();
@@ -44,20 +45,28 @@
 </PageHead>
 
 <div class="body">
-	<ResourceList
-		query={projects}
-		empty={{ title: 'No projects yet', hint: 'Group your services and databases into a project.' }}
-	>
-		{#snippet item(p)}
-			<a class="card" href="/app/projects/{p.id}">
-				<span class="ico"><FolderGit2 size={18} /></span>
-				<div>
-					<h3>{p.name}</h3>
-					<p class="u-mono">{p.slug}</p>
-				</div>
-			</a>
-		{/snippet}
-	</ResourceList>
+	<section>
+		<h2 class="sec-title">Projects</h2>
+		<ResourceList
+			query={projects}
+			empty={{
+				title: 'No projects yet',
+				hint: 'Group your services and databases into a project.'
+			}}
+		>
+			{#snippet item(p)}
+				<a class="card" href="/app/projects/{p.id}">
+					<span class="ico"><FolderGit2 size={18} /></span>
+					<div>
+						<h3>{p.name}</h3>
+						<p class="u-mono">{p.slug}</p>
+					</div>
+				</a>
+			{/snippet}
+		</ResourceList>
+	</section>
+
+	<MembersSection {orgId} />
 </div>
 
 <Dialog bind:open={dialogOpen} title="New project">
@@ -78,6 +87,12 @@
 <style>
 	.body {
 		padding: var(--space-l);
+		display: grid;
+		gap: var(--space-2xl);
+	}
+	.sec-title {
+		font-size: var(--step-1);
+		margin-bottom: var(--space-m);
 	}
 	.card {
 		display: flex;

@@ -6,6 +6,8 @@
 import {
 	projectList,
 	project,
+	orgMemberList,
+	orgMember,
 	serviceList,
 	service,
 	serviceStatusList,
@@ -28,15 +30,17 @@ import {
 	type Domain,
 	type Database,
 	type DbConnection,
-	type ApiTokenCreated
+	type ApiTokenCreated,
+	type OrgMember
 } from '$lib/api/resources';
-import { apiGet, apiPost, apiDelete } from './fetcher';
+import { apiGet, apiPost, apiPatch, apiDelete } from './fetcher';
 
 const v1 = '/api/v1';
 
 /* ── Query keys ──────────────────────────────────────────────────────── */
 export const qk = {
 	projects: (orgId: number) => ['orgs', orgId, 'projects'] as const,
+	members: (orgId: number) => ['orgs', orgId, 'members'] as const,
 	project: (id: number) => ['projects', id] as const,
 	services: (projectId: number) => ['projects', projectId, 'services'] as const,
 	projectStatus: (projectId: number) => ['projects', projectId, 'status'] as const,
@@ -58,6 +62,15 @@ export const qk = {
 export const getProjects = (orgId: number) => apiGet(`${v1}/orgs/${orgId}/projects`, projectList);
 export const createProject = (orgId: number, name: string): Promise<Project> =>
 	apiPost(`${v1}/orgs/${orgId}/projects`, { name }, project);
+
+/* ── Org members ─────────────────────────────────────────────────────── */
+export const getMembers = (orgId: number) => apiGet(`${v1}/orgs/${orgId}/members`, orgMemberList);
+export const addMember = (orgId: number, email: string, role: string): Promise<OrgMember> =>
+	apiPost(`${v1}/orgs/${orgId}/members`, { email, role }, orgMember);
+export const setMemberRole = (orgId: number, userId: number, role: string) =>
+	apiPatch(`${v1}/orgs/${orgId}/members/${userId}`, { role });
+export const removeMember = (orgId: number, userId: number) =>
+	apiDelete(`${v1}/orgs/${orgId}/members/${userId}`);
 
 /* ── Services ────────────────────────────────────────────────────────── */
 export const getServices = (projectId: number) =>

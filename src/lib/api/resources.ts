@@ -25,6 +25,18 @@ export const project = z.object({
 export type Project = z.infer<typeof project>;
 export const projectList = list(project);
 
+/* ── Org members ─────────────────────────────────────────────────────── */
+
+export const ORG_ROLES = ['viewer', 'member', 'admin'] as const;
+export const orgMember = z.object({
+	user_id: z.number(),
+	email: z.string(),
+	name: z.string(),
+	role: z.string()
+});
+export type OrgMember = z.infer<typeof orgMember>;
+export const orgMemberList = list(orgMember);
+
 /* ── Services ────────────────────────────────────────────────────────── */
 
 export const SERVICE_TYPES = ['web', 'static', 'worker', 'cron'] as const;

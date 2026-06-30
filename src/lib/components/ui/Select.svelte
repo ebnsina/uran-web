@@ -20,7 +20,7 @@
 </script>
 
 <div class="field">
-	<label for={fieldId}>{label}</label>
+	{#if label}<label for={fieldId}>{label}</label>{/if}
 	<div class="wrap">
 		<select id={fieldId} {name} bind:value {...rest}>
 			{#each options as o (o.value)}
