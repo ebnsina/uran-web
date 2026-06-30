@@ -324,7 +324,9 @@
 		background: color-mix(in oklab, var(--surface) 82%, transparent);
 		backdrop-filter: blur(12px);
 		border: 1px solid var(--border-strong);
-		border-radius: var(--radius-full);
+		border-radius: 1.6rem;
+		/* squircle here only — it looked great on the hero input */
+		corner-shape: squircle;
 		box-shadow: var(--shadow-2);
 		transition:
 			border-color var(--dur-2) var(--ease-out),
@@ -356,7 +358,8 @@
 		color: var(--accent-contrast);
 		background: var(--accent);
 		border: none;
-		border-radius: var(--radius-full);
+		border-radius: 1.15rem;
+		corner-shape: squircle;
 		cursor: pointer;
 		transition:
 			background var(--dur-2) var(--ease-out),
