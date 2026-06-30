@@ -109,14 +109,15 @@
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
 		min-height: 100dvh;
+		background: var(--bg);
 	}
+	/* Sidebar sits on the grey canvas (no panel/border) — active item is brand. */
 	.side {
 		display: none;
 		flex-direction: column;
 		gap: var(--space-l);
 		padding: var(--space-m);
-		border-right: 1px solid var(--border);
-		background: var(--surface);
+		background: transparent;
 	}
 	.side-top {
 		padding: var(--space-2xs) var(--space-2xs) var(--space-s);
@@ -208,11 +209,18 @@
 		opacity: 0.5;
 		cursor: not-allowed;
 	}
+	/* The content area: a single white, rounded-xl panel floating on the canvas. */
 	.main {
 		min-width: 0;
-		width: 100%;
-		max-width: 84rem;
-		margin-inline: auto;
+		width: calc(100% - 2 * var(--space-s));
+		max-width: 82rem;
+		margin: var(--space-s) auto;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-1);
+		overflow: hidden;
+		min-height: calc(100dvh - 2 * var(--space-s));
 	}
 
 	.boot {
