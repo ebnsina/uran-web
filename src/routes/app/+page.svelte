@@ -1,12 +1,15 @@
 <script lang="ts">
-	import { Button, Reveal } from '$lib';
+	import { createQuery } from '@tanstack/svelte-query';
 	import { fly } from 'svelte/transition';
 	import { expoOut } from 'svelte/easing';
-	import { motion } from '$lib';
-	import type { PageData } from './$types';
+	import { Button, Reveal, motion } from '$lib';
+	import { getMe, getOrgs, keys } from '$lib/query/dashboard';
 
-	let { data }: { data: PageData } = $props();
-	const firstName = $derived((data.user?.name || '').split(/\s+/)[0] || 'there');
+	const me = createQuery(() => ({ queryKey: keys.me, queryFn: getMe, staleTime: 60_000 }));
+	const orgs = createQuery(() => ({ queryKey: keys.orgs, queryFn: getOrgs }));
+
+	const firstName = $derived((me.data?.name || '').split(/\s+/)[0] || 'there');
+	const skeletons = [0, 1, 2];
 </script>
 
 <svelte:head><title>Overview · Uran</title></svelte:head>
@@ -20,7 +23,19 @@
 </header>
 
 <section class="body">
-	{#if data.orgs.length === 0}
+	{#if orgs.isPending}
+		<div class="skeleton-grid">
+			{#each skeletons as i (i)}
+				<div class="skeleton"></div>
+			{/each}
+		</div>
+	{:else if orgs.isError}
+		<div class="state">
+			<h2>Couldn't load your organizations</h2>
+			<p>{orgs.error.message}</p>
+			<Button onclick={() => orgs.refetch()}>Try again</Button>
+		</div>
+	{:else if orgs.data.length === 0}
 		<Reveal>
 			<div class="empty">
 				<div class="empty-mark" aria-hidden="true">⌁</div>
@@ -37,7 +52,7 @@
 		</Reveal>
 	{:else}
 		<div class="org-grid">
-			{#each data.orgs as org, i (org.id)}
+			{#each orgs.data as org, i (org.id)}
 				<a
 					href="/app/orgs/{org.slug}"
 					class="org"
@@ -70,6 +85,44 @@
 	}
 	.body {
 		padding: var(--space-l);
+	}
+
+	/* Loading skeleton */
+	.skeleton-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+		gap: var(--space-m);
+	}
+	.skeleton {
+		height: 9rem;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-md);
+		background: linear-gradient(
+			100deg,
+			var(--surface) 30%,
+			var(--surface-2) 50%,
+			var(--surface) 70%
+		);
+		background-size: 200% 100%;
+		animation: shimmer 1.3s ease-in-out infinite;
+	}
+	@keyframes shimmer {
+		to {
+			background-position: -200% 0;
+		}
+	}
+
+	.state {
+		max-width: 28rem;
+		margin: var(--space-2xl) auto;
+		text-align: center;
+	}
+	.state h2 {
+		font-size: var(--step-1);
+	}
+	.state p {
+		margin: var(--space-s) 0 var(--space-l);
+		color: var(--fg-muted);
 	}
 
 	.empty {

@@ -61,6 +61,10 @@ export const org = z.object({
 });
 export type Org = z.infer<typeof org>;
 
-export const orgList = z.array(org);
+// The API returns `null` for an empty list (Go nil slice); normalise to [].
+export const orgList = z
+	.array(org)
+	.nullable()
+	.transform((v) => v ?? []);
 
 export const apiError = z.object({ error: z.string() });

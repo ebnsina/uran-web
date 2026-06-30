@@ -1,0 +1,246 @@
+<!--
+  Authenticated dashboard chrome. Runs inside the QueryClientProvider so it can
+  use TanStack Query: a `me` query doubles as the auth guard (401 → login) and
+  feeds the sidebar identity; logout is a mutation. No SSR, no form actions.
+-->
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
+	import { Logo } from '$lib';
+	import { getMe, postLogout, keys } from '$lib/query/dashboard';
+	import { FetchError } from '$lib/query/fetcher';
+
+	let { children }: { children: Snippet } = $props();
+
+	const client = useQueryClient();
+
+	const me = createQuery(() => ({
+		queryKey: keys.me,
+		queryFn: getMe,
+		retry: false,
+		staleTime: 60_000
+	}));
+
+	// Client-side auth guard: bounce to login on 401 (preserve return path).
+	$effect(() => {
+		if (me.isError && me.error instanceof FetchError && me.error.status === 401) {
+			goto(`/login?next=${encodeURIComponent(page.url.pathname)}`);
+		}
+	});
+
+	const logout = createMutation(() => ({
+		mutationFn: postLogout,
+		onSuccess: () => {
+			client.clear();
+			goto('/');
+		}
+	}));
+
+	const nav = [
+		{ href: '/app', label: 'Overview' },
+		{ href: '/app/services', label: 'Services' },
+		{ href: '/app/databases', label: 'Databases' },
+		{ href: '/app/settings', label: 'Settings' }
+	];
+
+	function isActive(href: string): boolean {
+		return href === '/app' ? page.url.pathname === '/app' : page.url.pathname.startsWith(href);
+	}
+
+	const initials = $derived(
+		(me.data?.name || me.data?.email || '?')
+			.split(/\s+/)
+			.map((s) => s[0])
+			.slice(0, 2)
+			.join('')
+			.toUpperCase()
+	);
+</script>
+
+{#if me.isSuccess}
+	<div class="layout">
+		<aside class="side">
+			<div class="side-top"><Logo /></div>
+			<nav>
+				{#each nav as item (item.href)}
+					<a
+						href={item.href}
+						class="nav-item"
+						class:active={isActive(item.href)}
+						aria-current={isActive(item.href) ? 'page' : undefined}
+					>
+						{item.label}
+					</a>
+				{/each}
+			</nav>
+			<div class="user">
+				<div class="avatar" aria-hidden="true">{initials}</div>
+				<div class="who">
+					<span class="name">{me.data.name || 'Account'}</span>
+					<span class="email">{me.data.email}</span>
+				</div>
+				<button
+					class="logout"
+					type="button"
+					title="Log out"
+					aria-label="Log out"
+					disabled={logout.isPending}
+					onclick={() => logout.mutate()}
+				>
+					⏻
+				</button>
+			</div>
+		</aside>
+
+		<main class="main">
+			{@render children()}
+		</main>
+	</div>
+{:else}
+	<div class="boot" role="status" aria-live="polite">
+		<span class="spinner" aria-hidden="true"></span>
+		<span class="u-visually-hidden">Loading your dashboard…</span>
+	</div>
+{/if}
+
+<style>
+	.layout {
+		display: grid;
+		grid-template-columns: 1fr;
+		min-height: 100dvh;
+	}
+	.side {
+		display: none;
+		flex-direction: column;
+		gap: var(--space-l);
+		padding: var(--space-m);
+		border-right: 1px solid var(--border);
+		background: var(--surface);
+	}
+	.side-top {
+		padding: var(--space-2xs) var(--space-2xs) var(--space-s);
+	}
+	nav {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		flex: 1;
+	}
+	.nav-item {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+		padding: 0.6em 0.7em;
+		border-radius: var(--radius-sm);
+		color: var(--fg-muted);
+		font-size: var(--step--1);
+		font-weight: 500;
+		transition:
+			color var(--dur-2) var(--ease-out),
+			background var(--dur-2) var(--ease-out);
+	}
+	.nav-item:hover {
+		color: var(--fg);
+		background: var(--surface-2);
+	}
+	.nav-item.active {
+		color: var(--accent-contrast);
+		background: var(--accent);
+	}
+	.user {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2xs);
+		padding-top: var(--space-s);
+		border-top: 1px solid var(--border);
+	}
+	.avatar {
+		display: grid;
+		place-items: center;
+		width: 2.1rem;
+		height: 2.1rem;
+		border-radius: var(--radius-full);
+		background: var(--accent-soft);
+		color: var(--accent);
+		font-size: var(--step--2);
+		font-weight: 700;
+		font-family: var(--font-mono);
+	}
+	.who {
+		flex: 1;
+		min-width: 0;
+	}
+	.name,
+	.email {
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.name {
+		font-size: var(--step--1);
+		font-weight: 500;
+	}
+	.email {
+		font-size: var(--step--2);
+		color: var(--fg-subtle);
+	}
+	.logout {
+		display: grid;
+		place-items: center;
+		width: 2rem;
+		height: 2rem;
+		border: 1px solid var(--border);
+		background: transparent;
+		border-radius: var(--radius-sm);
+		color: var(--fg-muted);
+		cursor: pointer;
+		transition:
+			color var(--dur-2) var(--ease-out),
+			border-color var(--dur-2) var(--ease-out);
+	}
+	.logout:hover:not(:disabled) {
+		color: var(--danger-400);
+		border-color: var(--danger);
+	}
+	.logout:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+	.main {
+		min-width: 0;
+	}
+
+	.boot {
+		display: grid;
+		place-items: center;
+		min-height: 100dvh;
+	}
+	.spinner {
+		width: 1.6rem;
+		height: 1.6rem;
+		border-radius: var(--radius-full);
+		border: 2px solid var(--border-strong);
+		border-top-color: var(--accent);
+		animation: spin 0.7s linear infinite;
+	}
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	@media (min-width: 56rem) {
+		.layout {
+			grid-template-columns: 16rem 1fr;
+		}
+		.side {
+			display: flex;
+			position: sticky;
+			top: 0;
+			height: 100dvh;
+		}
+	}
+</style>
