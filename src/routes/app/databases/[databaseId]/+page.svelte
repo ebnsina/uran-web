@@ -3,7 +3,21 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
-	import { Copy, Check, Eye, DatabaseBackup, Trash2 } from '@lucide/svelte';
+	import {
+		Copy,
+		Check,
+		Eye,
+		DatabaseBackup,
+		Trash2,
+		Database as DbIcon,
+		Layers,
+		Cpu,
+		HardDrive,
+		Boxes,
+		Network,
+		Link2,
+		SlidersHorizontal
+	} from '@lucide/svelte';
 	import { Button, Select, Slider, StatusBadge, Alert } from '$lib';
 	import {
 		getDatabase,
@@ -108,22 +122,38 @@
 		{#if db.data}
 			{@const d = db.data}
 			<div class="info">
-				<div class="kv"><span>Engine</span><b class="u-mono">{d.engine}</b></div>
-				<div class="kv"><span>Tier</span><b class="u-mono">{d.tier}</b></div>
-				<div class="kv"><span>Size</span><b class="u-mono">{d.size}</b></div>
-				<div class="kv"><span>Storage</span><b class="u-mono">{d.storage}</b></div>
 				<div class="kv">
-					<span>Instances</span>
+					<span class="kv-ico"><DbIcon size={15} /></span>
+					<span class="kv-label">Engine</span><b class="u-mono">{d.engine}</b>
+				</div>
+				<div class="kv">
+					<span class="kv-ico"><Layers size={15} /></span>
+					<span class="kv-label">Tier</span><b class="u-mono">{d.tier}</b>
+				</div>
+				<div class="kv">
+					<span class="kv-ico"><Cpu size={15} /></span>
+					<span class="kv-label">Size</span><b class="u-mono">{d.size}</b>
+				</div>
+				<div class="kv">
+					<span class="kv-ico"><HardDrive size={15} /></span>
+					<span class="kv-label">Storage</span><b class="u-mono">{d.storage}</b>
+				</div>
+				<div class="kv">
+					<span class="kv-ico"><Boxes size={15} /></span>
+					<span class="kv-label">Instances</span>
 					<b class="u-mono"
 						>{d.tier === 'autoscale' ? `${d.min_instances}–${d.max_instances}` : d.instances}</b
 					>
 				</div>
-				<div class="kv"><span>Pooling</span><b class="u-mono">{d.pooling ? 'on' : 'off'}</b></div>
+				<div class="kv">
+					<span class="kv-ico"><Network size={15} /></span>
+					<span class="kv-label">Pooling</span><b class="u-mono">{d.pooling ? 'on' : 'off'}</b>
+				</div>
 			</div>
 
 			<!-- Connection -->
 			<section class="panel">
-				<h3>Connection</h3>
+				<h3><Link2 size={16} /> Connection</h3>
 				{#if d.status !== 'ready'}
 					<p class="muted">Connection details appear once the database is ready.</p>
 				{:else if !revealConn}
@@ -156,7 +186,7 @@
 
 			<!-- Scale -->
 			<section class="panel">
-				<h3>Scale</h3>
+				<h3><SlidersHorizontal size={16} /> Scale</h3>
 				<div class="row">
 					<Select label="Size" name="size" bind:value={size} options={sizeOptions} />
 					<Select label="Storage" name="storage" bind:value={storage} options={storageOptions} />
@@ -172,7 +202,7 @@
 			{#if d.backups}
 				<section class="panel">
 					<div class="panel-head">
-						<h3>Backups</h3>
+						<h3><DatabaseBackup size={16} /> Backups</h3>
 						<Button
 							size="sm"
 							variant="secondary"
@@ -205,7 +235,7 @@
 
 			<!-- Danger -->
 			<section class="panel danger">
-				<h3>Delete database</h3>
+				<h3><Trash2 size={16} /> Delete database</h3>
 				<p class="muted">Permanently deprovisions the database. This cannot be undone.</p>
 				{#if remove.isError}<Alert>{remove.error.message}</Alert>{/if}
 				<Button variant="secondary" loading={remove.isPending} onclick={() => remove.mutate()}>
@@ -232,15 +262,27 @@
 		gap: var(--space-s);
 	}
 	.kv {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
+		display: grid;
+		grid-template-columns: auto 1fr;
+		align-items: center;
+		column-gap: var(--space-2xs);
+		row-gap: 2px;
 		padding: var(--space-s) var(--space-m);
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: var(--radius-sm);
 	}
-	.kv span {
+	.kv-ico {
+		grid-row: 1 / span 2;
+		display: grid;
+		place-items: center;
+		width: 1.9rem;
+		height: 1.9rem;
+		color: var(--accent);
+		background: var(--accent-soft);
+		border-radius: var(--radius-sm);
+	}
+	.kv-label {
 		font-size: var(--step--2);
 		color: var(--fg-subtle);
 		text-transform: uppercase;
@@ -259,6 +301,9 @@
 		border-radius: var(--radius-md);
 	}
 	.panel h3 {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
 		font-size: var(--step-1);
 	}
 	.panel-head {

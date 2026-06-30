@@ -34,16 +34,20 @@
 	}
 	.box {
 		flex-shrink: 0;
-		width: 1.15rem;
-		height: 1.15rem;
-		margin-top: 0.1rem;
-		border: 1px solid var(--border-strong);
-		border-radius: var(--radius-xs);
-		background: var(--surface-2);
+		width: 1.2rem;
+		height: 1.2rem;
+		margin-top: 0.05rem;
+		border: 1.5px solid var(--border-strong);
+		/* small fixed radius — a square checkbox, not a round radio */
+		border-radius: 5px;
+		background: var(--surface);
 		transition:
 			background var(--dur-2) var(--ease-out),
 			border-color var(--dur-2) var(--ease-out);
 		position: relative;
+	}
+	.check:hover .box {
+		border-color: var(--fg-subtle);
 	}
 	input:checked + .box {
 		background: var(--accent);
@@ -52,10 +56,10 @@
 	input:checked + .box::after {
 		content: '';
 		position: absolute;
-		left: 0.36rem;
-		top: 0.16rem;
-		width: 0.28rem;
-		height: 0.55rem;
+		left: 0.4rem;
+		top: 0.17rem;
+		width: 0.3rem;
+		height: 0.58rem;
 		border: solid var(--accent-contrast);
 		border-width: 0 2px 2px 0;
 		transform: rotate(45deg);

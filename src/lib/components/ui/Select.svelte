@@ -58,6 +58,9 @@
 			border-color var(--dur-2) var(--ease-out),
 			box-shadow var(--dur-2) var(--ease-out);
 	}
+	select:hover {
+		border-color: var(--fg-subtle);
+	}
 	select:focus {
 		outline: none;
 		border-color: var(--accent);

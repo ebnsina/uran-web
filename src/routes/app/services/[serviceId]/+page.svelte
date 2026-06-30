@@ -1,7 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { createQuery } from '@tanstack/svelte-query';
-	import { ExternalLink } from '@lucide/svelte';
+	import {
+		ExternalLink,
+		Box,
+		GitBranch,
+		Cpu,
+		Gauge,
+		FolderGit2,
+		Globe,
+		Activity
+	} from '@lucide/svelte';
 	import { StatusBadge, Alert } from '$lib';
 	import { getService, getDeploys, getMetrics, qk } from '$lib/query/resources';
 	import type { Deploy } from '$lib/api/resources';
@@ -71,11 +80,21 @@
 			{#if svc.data}
 				{@const s = svc.data}
 				<div class="info">
-					<div class="kv"><span>Type</span><b class="u-mono">{s.type}</b></div>
-					<div class="kv"><span>Branch</span><b class="u-mono">{s.branch || '—'}</b></div>
-					<div class="kv"><span>Instance</span><b class="u-mono">{s.instance_size}</b></div>
 					<div class="kv">
-						<span>Scaling</span>
+						<span class="kv-ico"><Box size={15} /></span>
+						<span class="kv-label">Type</span><b class="u-mono">{s.type}</b>
+					</div>
+					<div class="kv">
+						<span class="kv-ico"><GitBranch size={15} /></span>
+						<span class="kv-label">Branch</span><b class="u-mono">{s.branch || '—'}</b>
+					</div>
+					<div class="kv">
+						<span class="kv-ico"><Cpu size={15} /></span>
+						<span class="kv-label">Instance</span><b class="u-mono">{s.instance_size}</b>
+					</div>
+					<div class="kv">
+						<span class="kv-ico"><Gauge size={15} /></span>
+						<span class="kv-label">Scaling</span>
 						<b class="u-mono"
 							>{s.max_replicas > 0
 								? `auto ${s.min_replicas}–${s.max_replicas}`
@@ -83,11 +102,15 @@
 						>
 					</div>
 					{#if s.repo_url}
-						<div class="kv wide"><span>Repository</span><b class="u-mono">{s.repo_url}</b></div>
+						<div class="kv wide">
+							<span class="kv-ico"><FolderGit2 size={15} /></span>
+							<span class="kv-label">Repository</span><b class="u-mono">{s.repo_url}</b>
+						</div>
 					{/if}
 					{#if s.internal_host}
 						<div class="kv wide">
-							<span>URL</span>
+							<span class="kv-ico"><Globe size={15} /></span>
+							<span class="kv-label">URL</span>
 							<a
 								class="u-mono link"
 								href="https://{s.internal_host}"
@@ -101,7 +124,7 @@
 					{/if}
 				</div>
 
-				<h3 class="sub">Live usage</h3>
+				<h3 class="sub"><Activity size={16} /> Live usage</h3>
 				{#if metrics.isError}
 					<p class="muted">Metrics unavailable.</p>
 				{:else if (metrics.data ?? []).length === 0}
@@ -168,9 +191,11 @@
 		margin-bottom: var(--space-xl);
 	}
 	.kv {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
+		display: grid;
+		grid-template-columns: auto 1fr;
+		align-items: center;
+		column-gap: var(--space-2xs);
+		row-gap: 2px;
 		padding: var(--space-s) var(--space-m);
 		background: var(--surface);
 		border: 1px solid var(--border);
@@ -179,7 +204,17 @@
 	.kv.wide {
 		grid-column: 1 / -1;
 	}
-	.kv span {
+	.kv-ico {
+		grid-row: 1 / span 2;
+		display: grid;
+		place-items: center;
+		width: 1.9rem;
+		height: 1.9rem;
+		color: var(--accent);
+		background: var(--accent-soft);
+		border-radius: var(--radius-sm);
+	}
+	.kv-label {
 		font-size: var(--step--2);
 		color: var(--fg-subtle);
 		text-transform: uppercase;
@@ -196,6 +231,9 @@
 		color: var(--accent);
 	}
 	.sub {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
 		font-size: var(--step-1);
 		margin-bottom: var(--space-s);
 	}
