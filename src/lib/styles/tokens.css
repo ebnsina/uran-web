@@ -66,12 +66,15 @@
 	--space-2xl: clamp(4rem, 3.8rem + 0.87vw, 4.94rem);
 	--space-3xl: clamp(6rem, 5.7rem + 1.3vw, 7.4rem);
 
-	/* Radii — generous, rounded (2xl) feel. */
-	--radius-xs: 8px;
-	--radius-sm: 12px;
-	--radius-md: 16px;
-	--radius-lg: 24px;
-	--radius-2xl: 32px;
+	/* Radii — ONE consistent rounded-xl radius for every rectangular surface
+	   (buttons, inputs, cards, panels, dialogs all match). Only tiny chips (xs)
+	   are tighter and pills use --radius-full. Retune everything via --radius. */
+	--radius: 14px;
+	--radius-xs: 10px;
+	--radius-sm: var(--radius);
+	--radius-md: var(--radius);
+	--radius-lg: var(--radius);
+	--radius-2xl: var(--radius);
 	--radius-full: 999px;
 
 	/* Typography families */
