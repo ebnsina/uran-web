@@ -3,9 +3,9 @@
 	import { Button, TextField } from '$lib';
 	import Alert from '$lib/components/ui/Alert.svelte';
 	import AuthShell from '$lib/components/site/AuthShell.svelte';
-	import type { ActionData } from './$types';
+	import type { ActionData, PageData } from './$types';
 
-	let { form }: { form: ActionData } = $props();
+	let { form, data }: { form: ActionData; data: PageData } = $props();
 	let submitting = $state(false);
 </script>
 
@@ -47,7 +47,7 @@
 			type="email"
 			autocomplete="email"
 			placeholder="you@company.com"
-			value={form?.email ?? ''}
+			value={form?.email ?? data.email}
 			error={form?.errors?.email?.[0]}
 			required
 		/>

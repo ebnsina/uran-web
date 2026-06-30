@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { Button, Reveal } from '$lib';
 	import { smoothAnchor } from '$lib/scroll';
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
@@ -8,6 +9,22 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	// Hero email capture → carry the address into registration.
+	function startFree(event: SubmitEvent) {
+		event.preventDefault();
+		const form = event.currentTarget as HTMLFormElement;
+		const email = String(new FormData(form).get('email') ?? '').trim();
+		goto(`/register${email ? `?email=${encodeURIComponent(email)}` : ''}`);
+	}
+
+	// Social-proof avatars (decorative initials, tinted).
+	const proof = [
+		{ i: 0, c: 'b', tint: 'var(--accent)' },
+		{ i: 1, c: 'm', tint: 'var(--ok)' },
+		{ i: 2, c: 'k', tint: 'var(--warn)' },
+		{ i: 3, c: '+', tint: 'var(--surface-hover)' }
+	];
 
 	// Capabilities read as an index / spec sheet, not a card grid.
 	const capabilities = [
@@ -94,12 +111,28 @@
 				Connect a repository and Uran turns every push into a running, routed, TLS-terminated
 				service — with managed databases, autoscaling, and preview environments built in.
 			</p>
-			<div class="cta">
-				<Button href="/register" size="lg">Start free</Button>
-				<Button href="#index" variant="ghost" size="lg" onclick={smoothAnchor}>
-					Browse capabilities →
-				</Button>
+			<form class="capture" onsubmit={startFree}>
+				<input
+					type="email"
+					name="email"
+					placeholder="you@company.com"
+					autocomplete="email"
+					aria-label="Email address"
+					required
+				/>
+				<button type="submit">Start free</button>
+			</form>
+
+			<div class="proof">
+				<div class="avatars" aria-hidden="true">
+					{#each proof as p (p.i)}
+						<span class="avatar" style="--tint: {p.tint}">{p.c}</span>
+					{/each}
+				</div>
+				<p>Join <strong>1,200+</strong> developers shipping on Uran</p>
 			</div>
+
+			<a class="browse" href="#index" onclick={smoothAnchor}>Browse capabilities →</a>
 		</div>
 		<div class="hero-panel">
 			<DeployPanel />
@@ -243,13 +276,110 @@
 		font-size: var(--step-1);
 		color: var(--fg-muted);
 	}
-	.cta {
+	/* Email capture pill */
+	.capture {
 		display: flex;
-		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-2xs);
+		margin-top: var(--space-l);
+		max-width: 30rem;
+		padding: 0.4rem 0.4rem 0.4rem 1rem;
+		background: color-mix(in oklab, var(--surface) 70%, transparent);
+		backdrop-filter: blur(10px);
+		border: 1px solid var(--border-strong);
+		border-radius: var(--radius-full);
+		transition:
+			border-color var(--dur-2) var(--ease-out),
+			box-shadow var(--dur-2) var(--ease-out);
+	}
+	.capture:focus-within {
+		border-color: var(--accent);
+		box-shadow: 0 0 0 3px var(--accent-soft);
+	}
+	.capture input {
+		flex: 1;
+		min-width: 0;
+		background: transparent;
+		border: none;
+		color: var(--fg);
+		font-size: var(--step-0);
+	}
+	.capture input::placeholder {
+		color: var(--fg-subtle);
+	}
+	.capture input:focus {
+		outline: none;
+	}
+	.capture button {
+		flex-shrink: 0;
+		padding: 0.6em 1.1em;
+		font-weight: 600;
+		color: var(--accent-contrast);
+		background: var(--accent);
+		border: none;
+		border-radius: var(--radius-full);
+		cursor: pointer;
+		transition:
+			background var(--dur-2) var(--ease-out),
+			box-shadow var(--dur-2) var(--ease-out),
+			transform var(--dur-1) var(--ease-out);
+	}
+	.capture button:hover {
+		background: var(--accent-hover);
+		box-shadow: var(--glow-accent);
+		transform: translateY(-1px);
+	}
+	.capture button:active {
+		transform: translateY(0) scale(0.98);
+	}
+
+	/* Social proof */
+	.proof {
+		display: flex;
 		align-items: center;
 		gap: var(--space-s);
-		margin-top: var(--space-l);
+		margin-top: var(--space-m);
 	}
+	.avatars {
+		display: flex;
+	}
+	.avatar {
+		display: grid;
+		place-items: center;
+		width: 1.85rem;
+		height: 1.85rem;
+		margin-left: -0.55rem;
+		border-radius: var(--radius-full);
+		border: 2px solid var(--bg);
+		background: color-mix(in oklab, var(--tint) 28%, var(--surface-2));
+		color: var(--fg);
+		font-family: var(--font-mono);
+		font-size: var(--step--2);
+		font-weight: 600;
+	}
+	.avatar:first-child {
+		margin-left: 0;
+	}
+	.proof p {
+		font-size: var(--step--1);
+		color: var(--fg-muted);
+	}
+	.proof strong {
+		color: var(--fg);
+		font-weight: 600;
+	}
+
+	.browse {
+		display: inline-block;
+		margin-top: var(--space-m);
+		font-size: var(--step--1);
+		color: var(--fg-muted);
+		transition: color var(--dur-2) var(--ease-out);
+	}
+	.browse:hover {
+		color: var(--accent);
+	}
+
 	.hero-panel {
 		margin-top: var(--space-l);
 	}

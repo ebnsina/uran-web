@@ -6,8 +6,10 @@ import { registerInput } from '$lib/api/schemas';
 import { setSession } from '$lib/server/session';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = ({ locals }) => {
+export const load: PageServerLoad = ({ locals, url }) => {
 	if (locals.user) redirect(303, '/app');
+	// Prefill from the landing-page email capture (?email=…).
+	return { email: url.searchParams.get('email') ?? '' };
 };
 
 export const actions: Actions = {
