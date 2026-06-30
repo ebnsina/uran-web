@@ -58,44 +58,56 @@
 	];
 
 	// Capabilities read as an index / spec sheet, not a card grid.
+	// Each icon carries its own colour for a livelier, scannable list.
 	const capabilities = [
 		{
 			icon: GitBranch,
+			c: '#38a8e6',
 			t: 'Push to live',
 			d: 'Connect a repo; every push builds, deploys, and routes itself — TLS and all.'
 		},
 		{
 			icon: Database,
+			c: '#2dd4bf',
 			t: 'Managed databases',
 			d: 'Postgres or Redis in a click. HA replicas, connection pooling, continuous backups + PITR.'
 		},
 		{
 			icon: Gauge,
+			c: '#fbbf24',
 			t: 'Autoscaling',
 			d: 'Scale on CPU between a floor and a ceiling, or pin a size from small to 2xlarge.'
 		},
 		{
 			icon: GitPullRequestArrow,
+			c: '#8b8cf7',
 			t: 'Preview environments',
 			d: 'Every pull request gets an isolated URL, torn down automatically when it merges.'
 		},
 		{
 			icon: ShieldCheck,
+			c: '#4ade80',
 			t: 'Automatic TLS',
 			d: 'Bring your domain; certificates are issued and renewed for you. HTTPS by default.'
 		},
 		{
 			icon: Activity,
+			c: '#fb7185',
 			t: 'Built-in observability',
 			d: 'Live logs, per-pod metrics, and usage metering — no agents to wire up.'
 		}
 	];
 
 	const flow = [
-		{ t: 'Connect', d: 'Link a repository and a branch.', icon: Link2 },
-		{ t: 'Detect', d: 'Read your Dockerfile, or auto-detect the stack.', icon: ScanSearch },
-		{ t: 'Deploy', d: 'Go live behind TLS, health-checked.', icon: Rocket },
-		{ t: 'Scale', d: 'Add databases, replicas, domains.', icon: TrendingUp }
+		{ t: 'Connect', c: '#38a8e6', d: 'Link a repository and a branch.', icon: Link2 },
+		{
+			t: 'Detect',
+			c: '#22d3ee',
+			d: 'Read your Dockerfile, or auto-detect the stack.',
+			icon: ScanSearch
+		},
+		{ t: 'Deploy', c: '#fbbf24', d: 'Go live behind TLS, health-checked.', icon: Rocket },
+		{ t: 'Scale', c: '#4ade80', d: 'Add databases, replicas, domains.', icon: TrendingUp }
 	];
 
 	// Tech-stack logos for the marquee (the platform Uran is built on / integrates).
@@ -192,7 +204,7 @@
 				{@const Icon = c.icon}
 				<Reveal delay={i * 50} y={16}>
 					<li class="row">
-						<span class="row-ico"><Icon size={20} strokeWidth={1.75} /></span>
+						<span class="row-ico" style="--c: {c.c}"><Icon size={20} strokeWidth={1.75} /></span>
 						<div class="row-main">
 							<h3>{c.t}</h3>
 							<p>{c.d}</p>
@@ -215,7 +227,8 @@
 				{@const Icon = step.icon}
 				<Reveal delay={i * 80} y={14}>
 					<li class="step">
-						<span class="step-ico"><Icon size={20} strokeWidth={1.75} /></span>
+						<span class="step-ico" style="--c: {step.c}"><Icon size={20} strokeWidth={1.75} /></span
+						>
 						<h3>{step.t}</h3>
 						<p>{step.d}</p>
 					</li>
@@ -319,9 +332,7 @@
 	}
 	.capture:focus-within {
 		border-color: var(--accent);
-		box-shadow:
-			0 0 0 4px var(--accent-soft),
-			var(--glow-accent);
+		box-shadow: 0 0 0 3px var(--accent-soft);
 	}
 	.capture input {
 		flex: 1;
@@ -354,7 +365,6 @@
 	}
 	.capture button:hover {
 		background: var(--accent-hover);
-		box-shadow: var(--glow-accent);
 		transform: translateY(-1px);
 	}
 	.capture button:active {
@@ -495,19 +505,14 @@
 		place-items: center;
 		width: 2.4rem;
 		height: 2.4rem;
-		color: var(--fg-muted);
-		background: var(--surface-2);
-		border: 1px solid var(--border);
+		color: var(--c, var(--accent));
+		background: color-mix(in oklab, var(--c, var(--accent)) 13%, transparent);
+		border: 1px solid color-mix(in oklab, var(--c, var(--accent)) 28%, transparent);
 		border-radius: var(--radius-md);
-		transition:
-			color var(--dur-2) var(--ease-out),
-			background var(--dur-2) var(--ease-out),
-			border-color var(--dur-2) var(--ease-out);
+		transition: background var(--dur-2) var(--ease-out);
 	}
 	.row:hover .row-ico {
-		color: var(--accent);
-		background: var(--accent-soft);
-		border-color: color-mix(in oklab, var(--accent) 35%, transparent);
+		background: color-mix(in oklab, var(--c, var(--accent)) 22%, transparent);
 	}
 	.row-main h3 {
 		font-size: var(--step-1);
@@ -550,9 +555,9 @@
 		width: 2.6rem;
 		height: 2.6rem;
 		margin-bottom: var(--space-s);
-		color: var(--accent);
-		background: var(--accent-soft);
-		border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+		color: var(--c, var(--accent));
+		background: color-mix(in oklab, var(--c, var(--accent)) 13%, transparent);
+		border: 1px solid color-mix(in oklab, var(--c, var(--accent)) 28%, transparent);
 		border-radius: var(--radius-md);
 	}
 	.step h3 {

@@ -116,7 +116,7 @@
 	}
 	.primary:hover {
 		--_bg: var(--accent-hover);
-		box-shadow: var(--glow-accent);
+		box-shadow: var(--shadow-2);
 	}
 	.primary:active {
 		--_bg: var(--accent-press);

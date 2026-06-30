@@ -57,7 +57,6 @@
 	}
 	.link:hover .badge {
 		background: var(--accent-hover);
-		box-shadow: var(--glow-accent);
 	}
 	.word {
 		margin-top: 0.06em;

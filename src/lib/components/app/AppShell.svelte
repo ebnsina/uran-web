@@ -210,6 +210,9 @@
 	}
 	.main {
 		min-width: 0;
+		width: 100%;
+		max-width: 84rem;
+		margin-inline: auto;
 	}
 
 	.boot {
