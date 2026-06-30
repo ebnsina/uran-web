@@ -1,7 +1,12 @@
-<!-- Marketing header. Compacts on scroll for a subtle depth cue. -->
+<!--
+  Floating pill header. Logo left, centered nav with keyboard-shortcut badges
+  (press the key to jump to that section), CTA on the right. Compacts subtly on
+  scroll.
+-->
 <script lang="ts">
 	import { Logo, Button } from '$lib';
 	import { smoothAnchor } from '$lib/scroll';
+	import { goto } from '$app/navigation';
 	import type { User } from '$lib/api/schemas';
 
 	interface Props {
@@ -9,89 +14,138 @@
 	}
 	let { user = null }: Props = $props();
 
+	const links = [
+		{ label: 'Capabilities', href: '#index', key: 'C' },
+		{ label: 'Workflow', href: '#workflow', key: 'W' },
+		{ label: 'Docs', href: '/docs', key: 'D' }
+	];
+
 	let scrolled = $state(false);
 	function onScroll() {
 		scrolled = window.scrollY > 12;
 	}
+
+	// Keyboard shortcuts — ignore when typing or using modifiers.
+	function onKey(event: KeyboardEvent) {
+		if (event.metaKey || event.ctrlKey || event.altKey) return;
+		const el = event.target as HTMLElement | null;
+		if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)) return;
+		const link = links.find((l) => l.key.toLowerCase() === event.key.toLowerCase());
+		if (!link) return;
+		event.preventDefault();
+		if (link.href.startsWith('#')) {
+			document.getElementById(link.href.slice(1))?.scrollIntoView({ block: 'start' });
+		} else {
+			goto(link.href);
+		}
+	}
 </script>
 
-<svelte:window onscroll={onScroll} />
+<svelte:window onscroll={onScroll} onkeydown={onKey} />
 
-<header class="hdr" class:scrolled>
-	<div class="u-container bar">
-		<Logo />
+<div class="hdr">
+	<div class="pill" class:scrolled>
+		<div class="brand"><Logo /></div>
 		<nav class="nav">
-			<a href="#index" onclick={smoothAnchor}>Capabilities</a>
-			<a href="#workflow" onclick={smoothAnchor}>Workflow</a>
-			<a href="/docs">Docs</a>
+			{#each links as l (l.href)}
+				<a href={l.href} onclick={l.href.startsWith('#') ? smoothAnchor : undefined}>
+					{l.label}<kbd>{l.key}</kbd>
+				</a>
+			{/each}
 		</nav>
 		<div class="actions">
 			{#if user}
 				<Button href="/app" size="sm">Dashboard</Button>
 			{:else}
 				<Button href="/login" variant="ghost" size="sm">Log in</Button>
-				<Button href="/register" size="sm">Start free</Button>
+				<Button href="/register" size="sm">Get started</Button>
 			{/if}
 		</div>
 	</div>
-</header>
+</div>
 
 <style>
 	.hdr {
 		position: sticky;
-		top: 0;
+		top: var(--space-s);
 		z-index: 50;
-		background: color-mix(in oklab, var(--bg) 70%, transparent);
-		backdrop-filter: blur(12px);
-		border-bottom: 1px solid transparent;
-		transition:
-			border-color var(--dur-2) var(--ease-out),
-			background var(--dur-2) var(--ease-out);
+		padding-inline: var(--space-m);
 	}
-	.hdr.scrolled {
-		border-bottom-color: var(--border);
-		background: color-mix(in oklab, var(--bg) 88%, transparent);
-	}
-	.bar {
-		display: flex;
+	.pill {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
-		justify-content: space-between;
 		gap: var(--space-m);
-		height: var(--header-h);
+		width: min(100%, var(--container-wide));
+		margin-inline: auto;
+		padding: 0.45rem 0.45rem 0.45rem 1rem;
+		background: color-mix(in oklab, var(--surface) 72%, transparent);
+		backdrop-filter: blur(14px);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-full);
+		transition:
+			background var(--dur-2) var(--ease-out),
+			border-color var(--dur-2) var(--ease-out),
+			box-shadow var(--dur-2) var(--ease-out);
 	}
+	.pill.scrolled {
+		background: color-mix(in oklab, var(--surface) 90%, transparent);
+		border-color: var(--border-strong);
+		box-shadow: var(--shadow-2);
+	}
+	.brand {
+		justify-self: start;
+	}
+
 	.nav {
 		display: none;
-		gap: var(--space-m);
-		font-size: var(--step--1);
-		color: var(--fg-muted);
+		justify-self: center;
+		align-items: center;
+		gap: var(--space-2xs);
 	}
 	.nav a {
-		position: relative;
-		padding: 0.25em 0;
-		transition: color var(--dur-2) var(--ease-out);
-	}
-	.nav a::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		bottom: -2px;
-		height: 1.5px;
-		width: 0;
-		background: var(--accent);
-		transition: width var(--dur-2) var(--ease-out);
+		display: inline-flex;
+		align-items: center;
+		padding: 0.4em 0.7em;
+		border-radius: var(--radius-full);
+		font-size: var(--step--1);
+		color: var(--fg-muted);
+		transition:
+			color var(--dur-2) var(--ease-out),
+			background var(--dur-2) var(--ease-out);
 	}
 	.nav a:hover {
 		color: var(--fg);
+		background: var(--surface-2);
 	}
-	.nav a:hover::after {
-		width: 100%;
+	kbd {
+		margin-left: 0.55em;
+		display: inline-grid;
+		place-items: center;
+		min-width: 1.35em;
+		height: 1.35em;
+		padding: 0 0.3em;
+		font-family: var(--font-mono);
+		font-size: 0.72em;
+		line-height: 1;
+		color: var(--fg-subtle);
+		background: var(--surface-2);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-xs);
 	}
+	.nav a:hover kbd {
+		color: var(--accent);
+		border-color: var(--accent);
+	}
+
 	.actions {
+		justify-self: end;
 		display: flex;
 		align-items: center;
 		gap: var(--space-2xs);
 	}
-	@media (min-width: 48rem) {
+
+	@media (min-width: 52rem) {
 		.nav {
 			display: flex;
 		}
