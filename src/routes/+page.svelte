@@ -1,6 +1,19 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Link2, ScanSearch, Rocket, TrendingUp, ArrowUpRight, ArrowRight } from '@lucide/svelte';
+	import {
+		Link2,
+		ScanSearch,
+		Rocket,
+		TrendingUp,
+		ArrowUpRight,
+		ArrowRight,
+		GitBranch,
+		Database,
+		Gauge,
+		GitPullRequestArrow,
+		ShieldCheck,
+		Activity
+	} from '@lucide/svelte';
 	import {
 		siGit,
 		siGithub,
@@ -47,32 +60,32 @@
 	// Capabilities read as an index / spec sheet, not a card grid.
 	const capabilities = [
 		{
-			n: '01',
+			icon: GitBranch,
 			t: 'Push to live',
 			d: 'Connect a repo; every push builds, deploys, and routes itself — TLS and all.'
 		},
 		{
-			n: '02',
+			icon: Database,
 			t: 'Managed databases',
 			d: 'Postgres or Redis in a click. HA replicas, connection pooling, continuous backups + PITR.'
 		},
 		{
-			n: '03',
+			icon: Gauge,
 			t: 'Autoscaling',
 			d: 'Scale on CPU between a floor and a ceiling, or pin a size from small to 2xlarge.'
 		},
 		{
-			n: '04',
+			icon: GitPullRequestArrow,
 			t: 'Preview environments',
 			d: 'Every pull request gets an isolated URL, torn down automatically when it merges.'
 		},
 		{
-			n: '05',
+			icon: ShieldCheck,
 			t: 'Automatic TLS',
 			d: 'Bring your domain; certificates are issued and renewed for you. HTTPS by default.'
 		},
 		{
-			n: '06',
+			icon: Activity,
 			t: 'Built-in observability',
 			d: 'Live logs, per-pod metrics, and usage metering — no agents to wire up.'
 		}
@@ -175,10 +188,11 @@
 			<p class="block-note">Everything between <em>git push</em> and production.</p>
 		</aside>
 		<ol class="index">
-			{#each capabilities as c, i (c.n)}
+			{#each capabilities as c, i (c.t)}
+				{@const Icon = c.icon}
 				<Reveal delay={i * 50} y={16}>
 					<li class="row">
-						<span class="row-n u-mono">{c.n}</span>
+						<span class="row-ico"><Icon size={20} strokeWidth={1.75} /></span>
 						<div class="row-main">
 							<h3>{c.t}</h3>
 							<p>{c.d}</p>
@@ -476,13 +490,24 @@
 		background: var(--surface);
 		padding-left: var(--space-s);
 	}
-	.row-n {
-		font-size: var(--step-1);
-		color: var(--fg-subtle);
-		transition: color var(--dur-2) var(--ease-out);
+	.row-ico {
+		display: grid;
+		place-items: center;
+		width: 2.4rem;
+		height: 2.4rem;
+		color: var(--fg-muted);
+		background: var(--surface-2);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-md);
+		transition:
+			color var(--dur-2) var(--ease-out),
+			background var(--dur-2) var(--ease-out),
+			border-color var(--dur-2) var(--ease-out);
 	}
-	.row:hover .row-n {
+	.row:hover .row-ico {
 		color: var(--accent);
+		background: var(--accent-soft);
+		border-color: color-mix(in oklab, var(--accent) 35%, transparent);
 	}
 	.row-main h3 {
 		font-size: var(--step-1);
