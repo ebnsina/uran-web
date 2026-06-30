@@ -1,6 +1,7 @@
 <!-- Marketing footer. -->
 <script lang="ts">
 	import { Logo } from '$lib';
+	import { smoothAnchor } from '$lib/scroll';
 	const year = new Date().getFullYear();
 </script>
 
@@ -14,8 +15,8 @@
 		<div class="cols">
 			<div>
 				<h3>Product</h3>
-				<a href="/#features">Features</a>
-				<a href="/#how">How it works</a>
+				<a href="#index" onclick={smoothAnchor}>Capabilities</a>
+				<a href="#workflow" onclick={smoothAnchor}>Workflow</a>
 				<a href="/docs">Docs</a>
 			</div>
 			<div>

@@ -1,6 +1,7 @@
 <!-- Marketing header. Compacts on scroll for a subtle depth cue. -->
 <script lang="ts">
 	import { Logo, Button } from '$lib';
+	import { smoothAnchor } from '$lib/scroll';
 	import type { User } from '$lib/api/schemas';
 
 	interface Props {
@@ -20,8 +21,8 @@
 	<div class="u-container bar">
 		<Logo />
 		<nav class="nav">
-			<a href="/#features">Features</a>
-			<a href="/#how">How it works</a>
+			<a href="#index" onclick={smoothAnchor}>Capabilities</a>
+			<a href="#workflow" onclick={smoothAnchor}>Workflow</a>
 			<a href="/docs">Docs</a>
 		</nav>
 		<div class="actions">

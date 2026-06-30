@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button, Reveal } from '$lib';
+	import { smoothAnchor } from '$lib/scroll';
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
 	import SiteFooter from '$lib/components/site/SiteFooter.svelte';
 	import DeployPanel from '$lib/components/site/DeployPanel.svelte';
@@ -93,7 +94,9 @@
 			</p>
 			<div class="cta">
 				<Button href="/register" size="lg">Start free</Button>
-				<Button href="#index" variant="ghost" size="lg">Browse capabilities →</Button>
+				<Button href="#index" variant="ghost" size="lg" onclick={smoothAnchor}>
+					Browse capabilities →
+				</Button>
 			</div>
 		</div>
 		<div class="hero-panel">
@@ -135,7 +138,7 @@
 	</section>
 
 	<!-- ── Workflow: a connected flow line, not step cards ──────────────── -->
-	<section class="block">
+	<section id="workflow" class="block">
 		<aside class="gutter sticky">
 			<span class="marker">(02)</span>
 			<h2 class="block-title">Workflow</h2>
@@ -282,6 +285,8 @@
 		gap: var(--space-l);
 		padding-block: var(--space-2xl);
 		border-bottom: 1px solid var(--border);
+		/* clear the sticky header when scrolled to via in-page nav */
+		scroll-margin-top: calc(var(--header-h) + var(--space-s));
 	}
 	.block-title {
 		margin-top: var(--space-xs);
