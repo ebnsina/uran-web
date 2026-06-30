@@ -146,12 +146,13 @@
 :root[data-theme='light'] {
 	color-scheme: light;
 
-	/* Plain white + neutral greys (no warm tint). */
-	--bg: #ffffff;
+	/* Gray page, white cards (neutral, no warm tint): the page sits on a soft
+	   grey while surfaces/cards are white with a subtle grey border. */
+	--bg: #f4f4f6;
 	--bg-elevated: #ffffff;
 	--surface: #ffffff;
-	--surface-2: #f4f4f5;
-	--surface-hover: #ececee;
+	--surface-2: #efeff2;
+	--surface-hover: #e7e7eb;
 
 	--fg: #18181b;
 	--fg-muted: #52525b;
