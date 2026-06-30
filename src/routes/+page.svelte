@@ -587,24 +587,19 @@
 	@media (min-width: 60rem) {
 		.hero {
 			grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-			grid-template-rows: auto auto;
 			column-gap: var(--space-xl);
-			align-items: start;
+			align-items: center;
 			padding-block: var(--space-3xl) var(--space-2xl);
 		}
 		.hero-body {
 			grid-column: 1;
-			grid-row: 1;
 		}
-		/* Panel sits in the right column and dips below the baseline. */
+		/* Panel sits in the right column, vertically centred with the copy. */
 		.hero-panel {
 			grid-column: 2;
-			grid-row: 1 / span 2;
 			justify-self: start;
-			align-self: center;
 			min-width: 0;
 			margin-top: 0;
-			margin-bottom: calc(-1 * var(--space-xl));
 			z-index: 1;
 		}
 		.hero-panel :global(.win) {
