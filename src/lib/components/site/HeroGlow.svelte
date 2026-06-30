@@ -1,5 +1,5 @@
 <!--
-  Decorative hero backdrop: a soft flare-orange aurora beam rising behind the
+  Decorative hero backdrop: a soft Honolulu-blue aurora beam rising behind the
   headline, a brighter core, and a faint starfield. Full-bleed, pointer-inert,
   and tuned down on the light theme. Purely ambient — aria-hidden.
 -->
