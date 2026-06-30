@@ -33,7 +33,7 @@
 	},
 	"dependencies": {
 		"@fontsource-variable/geist-mono": "^5.2.8",
-		"@fontsource-variable/google-sans-flex": "^5.2.3",
+		"@fontsource-variable/mona-sans": "^5.2.8",
 		"zod": "^4.4.3"
 	}
 }

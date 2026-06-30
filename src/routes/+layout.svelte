@@ -1,7 +1,7 @@
 <script lang="ts">
 	// Self-hosted variable fonts (no external CDN, no layout shift). The full
 	// weight axis ships in one file each; both are wired to the --font-* tokens.
-	import '@fontsource-variable/google-sans-flex';
+	import '@fontsource-variable/mona-sans';
 	import '@fontsource-variable/geist-mono';
 
 	import '../app.css';
