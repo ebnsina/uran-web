@@ -135,3 +135,32 @@
 
 	--focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
 }
+
+/*
+ * Light theme. Because components consume only the semantic aliases, a whole
+ * light mode is just this remap — the accent (flare orange) and its white
+ * contrast text carry over unchanged. Activated by data-theme="light" on <html>
+ * (set pre-paint by the inline script in app.html, toggled via $lib/theme).
+ */
+:root[data-theme='light'] {
+	color-scheme: light;
+
+	--bg: #f4f2ec;
+	--bg-elevated: #ffffff;
+	--surface: #ffffff;
+	--surface-2: #f2efe8;
+	--surface-hover: #eae7df;
+
+	--fg: #17191d;
+	--fg-muted: #565a62;
+	--fg-subtle: #898d95;
+
+	--border: color-mix(in oklab, #17191d 11%, transparent);
+	--border-strong: color-mix(in oklab, #17191d 18%, transparent);
+
+	--accent-soft: color-mix(in oklab, var(--flare-400) 13%, transparent);
+
+	--shadow-1: 0 1px 2px rgb(20 22 26 / 0.08);
+	--shadow-2: 0 8px 30px -12px rgb(20 22 26 / 0.18);
+	--shadow-3: 0 24px 60px -20px rgb(20 22 26 / 0.22);
+}

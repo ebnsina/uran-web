@@ -5,6 +5,7 @@
 -->
 <script lang="ts">
 	import { Logo, Button } from '$lib';
+	import ThemeToggle from '$lib/components/ui/ThemeToggle.svelte';
 	import { smoothAnchor } from '$lib/scroll';
 	import { goto } from '$app/navigation';
 	import type { User } from '$lib/api/schemas';
@@ -54,6 +55,7 @@
 			{/each}
 		</nav>
 		<div class="actions">
+			<ThemeToggle />
 			{#if user}
 				<Button href="/app" size="sm">Dashboard</Button>
 			{:else}
