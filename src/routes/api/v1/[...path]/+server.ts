@@ -42,10 +42,13 @@ const proxy: RequestHandler = async ({ params, request, url, locals, fetch }) =>
 		error(503, 'Cannot reach the Uran API');
 	}
 
-	const text = await res.text();
-	return new Response(text, {
+	// Stream the body through (don't buffer) so SSE / chunked log endpoints work.
+	return new Response(res.body, {
 		status: res.status,
-		headers: { 'Content-Type': res.headers.get('content-type') ?? 'application/json' }
+		headers: {
+			'Content-Type': res.headers.get('content-type') ?? 'application/json',
+			'Cache-Control': 'no-cache'
+		}
 	});
 };
 

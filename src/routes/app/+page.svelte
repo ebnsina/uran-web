@@ -55,7 +55,7 @@
 		<div class="org-grid">
 			{#each orgs.data as org, i (org.id)}
 				<a
-					href="/app/orgs/{org.slug}"
+					href="/app/orgs/{org.id}"
 					class="org"
 					in:fly={{ y: 14, delay: motion.stagger(i), duration: 360, easing: expoOut }}
 				>
