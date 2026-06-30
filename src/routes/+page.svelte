@@ -5,7 +5,7 @@
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
 	import HeroGlow from '$lib/components/site/HeroGlow.svelte';
 	import SiteFooter from '$lib/components/site/SiteFooter.svelte';
-	import DeployPanel from '$lib/components/site/DeployPanel.svelte';
+	import DashboardPreview from '$lib/components/site/DashboardPreview.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -135,7 +135,7 @@
 			<a class="browse" href="#index" onclick={smoothAnchor}>Browse capabilities →</a>
 		</div>
 		<div class="hero-panel">
-			<DeployPanel />
+			<DashboardPreview />
 		</div>
 	</section>
 
@@ -216,6 +216,9 @@
 	.frame {
 		width: min(100% - 2 * var(--space-m), var(--container-wide));
 		margin-inline: auto;
+		/* clip the hero dashboard preview where it bleeds past the edge
+		   (clip, not hidden, so sticky children keep working) */
+		overflow-x: clip;
 	}
 
 	.marker {
@@ -576,15 +579,20 @@
 			grid-column: 2;
 			grid-row: 1;
 		}
-		/* Panel sits in the right column and dips below the baseline, breaking
-		   the grid into the marquee band. */
+		/* Panel sits in the right column, dips below the baseline, and bleeds
+		   off the right edge — a real dashboard cut off by the viewport. */
 		.hero-panel {
 			grid-column: 3;
 			grid-row: 1 / span 2;
+			justify-self: start;
 			align-self: center;
+			min-width: 0;
 			margin-top: 0;
 			margin-bottom: calc(-1 * var(--space-xl));
 			z-index: 1;
+		}
+		.hero-panel :global(.win) {
+			width: 42rem;
 		}
 
 		.block {
