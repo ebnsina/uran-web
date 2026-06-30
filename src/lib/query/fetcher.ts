@@ -1,11 +1,9 @@
 /**
- * Browser-side fetch helper for the dashboard's TanStack Query layer. It calls
- * the app's own same-origin `/api/*` endpoints (which proxy to uran-api using
- * the httpOnly session cookie), so the token is never exposed to JS. Responses
- * are validated with zod, mirroring the server client's contract enforcement.
+ * Browser-side fetch helpers for the dashboard's TanStack Query layer. They call
+ * the app's own same-origin /api/v1/* proxy (which attaches the httpOnly session
+ * cookie), so the token is never exposed to JS. Responses are validated with zod.
  *
- * This module is client-safe: it must NOT import the server API client, which
- * pulls in private env.
+ * Client-safe: must NOT import the server API client (it pulls in private env).
  */
 import type { z } from 'zod';
 
@@ -20,22 +18,44 @@ export class FetchError extends Error {
 	}
 }
 
-export async function apiGet<T>(url: string, schema: z.ZodType<T>): Promise<T> {
-	const res = await fetch(url, { headers: { Accept: 'application/json' } });
+type Method = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+
+async function call<T>(
+	method: Method,
+	url: string,
+	opts: { body?: unknown; schema?: z.ZodType<T> } = {}
+): Promise<T> {
+	const init: RequestInit = { method, headers: { Accept: 'application/json' } };
+	if (opts.body !== undefined) {
+		(init.headers as Record<string, string>)['Content-Type'] = 'application/json';
+		init.body = JSON.stringify(opts.body);
+	}
+
+	const res = await fetch(url, init);
 	if (!res.ok) throw new FetchError(res.status, await message(res));
-	return schema.parse(await res.json());
+	if (res.status === 204 || !opts.schema) return undefined as T;
+	return opts.schema.parse(await res.json());
 }
 
-export async function apiSend(url: string, method: 'POST' | 'PATCH' | 'DELETE'): Promise<void> {
-	const res = await fetch(url, { method, headers: { Accept: 'application/json' } });
-	if (!res.ok) throw new FetchError(res.status, await message(res));
+export function apiGet<T>(url: string, schema: z.ZodType<T>): Promise<T> {
+	return call('GET', url, { schema });
+}
+export function apiPost<T = void>(url: string, body?: unknown, schema?: z.ZodType<T>): Promise<T> {
+	return call('POST', url, { body, schema });
+}
+export function apiPatch<T = void>(url: string, body?: unknown, schema?: z.ZodType<T>): Promise<T> {
+	return call('PATCH', url, { body, schema });
+}
+export function apiDelete(url: string): Promise<void> {
+	return call('DELETE', url);
 }
 
-/** SvelteKit's error() responds with `{ message }`; fall back to a generic. */
+/** API errors come back as {"error": "..."}; SvelteKit's own as {"message": "..."}. */
 async function message(res: Response): Promise<string> {
 	try {
 		const body = await res.json();
-		if (body && typeof body.message === 'string') return body.message;
+		if (typeof body?.error === 'string') return body.error;
+		if (typeof body?.message === 'string') return body.message;
 	} catch {
 		/* ignore */
 	}
