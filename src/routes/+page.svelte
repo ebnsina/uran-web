@@ -211,9 +211,6 @@
 	.frame {
 		width: min(100% - 2 * var(--space-m), var(--container-wide));
 		margin-inline: auto;
-		/* clip the hero dashboard preview where it bleeds past the edge
-		   (clip, not hidden, so sticky children keep working) */
-		overflow-x: clip;
 	}
 
 	/* Shared display type — oversized, tight. */
@@ -553,35 +550,45 @@
 
 	/* ── Editorial layout kicks in at wider widths ────────────────────── */
 	@media (min-width: 60rem) {
+		/* Full-bleed: the hero spans the viewport so the preview can run to the
+		   right edge, while the left content stays aligned with the page frame. */
 		.hero {
-			grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+			width: 100vw;
+			margin-inline: calc(50% - 50vw);
+			padding-left: max(var(--space-m), calc((100vw - var(--container-wide)) / 2));
+			padding-right: 0;
+			grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
 			grid-template-rows: auto auto;
-			column-gap: var(--space-xl);
-			align-items: start;
+			column-gap: var(--space-2xl);
+			align-items: center;
 			padding-block: var(--space-3xl) var(--space-2xl);
 		}
 		.hero-body {
 			grid-column: 1;
 			grid-row: 1;
 		}
-		/* Panel sits in the right column, dips below the baseline, and bleeds
-		   off the right edge — a real dashboard cut off by the viewport. */
+		/* Preview fills the right column, so its right edge touches the viewport.
+		   It dips below the baseline into the marquee band. */
 		.hero-panel {
 			grid-column: 2;
 			grid-row: 1 / span 2;
-			justify-self: start;
+			justify-self: end;
 			align-self: center;
 			min-width: 0;
+			width: 100%;
 			margin-top: 0;
 			margin-bottom: calc(-1 * var(--space-xl));
 			z-index: 1;
 		}
 		.hero-panel :global(.win) {
-			width: 44rem;
-			/* Dissolve the right edge into the background for a premium,
-			   bleeding-off-the-screen look instead of a hard rectangular cut. */
-			-webkit-mask-image: linear-gradient(90deg, #000 68%, transparent 97%);
-			mask-image: linear-gradient(90deg, #000 68%, transparent 97%);
+			width: 100%;
+			min-width: 42rem;
+			max-width: 60rem;
+			margin-left: auto;
+			/* Flush against the viewport's right edge — cut by the screen. */
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+			border-right: none;
 		}
 
 		.block {
