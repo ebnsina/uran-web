@@ -223,3 +223,14 @@ export const auditEntry = z.object({
 });
 export type AuditEntry = z.infer<typeof auditEntry>;
 export const auditList = list(auditEntry);
+
+export const auditPage = z.object({
+	items: z
+		.array(auditEntry)
+		.nullable()
+		.transform((v) => v ?? []),
+	total: z.number(),
+	limit: z.number(),
+	offset: z.number()
+});
+export type AuditPage = z.infer<typeof auditPage>;

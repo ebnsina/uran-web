@@ -26,7 +26,7 @@ import {
 	backupList,
 	apiTokenList,
 	apiTokenCreated,
-	auditList,
+	auditPage,
 	type Project,
 	type Service,
 	type Deploy,
@@ -61,7 +61,7 @@ export const qk = {
 	dbConnection: (id: number) => ['databases', id, 'connection'] as const,
 	backups: (id: number) => ['databases', id, 'backups'] as const,
 	tokens: ['tokens'] as const,
-	audit: ['audit'] as const
+	audit: (params: object = {}) => ['audit', params] as const
 };
 
 /* ── Projects ────────────────────────────────────────────────────────── */
@@ -184,4 +184,18 @@ export const getTokens = () => apiGet(`${v1}/tokens`, apiTokenList);
 export const createToken = (name: string): Promise<ApiTokenCreated> =>
 	apiPost(`${v1}/tokens`, { name }, apiTokenCreated);
 export const deleteToken = (id: number) => apiDelete(`${v1}/tokens/${id}`);
-export const getAudit = () => apiGet(`${v1}/audit`, auditList);
+export interface AuditQuery {
+	q?: string;
+	method?: string;
+	limit?: number;
+	offset?: number;
+}
+export const getAudit = (params: AuditQuery = {}) => {
+	const sp = new URLSearchParams();
+	if (params.q) sp.set('q', params.q);
+	if (params.method) sp.set('method', params.method);
+	if (params.limit != null) sp.set('limit', String(params.limit));
+	if (params.offset != null) sp.set('offset', String(params.offset));
+	const qs = sp.toString();
+	return apiGet(`${v1}/audit${qs ? `?${qs}` : ''}`, auditPage);
+};

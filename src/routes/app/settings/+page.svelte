@@ -1,6 +1,14 @@
 <script lang="ts">
-	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
-	import { Plus, Trash2, Copy, Check, KeyRound } from '@lucide/svelte';
+	import {
+		createQuery,
+		createMutation,
+		useQueryClient,
+		keepPreviousData
+	} from '@tanstack/svelte-query';
+	import { Plus, Trash2, Copy, Check, KeyRound, Search } from '@lucide/svelte';
+	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
+	import { SvelteURLSearchParams } from 'svelte/reactivity';
 	import { Button, TextField, Dialog, ConfirmDialog, Alert, StatusBadge } from '$lib';
 	import { getMe, keys } from '$lib/query/dashboard';
 	import { getTokens, createToken, deleteToken, getAudit, qk } from '$lib/query/resources';
@@ -11,7 +19,54 @@
 	const client = useQueryClient();
 	const me = createQuery(() => ({ queryKey: keys.me, queryFn: getMe, staleTime: 60_000 }));
 	const tokens = createQuery(() => ({ queryKey: qk.tokens, queryFn: getTokens }));
-	const audit = createQuery(() => ({ queryKey: qk.audit, queryFn: getAudit }));
+
+	// ── Audit log: server-side search / filter / pagination, state in the URL ──
+	const PAGE_SIZE = 15;
+	const METHODS = ['', 'POST', 'PATCH', 'DELETE'];
+
+	const auditQ = $derived(page.url.searchParams.get('q') ?? '');
+	const auditMethod = $derived(page.url.searchParams.get('method') ?? '');
+	const auditPageNum = $derived(Math.max(1, Number(page.url.searchParams.get('page')) || 1));
+
+	const audit = createQuery(() => ({
+		queryKey: qk.audit({ q: auditQ, method: auditMethod, page: auditPageNum }),
+		queryFn: () =>
+			getAudit({
+				q: auditQ,
+				method: auditMethod,
+				limit: PAGE_SIZE,
+				offset: (auditPageNum - 1) * PAGE_SIZE
+			}),
+		placeholderData: keepPreviousData
+	}));
+	const totalPages = $derived(Math.max(1, Math.ceil((audit.data?.total ?? 0) / PAGE_SIZE)));
+
+	function setParams(next: Record<string, string | null>) {
+		const sp = new SvelteURLSearchParams(page.url.searchParams.toString());
+		for (const [k, v] of Object.entries(next)) {
+			if (v) sp.set(k, v);
+			else sp.delete(k);
+		}
+		const qs = sp.toString();
+		goto(qs ? `?${qs}` : page.url.pathname, {
+			replaceState: true,
+			keepFocus: true,
+			noScroll: true
+		});
+	}
+
+	// Debounced search → URL (resets to page 1).
+	let searchInput = $state(page.url.searchParams.get('q') ?? '');
+	let searchTimer: ReturnType<typeof setTimeout>;
+	$effect(() => {
+		const val = searchInput.trim();
+		clearTimeout(searchTimer);
+		searchTimer = setTimeout(() => {
+			if (val !== (page.url.searchParams.get('q') ?? '')) setParams({ q: val || null, page: null });
+		}, 300);
+	});
+	const setMethod = (m: string) => setParams({ method: m || null, page: null });
+	const goPage = (p: number) => setParams({ page: p > 1 ? String(p) : null });
 
 	let dialogOpen = $state(false);
 	let name = $state('');
@@ -112,16 +167,43 @@
 
 	<!-- Audit log -->
 	<section class="panel">
-		<h2>Recent activity</h2>
-		{#if audit.isPending}
-			<p class="muted">Loading…</p>
-		{:else if audit.isError}
+		<div class="audit-head">
+			<h2>Recent activity</h2>
+			<label class="search">
+				<Search size={15} />
+				<input
+					type="search"
+					placeholder="Search path…"
+					bind:value={searchInput}
+					aria-label="Search audit log"
+				/>
+			</label>
+		</div>
+
+		<div class="filters" role="group" aria-label="Filter by method">
+			{#each METHODS as m (m)}
+				<button
+					type="button"
+					class="chip"
+					class:active={auditMethod === m}
+					onclick={() => setMethod(m)}
+				>
+					{m || 'All'}
+				</button>
+			{/each}
+		</div>
+
+		{#if audit.isError}
 			<Alert>{audit.error.message}</Alert>
-		{:else if audit.data.length === 0}
-			<p class="muted">No activity recorded.</p>
+		{:else if audit.isPending}
+			<p class="muted">Loading…</p>
+		{:else if audit.data.items.length === 0}
+			<p class="muted">
+				{auditQ || auditMethod ? 'No matching activity.' : 'No activity recorded.'}
+			</p>
 		{:else}
-			<ul class="audit">
-				{#each audit.data as a (a.id)}
+			<ul class="audit" class:stale={audit.isPlaceholderData}>
+				{#each audit.data.items as a (a.id)}
 					<li>
 						<span class="method u-mono">{a.method}</span>
 						<span class="path u-mono">{a.path}</span>
@@ -130,6 +212,28 @@
 					</li>
 				{/each}
 			</ul>
+			<div class="pager">
+				<span class="muted">{audit.data.total} result{audit.data.total === 1 ? '' : 's'}</span>
+				<div class="pager-btns">
+					<Button
+						size="sm"
+						variant="secondary"
+						disabled={auditPageNum <= 1}
+						onclick={() => goPage(auditPageNum - 1)}
+					>
+						Prev
+					</Button>
+					<span class="muted">Page {auditPageNum} of {totalPages}</span>
+					<Button
+						size="sm"
+						variant="secondary"
+						disabled={auditPageNum >= totalPages}
+						onclick={() => goPage(auditPageNum + 1)}
+					>
+						Next
+					</Button>
+				</div>
+			</div>
 		{/if}
 	</section>
 </div>
@@ -307,6 +411,82 @@
 		font-size: var(--step--2);
 		color: var(--fg-subtle);
 		white-space: nowrap;
+	}
+
+	.audit-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-m);
+		flex-wrap: wrap;
+	}
+	.search {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2xs);
+		padding: 0.45em 0.9em;
+		background: var(--surface-2);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-full);
+		color: var(--fg-subtle);
+		min-width: 14rem;
+	}
+	.search input {
+		flex: 1;
+		min-width: 0;
+		border: none;
+		background: transparent;
+		color: var(--fg);
+		font-size: var(--step--1);
+		outline: none;
+	}
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2xs);
+		margin: var(--space-m) 0;
+	}
+	.chip {
+		padding: 0.35em 0.9em;
+		border: 1px solid var(--border);
+		background: var(--surface);
+		border-radius: var(--radius-full);
+		font-size: var(--step--1);
+		font-weight: 600;
+		color: var(--fg-muted);
+		cursor: pointer;
+		transition:
+			background var(--dur-2) var(--ease-out),
+			color var(--dur-2) var(--ease-out),
+			border-color var(--dur-2) var(--ease-out);
+	}
+	.chip:hover {
+		border-color: var(--border-strong);
+		color: var(--fg);
+	}
+	.chip.active {
+		background: var(--fg);
+		color: var(--bg);
+		border-color: var(--fg);
+	}
+	.audit.stale {
+		opacity: 0.55;
+		transition: opacity var(--dur-2) var(--ease-out);
+	}
+	.pager {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-m);
+		flex-wrap: wrap;
+		margin-top: var(--space-m);
+		padding-top: var(--space-s);
+		border-top: 1px solid var(--border);
+	}
+	.pager-btns {
+		display: flex;
+		align-items: center;
+		gap: var(--space-s);
 	}
 
 	.created {

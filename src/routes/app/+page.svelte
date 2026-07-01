@@ -10,7 +10,10 @@
 	const client = useQueryClient();
 	const me = createQuery(() => ({ queryKey: keys.me, queryFn: getMe, staleTime: 60_000 }));
 	const orgs = createQuery(() => ({ queryKey: keys.orgs, queryFn: getOrgs }));
-	const audit = createQuery(() => ({ queryKey: qk.audit, queryFn: getAudit }));
+	const audit = createQuery(() => ({
+		queryKey: qk.audit({ limit: 8 }),
+		queryFn: () => getAudit({ limit: 8 })
+	}));
 
 	const firstName = $derived((me.data?.name || '').split(/\s+/)[0] || 'there');
 
@@ -55,7 +58,7 @@
 			<span class="stat-ico"><History size={17} /></span>
 			<div>
 				<b
-					>{#if audit.data}<RollingNumber value={audit.data.length} />{:else}—{/if}</b
+					>{#if audit.data}<RollingNumber value={audit.data.total} />{:else}—{/if}</b
 				>
 				<span>Recent actions</span>
 			</div>
@@ -110,14 +113,14 @@
 				<p class="muted">Loading…</p>
 			{:else if audit.isError}
 				<Alert>{audit.error.message}</Alert>
-			{:else if audit.data.length === 0}
+			{:else if audit.data.items.length === 0}
 				<div class="quiet">
 					<span class="quiet-ico"><FolderGit2 size={18} /></span>
 					<p>No activity yet. Create a project and deploy to see it here.</p>
 				</div>
 			{:else}
 				<ul class="feed">
-					{#each audit.data.slice(0, 8) as a (a.id)}
+					{#each audit.data.items as a (a.id)}
 						<li>
 							<span class="method u-mono">{a.method}</span>
 							<span class="path u-mono">{a.path}</span>
