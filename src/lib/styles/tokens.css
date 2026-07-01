@@ -32,16 +32,15 @@
 	--paper-300: #9a978f;
 	--paper-500: #6a6760;
 
-	/* Pink accent ramp (Dribbble Minimal — tertiary) */
-	--pink-200: #fde9f1; /* tertiary-90 — pale wash */
-	--pink-300: #f7a1c4; /* tertiary-60 — light */
-	--pink-400: #ea4c89; /* tertiary — signal */
-	--pink-500: #d83a76; /* press */
-	--pink-600: #bd2e64; /* deep */
+	/* Honolulu Blue accent ramp */
+	--blue-300: #3aa6de; /* light / hover */
+	--blue-400: #007fbf; /* signal — Honolulu Blue */
+	--blue-500: #0069a0; /* press */
+	--blue-600: #00527e; /* deep */
 
 	/* Status hues, distinct from the accent. */
 	--danger-400: #ff7a93;
-	--danger-500: #e5484d; /* error */
+	--danger-500: #f5375f; /* rose-red error */
 	--warn-400: #ffc24b;
 	--ok-400: #4ec77f;
 
@@ -77,13 +76,13 @@
 	/* Radii — ONE consistent rounded-xl radius for every rectangular surface
 	   (buttons, inputs, cards, panels, dialogs all match). Only tiny chips (xs)
 	   are tighter and pills use --radius-full. Retune everything via --radius. */
-	--radius: 16px; /* lg — cards, panels */
-	--radius-xs: 8px; /* md — small chips */
+	--radius: 14px; /* rounded-xl — buttons, inputs, cards, panels all match */
+	--radius-xs: 10px; /* tiny chips */
 	--radius-sm: var(--radius);
 	--radius-md: var(--radius);
 	--radius-lg: var(--radius);
-	--radius-2xl: 24px; /* xl — hero/large surfaces */
-	--radius-full: 9999px; /* pill — buttons, inputs, chips */
+	--radius-2xl: var(--radius);
+	--radius-full: 999px;
 
 	/* Typography families */
 	--font-sans: 'Mona Sans Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -102,7 +101,7 @@
 	--shadow-3: 0 34px 80px -28px rgb(0 0 0 / 0.62);
 
 	/* Accent gradient partner (used for soft halos) */
-	--accent-2: var(--pink-300);
+	--accent-2: var(--blue-300);
 
 	/* Motion — one place to tune the whole feel */
 	--dur-1: 120ms;
@@ -137,10 +136,11 @@
 	--border: color-mix(in oklab, var(--paper-50) 9%, transparent);
 	--border-strong: color-mix(in oklab, var(--paper-50) 18%, transparent);
 
-	--accent: var(--pink-400);
-	--accent-hover: var(--pink-500);
-	--accent-contrast: #ffffff; /* text on an accent surface — white on pink */
-	--accent-soft: color-mix(in oklab, var(--pink-400) 15%, transparent);
+	--accent: var(--blue-400);
+	--accent-hover: var(--blue-300);
+	--accent-press: var(--blue-500);
+	--accent-contrast: #ffffff; /* text on an accent surface — white on blue */
+	--accent-soft: color-mix(in oklab, var(--blue-400) 15%, transparent);
 
 	--danger: var(--danger-500);
 	--warn: var(--warn-400);
@@ -161,22 +161,22 @@
 	/* Light theme. The marketing site is white (--bg); the dashboard puts its
 	   white content panel on a distinct grey canvas (--canvas). */
 	--bg: #ffffff;
-	--canvas: #f3f3f4; /* neutral */
+	--canvas: #e9ebef; /* distinct grey dashboard canvas */
 	--bg-elevated: #ffffff;
 	--surface: #ffffff;
-	--surface-2: #f3f3f4; /* neutral — fields, chips, muted surfaces */
-	--surface-hover: #ececee;
+	--surface-2: #f1f2f4;
+	--surface-hover: #e7e9ed;
 
-	--fg: #0d0c22; /* primary / on-surface ink */
-	--fg-muted: #6e6d7a; /* secondary */
-	--fg-subtle: #9c9ba5;
+	--fg: #18181b;
+	--fg-muted: #52525b;
+	--fg-subtle: #8a8a93;
 
-	--border: #e7e7eb; /* primary-90 */
-	--border-strong: #d7d7dd;
+	--border: color-mix(in oklab, #18181b 9%, transparent);
+	--border-strong: color-mix(in oklab, #18181b 15%, transparent);
 
-	--accent-soft: var(--pink-200); /* tertiary-90 wash */
+	--accent-soft: color-mix(in oklab, var(--blue-400) 13%, transparent);
 
-	--shadow-1: 0 2px 10px -3px rgb(13 12 34 / 0.07);
-	--shadow-2: 0 16px 44px -16px rgb(13 12 34 / 0.12);
-	--shadow-3: 0 34px 80px -26px rgb(13 12 34 / 0.16);
+	--shadow-1: 0 2px 10px -3px rgb(24 24 27 / 0.08);
+	--shadow-2: 0 16px 44px -16px rgb(24 24 27 / 0.12);
+	--shadow-3: 0 34px 80px -26px rgb(24 24 27 / 0.16);
 }

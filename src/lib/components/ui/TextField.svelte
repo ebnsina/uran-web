@@ -63,7 +63,7 @@
 		background: var(--surface-2);
 		color: var(--fg);
 		border: 1px solid var(--border);
-		border-radius: var(--radius-full);
+		border-radius: var(--radius);
 		transition:
 			border-color var(--dur-2) var(--ease-out),
 			box-shadow var(--dur-2) var(--ease-out),

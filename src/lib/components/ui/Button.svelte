@@ -71,7 +71,7 @@
 		border: 1px solid var(--_border);
 		background: var(--_bg);
 		color: var(--_fg);
-		border-radius: var(--radius-full);
+		border-radius: var(--radius);
 		transition:
 			transform var(--dur-1) var(--ease-out),
 			background var(--dur-2) var(--ease-out),
@@ -104,16 +104,19 @@
 		font-size: var(--step-0);
 	}
 
-	/* Variants — flat, pill-shaped (Dribbble Minimal). Primary is the dark ink
-	   fill; the pink accent is reserved for emphasis/active states elsewhere. */
+	/* Variants — Honolulu-blue primary, rounded-xl. */
 	.primary {
-		--_bg: var(--fg);
-		--_fg: var(--bg);
+		--_bg: var(--accent);
+		--_fg: var(--accent-contrast);
 		--_border: transparent;
 		font-weight: 600;
 	}
 	.primary:hover {
-		--_bg: color-mix(in oklab, var(--fg) 86%, var(--bg));
+		--_bg: var(--accent-hover);
+		box-shadow: var(--shadow-2);
+	}
+	.primary:active {
+		--_bg: var(--accent-press);
 	}
 
 	.secondary {
