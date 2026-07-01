@@ -934,7 +934,15 @@
 		gap: var(--space-m);
 		margin-top: var(--space-2xl);
 	}
+	/* Reveal wrappers are the grid items — let them (and the cards inside) fill
+	   the row so every card in a row is the same height. */
+	.grid4 :global(.reveal),
+	.grid3 :global(.reveal),
+	.steps :global(.reveal) {
+		height: 100%;
+	}
 	.cell {
+		height: 100%;
 		padding: var(--space-l);
 		background: var(--surface);
 		border: 1px solid var(--border);
