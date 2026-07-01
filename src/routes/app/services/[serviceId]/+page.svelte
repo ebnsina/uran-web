@@ -9,6 +9,7 @@
 		Gauge,
 		FolderGit2,
 		Globe,
+		Network,
 		Activity,
 		ChartSpline
 	} from '@lucide/svelte';
@@ -118,19 +119,23 @@
 							<span class="kv-label">Repository</span><b class="u-mono">{s.repo_url}</b>
 						</div>
 					{/if}
-					{#if s.internal_host}
+					{#if s.url}
 						<div class="kv wide">
 							<span class="kv-ico"><Globe size={15} /></span>
 							<span class="kv-label">URL</span>
-							<a
-								class="u-mono link"
-								href="https://{s.internal_host}"
-								target="_blank"
-								rel="noreferrer"
-							>
-								{s.internal_host}
+							<a class="u-mono link" href="https://{s.url}" target="_blank" rel="noreferrer">
+								{s.url}
 								<ExternalLink size={13} />
 							</a>
+						</div>
+					{/if}
+					{#if s.internal_host}
+						<div class="kv wide">
+							<span class="kv-ico"><Network size={15} /></span>
+							<span class="kv-label">Internal host</span>
+							<b class="u-mono" title="Reachable from other services in this org">
+								{s.internal_host}
+							</b>
 						</div>
 					{/if}
 				</div>

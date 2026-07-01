@@ -84,6 +84,7 @@ export const service = z.object({
 	disk_path: z.string().optional().default(''),
 	suspended: z.boolean(),
 	created_at: ts,
+	url: z.string().optional().default(''),
 	internal_host: z.string().optional().default('')
 });
 export type Service = z.infer<typeof service>;
