@@ -134,6 +134,7 @@
 			icon: Radio,
 			c: '#fb7185',
 			t: 'WebSockets',
+			soon: true,
 			d: 'Long-lived, bi-directional streaming out of the box.'
 		},
 		{
@@ -156,18 +157,21 @@
 			icon: Network,
 			c: '#38a8e6',
 			t: 'Private networking',
+			soon: true,
 			d: 'Keep internal traffic off the public internet — no VPC wrangling.'
 		},
 		{
 			icon: ShieldAlert,
 			c: '#fb7185',
 			t: 'DDoS protection',
+			soon: true,
 			d: 'Every service is shielded from attacks without extra config.'
 		},
 		{
 			icon: BadgeCheck,
 			c: '#4ade80',
 			t: 'Managed compliance',
+			soon: true,
 			d: 'Encryption, controls, and audit trails built in from day one.'
 		},
 		{
@@ -180,6 +184,7 @@
 			icon: Lock,
 			c: '#8b8cf7',
 			t: 'Encryption at rest',
+			soon: true,
 			d: 'Databases, backups, and secrets encrypted by default.'
 		},
 		{
@@ -315,7 +320,7 @@
 					<span class="branch u-mono">feature/database</span>
 					<span class="checks"><Check size={13} /> Checks passed</span>
 					<ul class="env">
-						{#each ['web', 'api', 'database', 'workflow'] as e (e)}
+						{#each ['web', 'api', 'database', 'worker'] as e (e)}
 							<li>
 								<span class="led"></span><span class="u-mono">{e}</span><span class="avail"
 									>Available</span
@@ -351,7 +356,7 @@
 		<div class="split">
 			<Reveal>
 				<div class="feature">
-					<h3>Durable, long-running workflows as code</h3>
+					<h3>Durable, long-running workflows as code <span class="soon">Soon</span></h3>
 					<p>
 						Run reliable agents and background processes at scale — without wiring up queues,
 						workers, and retry logic.
@@ -417,7 +422,9 @@
 				<Reveal delay={i * 40} y={14}>
 					<div class="cell">
 						<span class="cell-ico" style="--c: {p.c}"><Icon size={20} strokeWidth={1.75} /></span>
-						<h3>{p.t}</h3>
+						<h3>
+							{p.t}{#if p.soon}<span class="soon">Soon</span>{/if}
+						</h3>
 						<p>{p.d}</p>
 					</div>
 				</Reveal>
@@ -435,7 +442,9 @@
 				<Reveal delay={i * 40} y={14}>
 					<div class="cell">
 						<span class="cell-ico" style="--c: {s.c}"><Icon size={20} strokeWidth={1.75} /></span>
-						<h3>{s.t}</h3>
+						<h3>
+							{s.t}{#if s.soon}<span class="soon">Soon</span>{/if}
+						</h3>
 						<p>{s.d}</p>
 					</div>
 				</Reveal>
@@ -934,6 +943,20 @@
 		border: 1px solid color-mix(in oklab, var(--c) 42%, transparent);
 		background: color-mix(in oklab, var(--c) 12%, transparent);
 		margin-bottom: var(--space-s);
+	}
+	.soon {
+		display: inline-block;
+		margin-left: 0.5em;
+		padding: 0.1em 0.5em;
+		font-size: 0.62em;
+		font-weight: 600;
+		letter-spacing: var(--tracking-wide);
+		text-transform: uppercase;
+		vertical-align: middle;
+		color: var(--accent);
+		background: var(--accent-soft);
+		border: 1px solid color-mix(in oklab, var(--accent) 35%, transparent);
+		border-radius: var(--radius-full);
 	}
 	.cell h3 {
 		font-size: var(--step-0);
