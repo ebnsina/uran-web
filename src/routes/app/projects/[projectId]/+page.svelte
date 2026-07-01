@@ -174,7 +174,7 @@
 		grid-template-columns: var(--cols);
 		align-items: center;
 		gap: var(--space-s);
-		padding: var(--space-s) var(--space-m);
+		padding: var(--space-m);
 	}
 	.thead {
 		font-size: var(--step--2);

@@ -931,19 +931,32 @@
 	.grid3 {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--space-xl);
+		gap: var(--space-m);
 		margin-top: var(--space-2xl);
+	}
+	.cell {
+		padding: var(--space-l);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		transition:
+			border-color var(--dur-2) var(--ease-out),
+			transform var(--dur-2) var(--ease-out);
+	}
+	.cell:hover {
+		border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+		transform: translateY(-3px);
 	}
 	.cell-ico {
 		display: inline-grid;
 		place-items: center;
-		width: 2.4rem;
-		height: 2.4rem;
+		width: 2.6rem;
+		height: 2.6rem;
 		border-radius: var(--radius-sm);
 		color: var(--c);
 		border: 1px solid color-mix(in oklab, var(--c) 42%, transparent);
 		background: color-mix(in oklab, var(--c) 12%, transparent);
-		margin-bottom: var(--space-s);
+		margin-bottom: var(--space-m);
 	}
 	.soon {
 		display: inline-block;
@@ -961,8 +974,8 @@
 		border-radius: var(--radius-full);
 	}
 	.cell h3 {
-		font-size: var(--step-0);
-		margin-bottom: var(--space-3xs);
+		font-size: var(--step-1);
+		margin-bottom: var(--space-2xs);
 	}
 	.cell p {
 		color: var(--fg-muted);

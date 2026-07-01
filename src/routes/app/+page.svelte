@@ -162,8 +162,8 @@
 	.stat {
 		display: flex;
 		align-items: center;
-		gap: var(--space-s);
-		padding: var(--space-m);
+		gap: var(--space-m);
+		padding: var(--space-l);
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: var(--radius-md);
@@ -220,7 +220,7 @@
 		grid-template-columns: 2fr 1fr 1fr auto;
 		align-items: center;
 		gap: var(--space-s);
-		padding: var(--space-s) var(--space-m);
+		padding: var(--space-m);
 	}
 	.thead {
 		font-size: var(--step--2);
