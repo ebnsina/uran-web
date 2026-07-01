@@ -12,7 +12,12 @@
 		detachDisk,
 		qk
 	} from '$lib/query/resources';
-	import { INSTANCE_SIZES, STORAGE_OPTIONS, type Service } from '$lib/api/resources';
+	import {
+		INSTANCE_SIZES,
+		INSTANCE_SPECS,
+		STORAGE_OPTIONS,
+		type Service
+	} from '$lib/api/resources';
 	import { toast } from '$lib/toast.svelte';
 
 	let { service }: { service: Service } = $props();
@@ -30,7 +35,10 @@
 	let diskSize = $state('10Gi');
 	let diskPath = $state('/data');
 
-	const sizeOptions = INSTANCE_SIZES.map((s) => ({ value: s, label: s }));
+	const sizeOptions = INSTANCE_SIZES.map((s) => ({
+		value: s,
+		label: `${s} — ${INSTANCE_SPECS[s].memory} · ${INSTANCE_SPECS[s].cpu}`
+	}));
 	const storageOptions = STORAGE_OPTIONS.map((s) => ({ value: s, label: s }));
 	const hasDisk = $derived(!!service.disk_size);
 
@@ -81,6 +89,10 @@
 	<section class="panel">
 		<h3>Scaling</h3>
 		<Select label="Instance size" name="size" bind:value={size} options={sizeOptions} />
+		<p class="hint">
+			Memory + CPU are set by the instance size — this service gets
+			<b>{INSTANCE_SPECS[size]?.memory}</b> memory and <b>{INSTANCE_SPECS[size]?.cpu}</b>.
+		</p>
 		<Checkbox label="Autoscale on CPU" name="autoscale" bind:checked={autoscale} />
 		{#if autoscale}
 			<div class="two">

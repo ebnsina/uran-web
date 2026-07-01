@@ -237,6 +237,7 @@
 	}
 	.content {
 		padding: var(--space-m);
+		min-width: 0;
 	}
 	.info {
 		display: grid;
@@ -248,6 +249,7 @@
 		display: grid;
 		grid-template-columns: auto 1fr;
 		align-items: center;
+		min-width: 0;
 		column-gap: var(--space-2xs);
 		row-gap: 2px;
 		padding: var(--space-s) var(--space-m);
@@ -276,12 +278,18 @@
 	}
 	.kv b {
 		font-weight: 500;
+		min-width: 0;
 		overflow-wrap: anywhere;
 	}
 	.link {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.4em;
+		min-width: 0;
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 		color: var(--accent);
 	}
 	.sub {
@@ -304,6 +312,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
+		min-width: 0;
 		padding: var(--space-m);
 		background: var(--surface);
 		border: 1px solid var(--border);
@@ -332,6 +341,7 @@
 		gap: var(--space-m);
 	}
 	.chart {
+		min-width: 0;
 		padding: var(--space-m);
 		background: var(--surface);
 		border: 1px solid var(--border);

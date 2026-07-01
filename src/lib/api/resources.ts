@@ -66,6 +66,16 @@ export const githubRepoList = list(githubRepo);
 export const SERVICE_TYPES = ['web', 'static', 'worker', 'cron'] as const;
 export const INSTANCE_SIZES = ['small', 'medium', 'large', 'xlarge', '2xlarge'] as const;
 
+// Memory + CPU each instance size grants (limits), mirroring the API's instance
+// table. Instance size is the memory/CPU lever — there's no separate control.
+export const INSTANCE_SPECS: Record<string, { memory: string; cpu: string }> = {
+	small: { memory: '256 MiB', cpu: '0.25 vCPU' },
+	medium: { memory: '512 MiB', cpu: '1 vCPU' },
+	large: { memory: '1 GiB', cpu: '2 vCPU' },
+	xlarge: { memory: '4 GiB', cpu: '4 vCPU' },
+	'2xlarge': { memory: '8 GiB', cpu: '8 vCPU' }
+};
+
 export const service = z.object({
 	id: z.number(),
 	project_id: z.number(),
