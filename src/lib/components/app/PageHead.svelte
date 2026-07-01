@@ -38,7 +38,8 @@
 		justify-content: space-between;
 		gap: var(--space-m);
 		padding: var(--space-l) var(--space-l) var(--space-m);
-		background: var(--surface-2);
+		/* subtle hairline, lighter than the standard border */
+		border-bottom: 1px solid color-mix(in oklab, var(--fg) 6%, transparent);
 	}
 	.crumbs {
 		display: flex;
