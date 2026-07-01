@@ -418,17 +418,14 @@
 
 	<!-- ── CTA ──────────────────────────────────────────────────────────── -->
 	<section class="cta u-container">
-		<div class="cta-orbit" aria-hidden="true">
-			{#each brands.slice(0, 10) as b, i (b)}
-				<span class="orbit-word u-mono" style="--i: {i}">{b}</span>
-			{/each}
-		</div>
 		<Reveal>
 			<div class="cta-card">
+				<span class="cta-glow" aria-hidden="true"></span>
 				<h2 class="display sm">Start building with Uran.</h2>
-				<p>Zero ops, zero surprises.</p>
+				<p>Zero ops, zero surprises — from your first push to your billionth request.</p>
 				<Button href="/register" size="lg">Deploy your app for free <ArrowRight size={16} /></Button
 				>
+				<p class="cta-meta u-mono">no credit card · minutes to live</p>
 			</div>
 		</Reveal>
 	</section>
@@ -852,42 +849,48 @@
 
 	/* ── CTA ───────────────────────────────────────────────────────────── */
 	.cta {
-		position: relative;
-		padding-block: clamp(var(--space-3xl), 12vw, var(--space-3xl));
-	}
-	.cta-orbit {
-		position: absolute;
-		inset: 0;
-		overflow: hidden;
-		pointer-events: none;
-	}
-	.orbit-word {
-		position: absolute;
-		font-size: var(--step-1);
-		font-weight: 600;
-		color: color-mix(in oklab, var(--fg) 12%, transparent);
-		top: calc(8% + (var(--i) * 8.5%));
-		left: calc(2% + (var(--i) * 9%) + (var(--i) * var(--i) * -0.4%));
-	}
-	.orbit-word:nth-child(even) {
-		top: calc(70% - (var(--i) * 5%));
+		padding-block: clamp(var(--space-2xl), 8vw, var(--space-3xl));
 	}
 	.cta-card {
 		position: relative;
-		z-index: 1;
-		max-width: 40rem;
+		max-width: 48rem;
 		margin: 0 auto;
-		padding: var(--space-2xl);
+		padding: clamp(var(--space-2xl), 6vw, var(--space-3xl)) var(--space-l);
 		text-align: center;
-		background: color-mix(in oklab, var(--surface) 78%, transparent);
-		backdrop-filter: blur(6px);
+		overflow: hidden;
+		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: var(--radius-2xl);
 	}
+	.cta-glow {
+		position: absolute;
+		top: -40%;
+		left: 50%;
+		width: 30rem;
+		height: 22rem;
+		transform: translateX(-50%);
+		background: radial-gradient(
+			ellipse at center,
+			color-mix(in oklab, var(--accent) 30%, transparent),
+			transparent 70%
+		);
+		filter: blur(20px);
+		pointer-events: none;
+	}
+	.cta-card h2,
 	.cta-card p {
-		margin: var(--space-s) 0 var(--space-l);
+		position: relative;
+	}
+	.cta-card > p {
+		max-width: 34rem;
+		margin: var(--space-m) auto var(--space-l);
 		color: var(--fg-muted);
 		font-size: var(--step-1);
+	}
+	.cta-meta {
+		margin-top: var(--space-m) !important;
+		font-size: var(--step--1);
+		color: var(--fg-subtle);
 	}
 
 	/* ── Responsive ────────────────────────────────────────────────────── */
