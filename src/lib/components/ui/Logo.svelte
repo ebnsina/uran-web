@@ -17,9 +17,9 @@
 		<span class="badge" aria-hidden="true">
 			<svg class="plane" width={glyph} height={glyph} viewBox="0 0 24 24" fill="none">
 				<!-- top wing (lit) -->
-				<path d="M21 3.2 6.2 10 11 12.7Z" fill="currentColor" />
-				<!-- belly fold (shaded), meeting the wing at the crease -->
-				<path d="M21 3.2 11 12.7 10.3 20.6Z" fill="currentColor" fill-opacity="0.5" />
+				<path d="M21.5 2.5 2.5 12 10.2 13.6 12 21.5Z" fill="currentColor" />
+				<!-- belly fold (crease facet) -->
+				<path d="M21.5 2.5 10.2 13.6 12 21.5Z" fill="currentColor" fill-opacity="0.62" />
 			</svg>
 		</span>
 		<span class="word">uran</span>
@@ -59,9 +59,6 @@
 		transition:
 			background var(--dur-2) var(--ease-out),
 			box-shadow var(--dur-2) var(--ease-out);
-	}
-	.plane {
-		transform: translate(-1%, 1%);
 	}
 	.link:hover .badge {
 		background: var(--accent-hover);
