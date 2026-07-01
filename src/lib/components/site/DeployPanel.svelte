@@ -75,9 +75,23 @@
 	<div class="chrome">
 		<div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
 		<span class="title u-mono">uran deploy --service web</span>
-		<span class="pill u-mono {phaseMeta[phase].cls}">
-			<span class="led"></span>{phaseMeta[phase].label}
-		</span>
+		<div class="status {phaseMeta[phase].cls}">
+			<span class="plabel u-mono">{phaseMeta[phase].label}</span>
+			<span class="ring">
+				<svg viewBox="0 0 36 36" aria-hidden="true">
+					<circle class="rtrack" cx="18" cy="18" r="15" />
+					<circle
+						class="rprog"
+						cx="18"
+						cy="18"
+						r="15"
+						stroke-dasharray="94.25"
+						stroke-dashoffset={94.25 * (1 - progress / 100)}
+					/>
+				</svg>
+				<span class="pct u-mono">{phase === 'live' ? '✓' : progress}</span>
+			</span>
+		</div>
 	</div>
 
 	<div class="log u-mono">
@@ -91,10 +105,6 @@
 			</p>
 		{/each}
 		<span class="caret" aria-hidden="true"></span>
-	</div>
-
-	<div class="bar" aria-hidden="true">
-		<span class="fill" style="width: {progress}%"></span>
 	</div>
 </div>
 
@@ -129,39 +139,60 @@
 		font-size: var(--step--2);
 		color: var(--fg-subtle);
 	}
-	.pill {
+	.status {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.45em;
-		padding: 0.25em 0.6em;
-		font-size: var(--step--2);
-		border-radius: var(--radius);
-		border: 1px solid var(--border-strong);
+		gap: 0.6em;
 		color: var(--fg-muted);
 		transition: color var(--dur-2) var(--ease-out);
 	}
-	.led {
-		width: 7px;
-		height: 7px;
-		border-radius: var(--radius-full);
-		background: currentColor;
-	}
-	.pill.is-build {
+	.status.is-build {
 		color: var(--warn);
 	}
-	.pill.is-deploy {
+	.status.is-deploy {
 		color: var(--accent);
 	}
-	.pill.is-live {
+	.status.is-live {
 		color: var(--ok);
 	}
-	.pill.is-live .led {
-		animation: blink 1.4s steps(2, jump-none) infinite;
+	.plabel {
+		font-size: var(--step--2);
+		font-weight: 600;
+		color: currentColor;
 	}
-	@keyframes blink {
-		50% {
-			opacity: 0.35;
-		}
+	.ring {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: 2rem;
+		height: 2rem;
+	}
+	.ring svg {
+		width: 100%;
+		height: 100%;
+		transform: rotate(-90deg);
+	}
+	.rtrack {
+		fill: none;
+		stroke: color-mix(in oklab, var(--fg) 10%, transparent);
+		stroke-width: 3;
+	}
+	.rprog {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 3;
+		stroke-linecap: round;
+		filter: drop-shadow(0 0 4px color-mix(in oklab, currentColor 70%, transparent));
+		transition: stroke-dashoffset var(--dur-3) var(--ease-out);
+	}
+	.pct {
+		position: absolute;
+		font-size: 0.62rem;
+		font-weight: 700;
+		color: currentColor;
+	}
+	.status.is-live .pct {
+		font-size: 0.8rem;
 	}
 
 	.log {
@@ -193,51 +224,17 @@
 		}
 	}
 
-	.bar {
-		position: relative;
-		height: 5px;
-		background: color-mix(in oklab, var(--fg) 8%, transparent);
-		overflow: hidden;
+	.status.is-live .rprog {
+		animation: pulse 1.6s ease-in-out infinite;
 	}
-	.fill {
-		position: relative;
-		display: block;
-		height: 100%;
-		border-radius: 0 var(--radius-full) var(--radius-full) 0;
-		background: linear-gradient(
-			90deg,
-			color-mix(in oklab, var(--accent) 70%, transparent),
-			var(--accent) 60%,
-			var(--blue-300)
-		);
-		box-shadow:
-			0 0 10px -1px color-mix(in oklab, var(--accent) 80%, transparent),
-			0 0 2px var(--accent);
-		transition: width var(--dur-3) var(--ease-out);
-	}
-	/* Moving sheen along the fill for a lively, premium feel. */
-	.fill::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(
-			90deg,
-			transparent,
-			color-mix(in oklab, #fff 55%, transparent),
-			transparent
-		);
-		transform: translateX(-100%);
-		animation: sheen 1.8s var(--ease-out) infinite;
-	}
-	@keyframes sheen {
-		to {
-			transform: translateX(100%);
+	@keyframes pulse {
+		50% {
+			opacity: 0.55;
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.fill::after {
+		.status.is-live .rprog {
 			animation: none;
-			opacity: 0;
 		}
 	}
 </style>
