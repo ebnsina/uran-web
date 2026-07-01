@@ -16,7 +16,7 @@
 	let { user = null }: Props = $props();
 
 	const links = [
-		{ label: 'Capabilities', href: '#index', key: 'C' },
+		{ label: 'Capabilities', href: '#capabilities', key: 'C' },
 		{ label: 'Workflow', href: '#workflow', key: 'W' },
 		{ label: 'Docs', href: '/docs', key: 'D' }
 	];

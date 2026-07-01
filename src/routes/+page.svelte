@@ -242,7 +242,7 @@
 	</section>
 
 	<!-- ── Click, click, done ───────────────────────────────────────────── -->
-	<section class="u-container block">
+	<section id="workflow" class="u-container block">
 		<Reveal><h2 class="display sm">Click, click, done.</h2></Reveal>
 		<ol class="steps">
 			{#each steps as s, i (s.n)}
@@ -378,7 +378,7 @@
 	</section>
 
 	<!-- ── Primitives grid ──────────────────────────────────────────────── -->
-	<section class="u-container block">
+	<section id="capabilities" class="u-container block">
 		<Reveal
 			><h2 class="display sm">Intuitive infrastructure,<br />designed for builders.</h2></Reveal
 		>
