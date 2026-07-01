@@ -295,7 +295,7 @@
 	</section>
 
 	<!-- ── Full-stack previews ──────────────────────────────────────────── -->
-	<section class="u-container block">
+	<section class="u-container block band">
 		<div class="split top">
 			<Reveal>
 				<div class="feature">
@@ -373,7 +373,7 @@
 	</section>
 
 	<!-- ── Observability ────────────────────────────────────────────────── -->
-	<section class="u-container block">
+	<section class="u-container block band">
 		<div class="split top">
 			<Reveal>
 				<div class="feature">
@@ -426,7 +426,7 @@
 	</section>
 
 	<!-- ── Security ─────────────────────────────────────────────────────── -->
-	<section class="u-container block">
+	<section class="u-container block band">
 		<Reveal><h2 class="display sm">Stay secure and<br />resilient by default.</h2></Reveal>
 		<Reveal delay={60}><p class="sub">Build products, not compliance.</p></Reveal>
 		<div class="grid3">
@@ -500,6 +500,21 @@
 	}
 	.block {
 		padding-block: clamp(var(--space-xl), 5vw, var(--space-2xl));
+	}
+	/* Alternating full-width band to separate sections (works both themes). */
+	.band {
+		position: relative;
+	}
+	.band::before {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		inset-block: 0;
+		left: 50%;
+		width: 100vw;
+		transform: translateX(-50%);
+		background: var(--surface-2);
+		border-block: 1px solid var(--border);
 	}
 	.sub {
 		margin-top: var(--space-s);
