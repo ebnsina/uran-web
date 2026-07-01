@@ -3,6 +3,7 @@
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import AppShell from '$lib/components/app/AppShell.svelte';
 	import Toaster from '$lib/components/ui/Toaster.svelte';
+	import CommandPalette from '$lib/components/app/CommandPalette.svelte';
 
 	let { children }: { children: Snippet } = $props();
 
@@ -18,6 +19,7 @@
 	<AppShell>
 		{@render children()}
 	</AppShell>
+	<CommandPalette />
 </QueryClientProvider>
 
 <Toaster />

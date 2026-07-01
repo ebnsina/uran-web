@@ -8,8 +8,9 @@
 	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-	import { LogOut } from '@lucide/svelte';
+	import { LogOut, Search } from '@lucide/svelte';
 	import { Logo } from '$lib';
+	import { palette } from '$lib/palette.svelte';
 	import { getMe, postLogout, keys } from '$lib/query/dashboard';
 	import { FetchError } from '$lib/query/fetcher';
 
@@ -63,6 +64,11 @@
 	<div class="layout">
 		<aside class="side">
 			<div class="side-top"><Logo /></div>
+			<button class="search" type="button" onclick={() => (palette.open = true)}>
+				<Search size={15} />
+				<span>Search</span>
+				<kbd>⌘K</kbd>
+			</button>
 			<nav>
 				{#each nav as item (item.href)}
 					<a
@@ -122,6 +128,36 @@
 	}
 	.side-top {
 		padding: var(--space-2xs) var(--space-2xs) var(--space-s);
+	}
+	.search {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2xs);
+		padding: 0.55em 0.7em;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+		color: var(--fg-subtle);
+		font-size: var(--step--1);
+		cursor: pointer;
+		transition:
+			border-color var(--dur-2) var(--ease-out),
+			color var(--dur-2) var(--ease-out);
+	}
+	.search:hover {
+		color: var(--fg);
+		border-color: var(--border-strong);
+	}
+	.search span {
+		flex: 1;
+		text-align: left;
+	}
+	.search kbd {
+		font-family: var(--font-mono);
+		font-size: var(--step--2);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-xs);
+		padding: 0.05em 0.4em;
 	}
 	nav {
 		display: flex;
