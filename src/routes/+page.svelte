@@ -206,10 +206,6 @@
 
 <svelte:head>
 	<title>Uran — Ship code, not infrastructure</title>
-	<meta
-		name="description"
-		content="Uran is the developer platform that turns a git push into a running, routed, TLS-terminated service. Managed databases, autoscaling, preview environments."
-	/>
 </svelte:head>
 
 <svelte:window onscroll={onRevealScroll} onresize={onRevealScroll} />

@@ -21,10 +21,6 @@
 
 <svelte:head>
 	<title>Docs · Uran</title>
-	<meta
-		name="description"
-		content="Get started with Uran — deploy from git, manage databases, scale, and more."
-	/>
 </svelte:head>
 
 <SiteHeader user={data.user} />

@@ -168,6 +168,8 @@
 	}
 	.topnav {
 		display: flex;
+		flex-direction: row;
+		align-items: center;
 		gap: var(--space-3xs);
 		flex: 1;
 		overflow-x: auto;
@@ -249,7 +251,7 @@
 		border-radius: var(--radius-xs);
 		padding: 0.05em 0.4em;
 	}
-	nav {
+	.side nav {
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
