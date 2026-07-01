@@ -54,7 +54,8 @@
 			query={projects}
 			empty={{
 				title: 'No projects yet',
-				hint: 'Group your services and databases into a project.'
+				hint: 'Group your services and databases into a project.',
+				icon: FolderGit2
 			}}
 		>
 			{#snippet item(p)}
@@ -65,6 +66,11 @@
 						<p class="u-mono">{p.slug}</p>
 					</div>
 				</a>
+			{/snippet}
+			{#snippet action()}
+				<Button size="sm" onclick={() => (dialogOpen = true)}>
+					<Plus size={16} /> New project
+				</Button>
 			{/snippet}
 		</ResourceList>
 	</section>

@@ -4,17 +4,25 @@
   snippet. Keeps every resource page consistent.
 -->
 <script lang="ts" generics="T">
-	import type { Snippet } from 'svelte';
+	import type { Snippet, Component } from 'svelte';
 	import type { CreateQueryResult } from '@tanstack/svelte-query';
-	import { Button } from '$lib';
+	import { Button, EmptyState } from '$lib';
 
 	interface Props {
 		query: CreateQueryResult<T[], Error>;
 		item: Snippet<[T]>;
-		empty: { title: string; hint?: string };
+		empty: { title: string; hint?: string; icon?: Component };
+		/** Optional action shown in the empty state (e.g. a create button). */
+		action?: Snippet;
 		columns?: string;
 	}
-	let { query, item, empty, columns = 'repeat(auto-fill, minmax(17rem, 1fr))' }: Props = $props();
+	let {
+		query,
+		item,
+		empty,
+		action,
+		columns = 'repeat(auto-fill, minmax(17rem, 1fr))'
+	}: Props = $props();
 </script>
 
 {#if query.isPending}
@@ -29,10 +37,9 @@
 		<Button variant="secondary" size="sm" onclick={() => query.refetch()}>Try again</Button>
 	</div>
 {:else if !query.data || query.data.length === 0}
-	<div class="state">
-		<h3>{empty.title}</h3>
-		{#if empty.hint}<p>{empty.hint}</p>{/if}
-	</div>
+	<EmptyState icon={empty.icon} title={empty.title} hint={empty.hint}>
+		{#if action}{@render action()}{/if}
+	</EmptyState>
 {:else}
 	<div class="grid" style="--cols: {columns}">
 		{#each query.data as row, i (i)}
@@ -72,9 +79,6 @@
 		max-width: 28rem;
 		margin: var(--space-2xl) auto;
 		text-align: center;
-	}
-	.state h3 {
-		font-size: var(--step-1);
 	}
 	.state p {
 		color: var(--fg-muted);

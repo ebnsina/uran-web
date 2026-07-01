@@ -61,7 +61,8 @@
 			query={services}
 			empty={{
 				title: 'No services yet',
-				hint: 'Deploy a web service, worker, static site, or cron job.'
+				hint: 'Deploy a web service, worker, static site, or cron job.',
+				icon: Box
 			}}
 		>
 			{#snippet item(s)}
@@ -73,6 +74,9 @@
 					</div>
 					{#if statusOf.get(s.id)}<StatusBadge status={statusOf.get(s.id)!} />{/if}
 				</a>
+			{/snippet}
+			{#snippet action()}
+				<Button size="sm" onclick={() => (svcDialog = true)}><Plus size={16} /> New service</Button>
 			{/snippet}
 		</ResourceList>
 	</section>
@@ -86,7 +90,11 @@
 		</div>
 		<ResourceList
 			query={databases}
-			empty={{ title: 'No databases yet', hint: 'Provision managed Postgres or Redis.' }}
+			empty={{
+				title: 'No databases yet',
+				hint: 'Provision managed Postgres or Redis.',
+				icon: DbIcon
+			}}
 		>
 			{#snippet item(d)}
 				<a class="card" href="/app/databases/{d.id}">
@@ -97,6 +105,11 @@
 					</div>
 					<StatusBadge status={d.status} />
 				</a>
+			{/snippet}
+			{#snippet action()}
+				<Button size="sm" variant="secondary" onclick={() => (dbDialog = true)}>
+					<Plus size={16} /> New database
+				</Button>
 			{/snippet}
 		</ResourceList>
 	</section>
