@@ -73,6 +73,10 @@ samp,
 pre {
 	font-family: var(--font-mono);
 	font-size: 0.9em;
+	/* Code must render literal characters — no coding ligatures (e.g. `--`
+	   combining) and none of the body's stylistic sets. */
+	font-feature-settings: normal;
+	font-variant-ligatures: none;
 }
 
 :focus-visible {
@@ -141,6 +145,7 @@ select:focus-visible {
 .u-mono {
 	font-family: var(--font-mono);
 	font-feature-settings: normal;
+	font-variant-ligatures: none;
 }
 
 /* Squircle (superellipse) corners — opt-in, used on the hero capture pill. */
