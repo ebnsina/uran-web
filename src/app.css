@@ -25,7 +25,8 @@ body {
 	font-family: var(--font-sans);
 	font-size: var(--step-0);
 	line-height: var(--leading-normal);
-	font-feature-settings: 'ss01', 'cv01';
+	font-feature-settings: 'ss01', 'cv01', 'tnum';
+	font-variant-numeric: tabular-nums;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-rendering: optimizeLegibility;
@@ -74,9 +75,11 @@ pre {
 	font-family: var(--font-mono);
 	font-size: 0.9em;
 	/* Code must render literal characters — no coding ligatures (e.g. `--`
-	   combining) and none of the body's stylistic sets. */
+	   combining) and none of the body's stylistic sets. Tabular figures keep
+	   numbers aligned. */
 	font-feature-settings: normal;
 	font-variant-ligatures: none;
+	font-variant-numeric: tabular-nums;
 }
 
 :focus-visible {
@@ -146,6 +149,7 @@ select:focus-visible {
 	font-family: var(--font-mono);
 	font-feature-settings: normal;
 	font-variant-ligatures: none;
+	font-variant-numeric: tabular-nums;
 }
 
 /* Squircle (superellipse) corners — opt-in, used on the hero capture pill. */

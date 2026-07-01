@@ -948,6 +948,7 @@
 		display: inline-block;
 		margin-left: 0.5em;
 		padding: 0.1em 0.5em;
+		font-family: var(--font-mono);
 		font-size: 0.62em;
 		font-weight: 600;
 		letter-spacing: var(--tracking-wide);
