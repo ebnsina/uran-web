@@ -38,7 +38,7 @@
 		justify-content: space-between;
 		gap: var(--space-m);
 		padding: var(--space-l) var(--space-l) var(--space-m);
-		border-bottom: 1px solid var(--border);
+		background: var(--surface-2);
 	}
 	.crumbs {
 		display: flex;

@@ -191,7 +191,6 @@
 		align-items: center;
 		gap: var(--space-2xs);
 		padding-top: var(--space-s);
-		border-top: 1px solid var(--border);
 	}
 	.avatar {
 		display: grid;
