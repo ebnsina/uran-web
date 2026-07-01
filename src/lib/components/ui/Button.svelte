@@ -71,7 +71,7 @@
 		border: 1px solid var(--_border);
 		background: var(--_bg);
 		color: var(--_fg);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius);
 		transition:
 			transform var(--dur-1) var(--ease-out),
 			background var(--dur-2) var(--ease-out),

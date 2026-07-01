@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import {
 		ArrowRight,
 		Check,
@@ -28,13 +27,6 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
-
-	function startFree(event: SubmitEvent) {
-		event.preventDefault();
-		const form = event.currentTarget as HTMLFormElement;
-		const email = String(new FormData(form).get('email') ?? '').trim();
-		goto(`/register${email ? `?email=${encodeURIComponent(email)}` : ''}`);
-	}
 
 	// Sticky scroll: highlight one primitive at a time, kept centered, as the
 	// section scrolls through its track.
@@ -217,17 +209,10 @@
 				Connect a repository and Uran turns every push into a running, routed, TLS-terminated
 				service — with managed databases, autoscaling, and preview environments built in.
 			</p>
-			<form class="capture u-squircle" onsubmit={startFree}>
-				<input
-					type="email"
-					name="email"
-					placeholder="you@company.com"
-					autocomplete="email"
-					aria-label="Email address"
-					required
-				/>
-				<button class="u-squircle" type="submit">Start free</button>
-			</form>
+			<div class="hero-cta">
+				<Button href="/register" size="lg">Start free <ArrowRight size={16} /></Button>
+				<Button href="/docs" variant="secondary" size="lg">Read the docs</Button>
+			</div>
 			<div class="proof">
 				<div class="avatars" aria-hidden="true">
 					{#each proof as p (p.i)}
@@ -547,38 +532,11 @@
 		font-size: var(--step-1);
 		line-height: var(--leading-normal);
 	}
-	.capture {
+	.hero-cta {
 		display: flex;
-		gap: 0.35rem;
+		flex-wrap: wrap;
+		gap: var(--space-s);
 		margin-top: var(--space-l);
-		max-width: 27rem;
-		padding: 0.35rem;
-		background: var(--surface);
-		border: 1px solid var(--border-strong);
-		border-radius: var(--radius-lg);
-	}
-	.capture input {
-		flex: 1;
-		border: none;
-		background: transparent;
-		color: var(--fg);
-		padding: 0 0.7rem;
-		font-size: var(--step-0);
-		outline: none;
-	}
-	.capture button {
-		padding: 0.6rem 1.1rem;
-		background: var(--accent);
-		color: var(--accent-contrast);
-		border: none;
-		border-radius: var(--radius-md);
-		font-weight: 600;
-		cursor: pointer;
-		white-space: nowrap;
-		transition: filter var(--dur-2) var(--ease-out);
-	}
-	.capture button:hover {
-		filter: brightness(1.06);
 	}
 	.proof {
 		display: flex;
@@ -608,6 +566,31 @@
 	.hero-panel {
 		position: relative;
 		min-width: 0;
+	}
+	/* Premium accent halo behind the dashboard preview. */
+	.hero-panel::before {
+		content: '';
+		position: absolute;
+		inset: -12% -8% -12% 4%;
+		z-index: -1;
+		background:
+			radial-gradient(
+				55% 45% at 62% 32%,
+				color-mix(in oklab, var(--accent) 26%, transparent),
+				transparent 72%
+			),
+			radial-gradient(
+				40% 40% at 30% 80%,
+				color-mix(in oklab, var(--blue-300) 16%, transparent),
+				transparent 70%
+			);
+		filter: blur(34px);
+		pointer-events: none;
+	}
+	.hero-panel :global(.win) {
+		box-shadow:
+			var(--shadow-3),
+			0 0 0 1px color-mix(in oklab, var(--fg) 6%, transparent);
 	}
 	.gitpush {
 		position: absolute;
