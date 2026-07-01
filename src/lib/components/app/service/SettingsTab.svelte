@@ -8,9 +8,11 @@
 		setHealthPath,
 		suspendService,
 		resumeService,
+		attachDisk,
+		detachDisk,
 		qk
 	} from '$lib/query/resources';
-	import { INSTANCE_SIZES, type Service } from '$lib/api/resources';
+	import { INSTANCE_SIZES, STORAGE_OPTIONS, type Service } from '$lib/api/resources';
 	import { toast } from '$lib/toast.svelte';
 
 	let { service }: { service: Service } = $props();
@@ -25,8 +27,12 @@
 	let minR = $state(untrack(() => service.min_replicas || 1));
 	let maxR = $state(untrack(() => service.max_replicas || 3));
 	let healthPath = $state(untrack(() => service.health_path ?? ''));
+	let diskSize = $state('10Gi');
+	let diskPath = $state('/data');
 
 	const sizeOptions = INSTANCE_SIZES.map((s) => ({ value: s, label: s }));
+	const storageOptions = STORAGE_OPTIONS.map((s) => ({ value: s, label: s }));
+	const hasDisk = $derived(!!service.disk_size);
 
 	const scale = createMutation(() => ({
 		mutationFn: () =>
@@ -53,6 +59,20 @@
 		onSuccess: () => {
 			invalidate();
 			toast.success(service.suspended ? 'Service resumed' : 'Service suspended');
+		}
+	}));
+	const attach = createMutation(() => ({
+		mutationFn: () => attachDisk(id, diskSize, diskPath.trim()),
+		onSuccess: () => {
+			invalidate();
+			toast.success('Disk attached');
+		}
+	}));
+	const detach = createMutation(() => ({
+		mutationFn: () => detachDisk(id),
+		onSuccess: () => {
+			invalidate();
+			toast.success('Disk detached');
 		}
 	}));
 </script>
@@ -87,6 +107,34 @@
 		<Button variant="secondary" loading={health.isPending} onclick={() => health.mutate()}>
 			Save health path
 		</Button>
+	</section>
+
+	<section class="panel">
+		<h3>Persistent disk</h3>
+		{#if hasDisk}
+			<p>
+				Mounted at <span class="u-mono">{service.disk_path}</span> ·
+				<span class="u-mono">{service.disk_size}</span>
+			</p>
+			{#if detach.isError}<Alert>{detach.error.message}</Alert>{/if}
+			<Button variant="secondary" loading={detach.isPending} onclick={() => detach.mutate()}>
+				Detach disk
+			</Button>
+		{:else}
+			<p>Attach a volume for stateful workloads. Pins the service to a single replica.</p>
+			<div class="two">
+				<Select label="Size" name="disk-size" bind:value={diskSize} options={storageOptions} />
+				<TextField label="Mount path" name="disk-path" bind:value={diskPath} placeholder="/data" />
+			</div>
+			{#if attach.isError}<Alert>{attach.error.message}</Alert>{/if}
+			<Button
+				variant="secondary"
+				loading={attach.isPending}
+				onclick={() => diskPath.trim() && attach.mutate()}
+			>
+				Attach disk
+			</Button>
+		{/if}
 	</section>
 
 	<section class="panel danger">

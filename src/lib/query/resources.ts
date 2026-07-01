@@ -97,6 +97,9 @@ export const scaleService = (
 ) => apiPost(`${v1}/services/${id}/scale`, body);
 export const setHealthPath = (id: number, path: string) =>
 	apiPost(`${v1}/services/${id}/health`, { path });
+export const attachDisk = (id: number, size: string, path: string) =>
+	apiPost(`${v1}/services/${id}/disk`, { size, path });
+export const detachDisk = (id: number) => apiDelete(`${v1}/services/${id}/disk`);
 
 /* ── Deploys ─────────────────────────────────────────────────────────── */
 export const getDeploys = (serviceId: number) =>
