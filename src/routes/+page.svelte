@@ -597,7 +597,7 @@
 		padding: 0.4em 0.7em;
 		background: var(--surface);
 		border: 1px solid var(--border-strong);
-		border-radius: 8px;
+		border-radius: var(--radius);
 		box-shadow: var(--shadow-2);
 		font-size: var(--step--1);
 	}
