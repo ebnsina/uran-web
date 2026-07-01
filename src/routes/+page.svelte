@@ -195,7 +195,7 @@
 				uran <span class="phon">/uˈraːn/</span> · <em>verb</em> — to take flight
 			</p>
 			<h1 class="display hero-h">
-				Your fastest path to production for <span class="grad">every push.</span>
+				Your fastest path to production for <span class="hl">every push.</span>
 			</h1>
 			<p class="lede">
 				Connect a repository and Uran turns every push into a running, routed, TLS-terminated
@@ -260,7 +260,7 @@
 	<section class="u-container block">
 		<Reveal>
 			<h2 class="display sm">
-				Deploy apps and agents<br />with <span class="grad">zero ops.</span>
+				Deploy apps and agents<br />with <span class="hl">zero ops.</span>
 			</h2>
 		</Reveal>
 		<div class="split">
@@ -454,11 +454,16 @@
 	.hero-h {
 		max-width: 15ch;
 	}
-	.grad {
-		background: linear-gradient(100deg, var(--blue-300), var(--accent) 55%, #7bd4ff);
-		-webkit-background-clip: text;
-		background-clip: text;
-		color: transparent;
+	/* Decorative accent underline (marker style), follows line wraps. */
+	.hl {
+		color: var(--fg);
+		background-image: linear-gradient(var(--accent), var(--accent));
+		background-repeat: no-repeat;
+		background-position: 0 92%;
+		background-size: 100% 0.14em;
+		padding-bottom: 0.04em;
+		-webkit-box-decoration-break: clone;
+		box-decoration-break: clone;
 	}
 	.block {
 		padding-block: clamp(var(--space-2xl), 9vw, var(--space-3xl));
