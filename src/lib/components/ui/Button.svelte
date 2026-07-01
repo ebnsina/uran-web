@@ -112,14 +112,20 @@
 	.primary {
 		--_bg: var(--accent);
 		--_fg: var(--accent-contrast);
+		--_border: transparent;
 		font-weight: 600;
+		background-image: var(--accent-gradient);
+		box-shadow:
+			var(--glow-accent),
+			inset 0 1px 0 rgb(255 255 255 / 0.22);
 	}
 	.primary:hover {
-		--_bg: var(--accent-hover);
-		box-shadow: var(--shadow-2);
+		box-shadow:
+			0 14px 34px -10px rgb(0 127 191 / 0.6),
+			inset 0 1px 0 rgb(255 255 255 / 0.28);
 	}
 	.primary:active {
-		--_bg: var(--accent-press);
+		box-shadow: var(--glow-accent);
 	}
 
 	.secondary {
