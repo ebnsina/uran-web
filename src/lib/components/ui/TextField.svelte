@@ -87,7 +87,8 @@
 	.has-error input:focus {
 		box-shadow:
 			0 0 0 2px var(--surface),
-			0 0 0 4px var(--danger);
+			0 0 0 5px var(--danger),
+			0 0 0 8px color-mix(in oklab, var(--danger) 28%, transparent);
 	}
 	.msg {
 		font-size: var(--step--1);
