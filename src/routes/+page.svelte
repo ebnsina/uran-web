@@ -194,9 +194,8 @@
 			<p class="define u-mono">
 				uran <span class="phon">/uˈraːn/</span> · <em>verb</em> — to take flight
 			</p>
-			<h1 class="display">
-				Your fastest path<br />to production for
-				<span class="grad">every push.</span>
+			<h1 class="display hero-h">
+				Your fastest path to production for <span class="grad">every push.</span>
 			</h1>
 			<p class="lede">
 				Connect a repository and Uran turns every push into a running, routed, TLS-terminated
@@ -443,13 +442,17 @@
 	}
 
 	.display {
-		font-size: clamp(2.6rem, 6vw, 4.6rem);
-		line-height: 0.98;
+		font-size: clamp(2.2rem, 4.6vw, 3.4rem);
+		line-height: 1.04;
 		letter-spacing: var(--tracking-tight);
-		font-weight: 680;
+		font-weight: 660;
+		text-wrap: balance;
 	}
 	.display.sm {
-		font-size: clamp(2rem, 4.4vw, 3.2rem);
+		font-size: clamp(1.9rem, 4vw, 2.9rem);
+	}
+	.hero-h {
+		max-width: 15ch;
 	}
 	.grad {
 		background: linear-gradient(100deg, var(--blue-300), var(--accent) 55%, #7bd4ff);

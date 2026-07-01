@@ -1,7 +1,7 @@
 <!--
-  Floating pill header. Logo left, centered nav with keyboard-shortcut badges
-  (press the key to jump to that section), CTA on the right. Compacts subtly on
-  scroll.
+  Full-width marketing header: logo + nav on the left, theme toggle + auth CTAs
+  on the right. Sticky, with a subtle bottom border that firms up on scroll.
+  Section links (Capabilities/Workflow) also have hidden keyboard shortcuts.
 -->
 <script lang="ts">
 	import { Logo, Button } from '$lib';
@@ -23,10 +23,9 @@
 
 	let scrolled = $state(false);
 	function onScroll() {
-		scrolled = window.scrollY > 12;
+		scrolled = window.scrollY > 8;
 	}
 
-	// Keyboard shortcuts — ignore when typing or using modifiers.
 	function onKey(event: KeyboardEvent) {
 		if (event.metaKey || event.ctrlKey || event.altKey) return;
 		const el = event.target as HTMLElement | null;
@@ -44,16 +43,16 @@
 
 <svelte:window onscroll={onScroll} onkeydown={onKey} />
 
-<div class="hdr">
-	<div class="pill" class:scrolled>
-		<div class="brand"><Logo /></div>
-		<nav class="nav">
-			{#each links as l (l.href)}
-				<a href={l.href} onclick={l.href.startsWith('#') ? smoothAnchor : undefined}>
-					{l.label}<kbd>{l.key}</kbd>
-				</a>
-			{/each}
-		</nav>
+<header class="hdr" class:scrolled>
+	<div class="bar u-container">
+		<div class="left">
+			<Logo />
+			<nav class="nav">
+				{#each links as l (l.href)}
+					<a href={l.href} onclick={l.href.startsWith('#') ? smoothAnchor : undefined}>{l.label}</a>
+				{/each}
+			</nav>
+		</div>
 		<div class="actions">
 			<ThemeToggle />
 			{#if user}
@@ -64,84 +63,52 @@
 			{/if}
 		</div>
 	</div>
-</div>
+</header>
 
 <style>
 	.hdr {
 		position: sticky;
-		top: var(--space-s);
+		top: 0;
 		z-index: 50;
-		padding-inline: var(--space-m);
-	}
-	.pill {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		align-items: center;
-		gap: var(--space-m);
-		width: min(100%, var(--container));
-		margin-inline: auto;
-		padding: 0.45rem 0.45rem 0.45rem 1rem;
-		background: color-mix(in oklab, var(--surface) 72%, transparent);
-		backdrop-filter: blur(14px);
-		border: 1px solid var(--border);
-		border-radius: var(--radius-lg);
+		background: color-mix(in oklab, var(--bg) 80%, transparent);
+		backdrop-filter: blur(12px);
+		border-bottom: 1px solid transparent;
 		transition:
-			background var(--dur-2) var(--ease-out),
 			border-color var(--dur-2) var(--ease-out),
-			box-shadow var(--dur-2) var(--ease-out);
+			background var(--dur-2) var(--ease-out);
 	}
-	.pill.scrolled {
-		background: color-mix(in oklab, var(--surface) 90%, transparent);
-		border-color: var(--border-strong);
-		box-shadow: var(--shadow-2);
+	.hdr.scrolled {
+		border-bottom-color: var(--border);
+		background: color-mix(in oklab, var(--bg) 90%, transparent);
 	}
-	.brand {
-		justify-self: start;
+	.bar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-m);
+		padding-block: var(--space-s);
 	}
-
+	.left {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xl);
+	}
 	.nav {
 		display: none;
-		justify-self: center;
 		align-items: center;
-		gap: var(--space-2xs);
+		gap: var(--space-xs);
 	}
 	.nav a {
-		display: inline-flex;
-		align-items: center;
-		padding: 0.4em 0.7em;
-		border-radius: var(--radius-full);
+		padding: 0.4em 0.6em;
+		border-radius: var(--radius-sm);
 		font-size: var(--step--1);
 		color: var(--fg-muted);
-		transition:
-			color var(--dur-2) var(--ease-out),
-			background var(--dur-2) var(--ease-out);
+		transition: color var(--dur-2) var(--ease-out);
 	}
 	.nav a:hover {
 		color: var(--fg);
-		background: var(--surface-2);
 	}
-	kbd {
-		margin-left: 0.55em;
-		display: inline-grid;
-		place-items: center;
-		min-width: 1.35em;
-		height: 1.35em;
-		padding: 0 0.3em;
-		font-family: var(--font-mono);
-		font-size: 0.72em;
-		line-height: 1;
-		color: var(--fg-subtle);
-		background: var(--surface-2);
-		border: 1px solid var(--border);
-		border-radius: var(--radius-xs);
-	}
-	.nav a:hover kbd {
-		color: var(--accent);
-		border-color: var(--accent);
-	}
-
 	.actions {
-		justify-self: end;
 		display: flex;
 		align-items: center;
 		gap: var(--space-2xs);
