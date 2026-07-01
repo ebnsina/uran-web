@@ -8,6 +8,7 @@
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { expoOut } from 'svelte/easing';
+	import { RollingNumber } from '$lib';
 
 	type Phase = 'build' | 'deploy' | 'live';
 
@@ -89,7 +90,9 @@
 						stroke-dashoffset={94.25 * (1 - progress / 100)}
 					/>
 				</svg>
-				<span class="pct u-mono">{phase === 'live' ? '✓' : progress}</span>
+				<span class="pct u-mono">
+					{#if phase === 'live'}✓{:else}<RollingNumber value={progress} />{/if}
+				</span>
 			</span>
 		</div>
 	</div>
