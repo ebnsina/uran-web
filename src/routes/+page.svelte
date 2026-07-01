@@ -2,7 +2,6 @@
 	import {
 		ArrowRight,
 		Check,
-		Terminal,
 		Boxes,
 		FileCode2,
 		Box,
@@ -23,7 +22,7 @@
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
 	import HeroGlow from '$lib/components/site/HeroGlow.svelte';
 	import SiteFooter from '$lib/components/site/SiteFooter.svelte';
-	import DashboardPreview from '$lib/components/site/DashboardPreview.svelte';
+	import DeployPanel from '$lib/components/site/DeployPanel.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -224,8 +223,7 @@
 		</div>
 
 		<div class="hero-panel">
-			<span class="gitpush u-mono"><Terminal size={14} /> $ git push</span>
-			<DashboardPreview />
+			<DeployPanel />
 		</div>
 	</section>
 
@@ -567,45 +565,30 @@
 		position: relative;
 		min-width: 0;
 	}
-	/* Premium accent halo behind the dashboard preview. */
+	/* Premium accent halo behind the deploy console. */
 	.hero-panel::before {
 		content: '';
 		position: absolute;
-		inset: -12% -8% -12% 4%;
+		inset: -14% -8% -14% 2%;
 		z-index: -1;
 		background:
 			radial-gradient(
-				55% 45% at 62% 32%,
+				55% 45% at 60% 30%,
 				color-mix(in oklab, var(--accent) 26%, transparent),
 				transparent 72%
 			),
 			radial-gradient(
-				40% 40% at 30% 80%,
+				40% 40% at 28% 82%,
 				color-mix(in oklab, var(--blue-300) 16%, transparent),
 				transparent 70%
 			);
-		filter: blur(34px);
+		filter: blur(36px);
 		pointer-events: none;
 	}
-	.hero-panel :global(.win) {
+	.hero-panel :global(.panel) {
 		box-shadow:
 			var(--shadow-3),
 			0 0 0 1px color-mix(in oklab, var(--fg) 6%, transparent);
-	}
-	.gitpush {
-		position: absolute;
-		top: -1.1rem;
-		left: 1rem;
-		z-index: 2;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.45em;
-		padding: 0.4em 0.7em;
-		background: var(--surface);
-		border: 1px solid var(--border-strong);
-		border-radius: var(--radius);
-		box-shadow: var(--shadow-2);
-		font-size: var(--step--1);
 	}
 
 	/* ── Stack marquee ─────────────────────────────────────────────────── */
@@ -987,8 +970,8 @@
 		}
 	}
 	@media (min-width: 72rem) {
-		.hero-panel :global(.win) {
-			min-width: 40rem;
+		.hero-panel :global(.panel) {
+			min-width: 34rem;
 		}
 	}
 </style>

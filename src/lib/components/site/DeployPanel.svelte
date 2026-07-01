@@ -135,7 +135,7 @@
 		gap: 0.45em;
 		padding: 0.25em 0.6em;
 		font-size: var(--step--2);
-		border-radius: var(--radius-full);
+		border-radius: var(--radius);
 		border: 1px solid var(--border-strong);
 		color: var(--fg-muted);
 		transition: color var(--dur-2) var(--ease-out);
@@ -194,14 +194,50 @@
 	}
 
 	.bar {
-		height: 3px;
-		background: var(--border);
+		position: relative;
+		height: 5px;
+		background: color-mix(in oklab, var(--fg) 8%, transparent);
+		overflow: hidden;
 	}
 	.fill {
+		position: relative;
 		display: block;
 		height: 100%;
-		background: var(--accent);
-		box-shadow: 0 0 12px var(--accent);
+		border-radius: 0 var(--radius-full) var(--radius-full) 0;
+		background: linear-gradient(
+			90deg,
+			color-mix(in oklab, var(--accent) 70%, transparent),
+			var(--accent) 60%,
+			var(--blue-300)
+		);
+		box-shadow:
+			0 0 10px -1px color-mix(in oklab, var(--accent) 80%, transparent),
+			0 0 2px var(--accent);
 		transition: width var(--dur-3) var(--ease-out);
+	}
+	/* Moving sheen along the fill for a lively, premium feel. */
+	.fill::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			color-mix(in oklab, #fff 55%, transparent),
+			transparent
+		);
+		transform: translateX(-100%);
+		animation: sheen 1.8s var(--ease-out) infinite;
+	}
+	@keyframes sheen {
+		to {
+			transform: translateX(100%);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.fill::after {
+			animation: none;
+			opacity: 0;
+		}
 	}
 </style>
