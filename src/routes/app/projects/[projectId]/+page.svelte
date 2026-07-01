@@ -211,6 +211,7 @@
 		color: var(--accent);
 	}
 	.cell-name b {
+		font-weight: 500;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
