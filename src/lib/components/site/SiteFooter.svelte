@@ -1,6 +1,6 @@
 <!-- Marketing footer: a Render-style multi-column link map + brand + socials. -->
 <script lang="ts">
-	import { Logo } from '$lib';
+	import { Logo, Button } from '$lib';
 	const year = new Date().getFullYear();
 
 	const columns = [
@@ -64,8 +64,8 @@
 			<Logo />
 			<p>Ship code, not infrastructure.</p>
 			<div class="get">
-				<a class="cta" href="/register">Get started</a>
-				<a class="alt" href="/login">Log in</a>
+				<Button href="/register" size="sm">Get started</Button>
+				<Button href="/login" variant="ghost" size="sm">Log in</Button>
 			</div>
 		</div>
 		<nav class="cols">
@@ -111,27 +111,8 @@
 	}
 	.get {
 		display: flex;
-		gap: var(--space-s);
+		gap: var(--space-2xs);
 		margin-top: var(--space-m);
-	}
-	.get .cta {
-		padding: 0.5em 1em;
-		background: var(--accent);
-		color: var(--accent-contrast);
-		border-radius: var(--radius-md);
-		font-size: var(--step--1);
-		font-weight: 600;
-	}
-	.get .cta:hover {
-		filter: brightness(1.06);
-	}
-	.get .alt {
-		padding: 0.5em 1em;
-		font-size: var(--step--1);
-		color: var(--fg-muted);
-	}
-	.get .alt:hover {
-		color: var(--fg);
 	}
 	.cols {
 		display: grid;
