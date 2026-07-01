@@ -1,9 +1,9 @@
 <!-- Service deploys: trigger a deploy, list history, roll back, view logs. -->
 <script lang="ts">
 	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
-	import { Rocket, RotateCcw, ScrollText } from '@lucide/svelte';
-	import { Button, StatusBadge, Alert } from '$lib';
-	import { getDeploys, triggerDeploy, rollbackDeploy, qk } from '$lib/query/resources';
+	import { Rocket, RotateCcw, ScrollText, Container } from '@lucide/svelte';
+	import { Button, StatusBadge, Alert, TextField, Dialog } from '$lib';
+	import { getDeploys, triggerDeploy, imageDeploy, rollbackDeploy, qk } from '$lib/query/resources';
 	import type { Deploy } from '$lib/api/resources';
 	import { toast } from '$lib/toast.svelte';
 
@@ -33,6 +33,18 @@
 		}
 	}));
 
+	let imageDialog = $state(false);
+	let image = $state('');
+	const imgDeploy = createMutation(() => ({
+		mutationFn: () => imageDeploy(serviceId, image.trim()),
+		onSuccess: () => {
+			client.invalidateQueries({ queryKey: qk.deploys(serviceId) });
+			imageDialog = false;
+			image = '';
+			toast.success('Image deploy started');
+		}
+	}));
+
 	function when(s: string) {
 		return new Date(s).toLocaleString();
 	}
@@ -40,9 +52,14 @@
 
 <div class="head">
 	<p class="hint">Build &amp; deploy the latest commit on the service's branch.</p>
-	<Button size="sm" loading={deploy.isPending} onclick={() => deploy.mutate()}>
-		<Rocket size={16} /> Deploy latest
-	</Button>
+	<div class="head-actions">
+		<Button size="sm" variant="secondary" onclick={() => (imageDialog = true)}>
+			<Container size={16} /> Deploy image
+		</Button>
+		<Button size="sm" loading={deploy.isPending} onclick={() => deploy.mutate()}>
+			<Rocket size={16} /> Deploy latest
+		</Button>
+	</div>
 </div>
 
 {#if deploy.isError}<Alert>{deploy.error.message}</Alert>{/if}
@@ -94,6 +111,28 @@
 	</ul>
 {/if}
 
+<Dialog bind:open={imageDialog} title="Deploy a prebuilt image">
+	<form
+		class="u-stack"
+		style="--flow: var(--space-m)"
+		onsubmit={(e) => {
+			e.preventDefault();
+			if (image.trim()) imgDeploy.mutate();
+		}}
+	>
+		{#if imgDeploy.isError}<Alert>{imgDeploy.error.message}</Alert>{/if}
+		<TextField
+			label="Image reference"
+			name="image"
+			bind:value={image}
+			placeholder="ghcr.io/me/app:latest"
+			hint="Skips the build and deploys this container image directly."
+			required
+		/>
+		<Button type="submit" full loading={imgDeploy.isPending}>Deploy image</Button>
+	</form>
+</Dialog>
+
 <style>
 	.head {
 		display: flex;
@@ -101,6 +140,11 @@
 		justify-content: space-between;
 		gap: var(--space-m);
 		margin-bottom: var(--space-m);
+	}
+	.head-actions {
+		display: flex;
+		gap: var(--space-2xs);
+		flex-shrink: 0;
 	}
 	.hint,
 	.muted {
