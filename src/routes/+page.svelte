@@ -36,6 +36,20 @@
 		goto(`/register${email ? `?email=${encodeURIComponent(email)}` : ''}`);
 	}
 
+	// Sticky scroll reveal: colour in the primitive words as the section scrolls.
+	let revealTrack = $state<HTMLElement>();
+	let activeCount = $state(0);
+	function onRevealScroll() {
+		const el = revealTrack;
+		if (!el) return;
+		const rect = el.getBoundingClientRect();
+		const total = rect.height - window.innerHeight;
+		const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
+		const progress = total > 0 ? scrolled / total : 0;
+		// Reveal a touch ahead of exact progress so the last word lands before the end.
+		activeCount = Math.min(words.length, Math.ceil(progress * (words.length + 0.5)));
+	}
+
 	const proof = [
 		{ i: 0, c: 'b', tint: 'var(--accent)' },
 		{ i: 1, c: 'm', tint: 'var(--ok)' },
@@ -184,6 +198,8 @@
 	/>
 </svelte:head>
 
+<svelte:window onscroll={onRevealScroll} onresize={onRevealScroll} />
+
 <SiteHeader user={data.user} />
 
 <main>
@@ -256,46 +272,54 @@
 		</ol>
 	</section>
 
-	<!-- ── Zero ops ─────────────────────────────────────────────────────── -->
+	<!-- ── Zero ops: sticky scroll word reveal ──────────────────────────── -->
+	<section class="reveal-section">
+		<div class="reveal-track" bind:this={revealTrack}>
+			<div class="reveal-sticky">
+				<div class="u-container">
+					<h2 class="display sm reveal-h">
+						Deploy apps and agents with <span class="hl">zero ops.</span>
+					</h2>
+					<p class="reveal-intro">Intuitive hosting and private networking for</p>
+					<ul class="reveal-words">
+						{#each words as w, i (w.w)}
+							<li class:on={i < activeCount} style="--c: {w.c}">{w.w}</li>
+						{/each}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── Full-stack previews ──────────────────────────────────────────── -->
 	<section class="u-container block">
-		<Reveal>
-			<h2 class="display sm">
-				Deploy apps and agents<br />with <span class="hl">zero ops.</span>
-			</h2>
-		</Reveal>
-		<div class="split">
+		<div class="split top">
 			<Reveal>
-				<p class="words">
-					Intuitive hosting and private networking for
-					{#each words as w, i (w.w)}<span style="color: {w.c}">{w.w}</span
-						>{#if i < words.length - 1},
-						{/if}{/each}.
-				</p>
-			</Reveal>
-			<Reveal delay={80}>
 				<div class="feature">
-					<h3>Full-stack previews for every pull request</h3>
+					<h2 class="head">Full-stack previews for every pull request</h2>
 					<p>
 						Iterate quickly with ephemeral previews of your entire application for every change.
 					</p>
 					<a class="doclink" href="/docs">Preview environment docs <ArrowRight size={15} /></a>
-					<div class="mock preview">
-						<div class="preview-pr">
-							<span class="pr u-mono">PR #128</span>
-							<span class="open u-mono">Open preview →</span>
-						</div>
-						<span class="branch u-mono">feature/database</span>
-						<span class="checks"><Check size={13} /> Checks passed</span>
-						<ul class="env">
-							{#each ['web', 'api', 'database', 'workflow'] as e (e)}
-								<li>
-									<span class="led"></span><span class="u-mono">{e}</span><span class="avail"
-										>Available</span
-									>
-								</li>
-							{/each}
-						</ul>
+				</div>
+			</Reveal>
+			<Reveal delay={80}>
+				<div class="mock preview">
+					<div class="preview-pr">
+						<span class="pr u-mono">PR #128</span>
+						<span class="open u-mono">Open preview →</span>
 					</div>
+					<span class="branch u-mono">feature/database</span>
+					<span class="checks"><Check size={13} /> Checks passed</span>
+					<ul class="env">
+						{#each ['web', 'api', 'database', 'workflow'] as e (e)}
+							<li>
+								<span class="led"></span><span class="u-mono">{e}</span><span class="avail"
+									>Available</span
+								>
+							</li>
+						{/each}
+					</ul>
 				</div>
 			</Reveal>
 		</div>
@@ -694,15 +718,64 @@
 		max-width: 32rem;
 		line-height: var(--leading-normal);
 	}
-	.words {
-		font-size: clamp(1.6rem, 3.4vw, 2.4rem);
-		line-height: 1.25;
-		letter-spacing: var(--tracking-tight);
-		font-weight: 600;
-		color: var(--fg);
+	/* ── Sticky scroll word reveal ─────────────────────────────────────── */
+	.reveal-track {
+		position: relative;
+		height: 240vh;
 	}
-	.words span {
+	.reveal-sticky {
+		position: sticky;
+		top: 0;
+		display: grid;
+		align-content: center;
+		min-height: 100vh;
+		padding-block: var(--space-2xl);
+	}
+	.reveal-h {
+		margin-bottom: var(--space-l);
+	}
+	.reveal-intro {
+		font-size: clamp(1.2rem, 2.4vw, 1.8rem);
+		color: var(--fg-muted);
+		margin-bottom: var(--space-xs);
+	}
+	.reveal-words {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.reveal-words li {
+		font-size: clamp(1.5rem, 4vw, 2.7rem);
+		line-height: 1.16;
 		font-weight: 680;
+		letter-spacing: var(--tracking-tight);
+		color: var(--fg-subtle);
+		opacity: 0.22;
+		transition:
+			color var(--dur-3) var(--ease-out),
+			opacity var(--dur-3) var(--ease-out),
+			transform var(--dur-3) var(--ease-out);
+		transform: translateY(0.1em);
+	}
+	.reveal-words li.on {
+		color: var(--c);
+		opacity: 1;
+		transform: none;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.reveal-track {
+			height: auto;
+		}
+		.reveal-sticky {
+			position: static;
+			min-height: 0;
+		}
+		.reveal-words li {
+			opacity: 1;
+			color: var(--c);
+			transform: none;
+			transition: none;
+		}
 	}
 
 	/* ── Mocks ─────────────────────────────────────────────────────────── */
