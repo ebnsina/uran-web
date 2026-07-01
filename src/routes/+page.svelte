@@ -36,9 +36,10 @@
 		goto(`/register${email ? `?email=${encodeURIComponent(email)}` : ''}`);
 	}
 
-	// Sticky scroll reveal: colour in the primitive words as the section scrolls.
+	// Sticky scroll: highlight one primitive at a time, kept centered, as the
+	// section scrolls through its track.
 	let revealTrack = $state<HTMLElement>();
-	let activeCount = $state(0);
+	let activeIndex = $state(0);
 	function onRevealScroll() {
 		const el = revealTrack;
 		if (!el) return;
@@ -46,8 +47,7 @@
 		const total = rect.height - window.innerHeight;
 		const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
 		const progress = total > 0 ? scrolled / total : 0;
-		// Reveal a touch ahead of exact progress so the last word lands before the end.
-		activeCount = Math.min(words.length, Math.ceil(progress * (words.length + 0.5)));
+		activeIndex = Math.min(words.length - 1, Math.max(0, Math.floor(progress * words.length)));
 	}
 
 	const proof = [
@@ -281,11 +281,13 @@
 						Deploy apps and agents with <span class="hl">zero ops.</span>
 					</h2>
 					<p class="reveal-intro">Intuitive hosting and private networking for</p>
-					<ul class="reveal-words">
-						{#each words as w, i (w.w)}
-							<li class:on={i < activeCount} style="--c: {w.c}">{w.w}</li>
-						{/each}
-					</ul>
+					<div class="reveal-viewport" style="--active: {activeIndex}">
+						<ul class="reveal-words">
+							{#each words as w, i (w.w)}
+								<li class:on={i === activeIndex} style="--c: {w.c}">{w.w}</li>
+							{/each}
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -737,30 +739,39 @@
 	.reveal-intro {
 		font-size: clamp(1.2rem, 2.4vw, 1.8rem);
 		color: var(--fg-muted);
-		margin-bottom: var(--space-xs);
+		margin-bottom: var(--space-m);
+	}
+	/* A 3-row window; the active word sits in the middle row, neighbours fade. */
+	.reveal-viewport {
+		--ih: clamp(2.8rem, 7vw, 4.4rem);
+		height: calc(var(--ih) * 3);
+		overflow: hidden;
+		-webkit-mask-image: linear-gradient(transparent, #000 33%, #000 67%, transparent);
+		mask-image: linear-gradient(transparent, #000 33%, #000 67%, transparent);
 	}
 	.reveal-words {
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		transform: translateY(calc((1 - var(--active)) * var(--ih)));
+		transition: transform var(--dur-4) var(--ease-out);
 	}
 	.reveal-words li {
-		font-size: clamp(1.5rem, 4vw, 2.7rem);
-		line-height: 1.16;
+		display: flex;
+		align-items: center;
+		height: var(--ih);
+		font-size: clamp(1.6rem, 4.6vw, 3rem);
 		font-weight: 680;
 		letter-spacing: var(--tracking-tight);
 		color: var(--fg-subtle);
-		opacity: 0.22;
+		opacity: 0.25;
 		transition:
 			color var(--dur-3) var(--ease-out),
-			opacity var(--dur-3) var(--ease-out),
-			transform var(--dur-3) var(--ease-out);
-		transform: translateY(0.1em);
+			opacity var(--dur-3) var(--ease-out);
 	}
 	.reveal-words li.on {
 		color: var(--c);
 		opacity: 1;
-		transform: none;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		.reveal-track {
@@ -770,11 +781,18 @@
 			position: static;
 			min-height: 0;
 		}
+		.reveal-viewport {
+			height: auto;
+			overflow: visible;
+			mask-image: none;
+			-webkit-mask-image: none;
+		}
+		.reveal-words {
+			transform: none;
+		}
 		.reveal-words li {
 			opacity: 1;
 			color: var(--c);
-			transform: none;
-			transition: none;
 		}
 	}
 
