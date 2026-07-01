@@ -1,4 +1,4 @@
-<!-- Labelled range slider with a live numeric readout. Accent-tinted track. -->
+<!-- Custom range slider: accent-filled track, clean thumb, live readout. -->
 <script lang="ts">
 	interface Props {
 		label: string;
@@ -20,6 +20,7 @@
 	}: Props = $props();
 
 	const id = $derived(`r-${name}`);
+	const pct = $derived(max > min ? ((value - min) / (max - min)) * 100 : 0);
 </script>
 
 <div class="field">
@@ -27,7 +28,7 @@
 		<label for={id}>{label}</label>
 		<span class="val u-mono">{value}{suffix}</span>
 	</div>
-	<input {id} {name} type="range" {min} {max} {step} bind:value />
+	<input {id} {name} type="range" {min} {max} {step} bind:value style="--pct: {pct}%" />
 	<div class="ticks" aria-hidden="true">
 		<span>{min}</span>
 		<span>{max}</span>
@@ -55,17 +56,76 @@
 		font-weight: 600;
 		color: var(--accent);
 	}
+
 	input[type='range'] {
 		width: 100%;
-		accent-color: var(--accent);
+		height: 1.25rem;
+		margin: 0;
+		background: transparent;
 		cursor: pointer;
-		height: 1.4rem;
+		-webkit-appearance: none;
+		appearance: none;
 	}
 	input[type='range']:focus-visible {
-		outline: 2px solid var(--accent-soft);
-		outline-offset: 4px;
-		border-radius: var(--radius-xs);
+		outline: none;
 	}
+
+	/* ── Track ── */
+	input[type='range']::-webkit-slider-runnable-track {
+		height: 6px;
+		border-radius: var(--radius-full);
+		background: linear-gradient(
+			to right,
+			var(--accent) var(--pct),
+			var(--surface-hover) var(--pct)
+		);
+	}
+	input[type='range']::-moz-range-track {
+		height: 6px;
+		border-radius: var(--radius-full);
+		background: var(--surface-hover);
+	}
+	input[type='range']::-moz-range-progress {
+		height: 6px;
+		border-radius: var(--radius-full);
+		background: var(--accent);
+	}
+
+	/* ── Thumb ── */
+	input[type='range']::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 16px;
+		height: 16px;
+		margin-top: -5px; /* centre on the 6px track */
+		border-radius: var(--radius-full);
+		background: var(--accent);
+		border: 3px solid var(--surface);
+		box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+		transition: transform var(--dur-1) var(--ease-out);
+	}
+	input[type='range']::-moz-range-thumb {
+		width: 16px;
+		height: 16px;
+		border: 3px solid var(--surface);
+		border-radius: var(--radius-full);
+		background: var(--accent);
+		box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+		transition: transform var(--dur-1) var(--ease-out);
+	}
+	input[type='range']:hover::-webkit-slider-thumb {
+		transform: scale(1.12);
+	}
+	input[type='range']:hover::-moz-range-thumb {
+		transform: scale(1.12);
+	}
+	input[type='range']:focus-visible::-webkit-slider-thumb {
+		box-shadow: var(--focus-ring);
+	}
+	input[type='range']:focus-visible::-moz-range-thumb {
+		box-shadow: var(--focus-ring);
+	}
+
 	.ticks {
 		display: flex;
 		justify-content: space-between;

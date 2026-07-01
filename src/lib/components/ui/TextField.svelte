@@ -59,7 +59,7 @@
 	}
 	input {
 		width: 100%;
-		padding: 0.85em 1.15em;
+		padding: 0.55em 0.85em;
 		background: var(--surface-2);
 		color: var(--fg);
 		border: 1px solid var(--border);
