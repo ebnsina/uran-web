@@ -5,6 +5,7 @@
 	import { getMe, keys } from '$lib/query/dashboard';
 	import { getTokens, createToken, deleteToken, getAudit, qk } from '$lib/query/resources';
 	import type { ApiTokenCreated } from '$lib/api/resources';
+	import { toast } from '$lib/toast.svelte';
 	import PageHead from '$lib/components/app/PageHead.svelte';
 
 	const client = useQueryClient();
@@ -27,7 +28,10 @@
 	}));
 	const revoke = createMutation(() => ({
 		mutationFn: (id: number) => deleteToken(id),
-		onSuccess: () => client.invalidateQueries({ queryKey: qk.tokens })
+		onSuccess: () => {
+			client.invalidateQueries({ queryKey: qk.tokens });
+			toast.success('Token revoked');
+		}
 	}));
 	let confirmRevoke = $state(false);
 	let revokeId = $state<number | null>(null);

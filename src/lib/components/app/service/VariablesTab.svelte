@@ -4,6 +4,7 @@
 	import { Trash2, Plus } from '@lucide/svelte';
 	import { Button, TextField, Checkbox, Alert } from '$lib';
 	import { getEnv, setEnv, deleteEnv, qk } from '$lib/query/resources';
+	import { toast } from '$lib/toast.svelte';
 
 	let { serviceId }: { serviceId: number } = $props();
 	const client = useQueryClient();
@@ -28,11 +29,15 @@
 			value = '';
 			secret = false;
 			buildTime = false;
+			toast.success('Variable saved');
 		}
 	}));
 	const remove = createMutation(() => ({
 		mutationFn: (k: string) => deleteEnv(serviceId, k),
-		onSuccess: invalidate
+		onSuccess: () => {
+			invalidate();
+			toast.success('Variable removed');
+		}
 	}));
 </script>
 

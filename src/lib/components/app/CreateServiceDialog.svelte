@@ -4,6 +4,7 @@
 	import { Button, TextField, Select, Dialog, Alert } from '$lib';
 	import { createService, qk } from '$lib/query/resources';
 	import { SERVICE_TYPES } from '$lib/api/resources';
+	import { toast } from '$lib/toast.svelte';
 
 	interface Props {
 		open: boolean;
@@ -37,6 +38,7 @@
 			client.invalidateQueries({ queryKey: qk.projectStatus(projectId) });
 			reset();
 			open = false;
+			toast.success('Service created');
 		}
 	}));
 

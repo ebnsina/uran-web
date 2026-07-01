@@ -4,6 +4,7 @@
 	import { Trash2, Plus, Globe } from '@lucide/svelte';
 	import { Button, TextField, Alert } from '$lib';
 	import { getDomains, addDomain, deleteDomain, qk } from '$lib/query/resources';
+	import { toast } from '$lib/toast.svelte';
 
 	let { serviceId }: { serviceId: number } = $props();
 	const client = useQueryClient();
@@ -20,11 +21,15 @@
 		onSuccess: () => {
 			invalidate();
 			host = '';
+			toast.success('Domain added');
 		}
 	}));
 	const remove = createMutation(() => ({
 		mutationFn: (d: string) => deleteDomain(serviceId, d),
-		onSuccess: invalidate
+		onSuccess: () => {
+			invalidate();
+			toast.success('Domain removed');
+		}
 	}));
 </script>
 

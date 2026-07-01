@@ -11,6 +11,7 @@
 		qk
 	} from '$lib/query/resources';
 	import { INSTANCE_SIZES, type Service } from '$lib/api/resources';
+	import { toast } from '$lib/toast.svelte';
 
 	let { service }: { service: Service } = $props();
 	const client = useQueryClient();
@@ -35,15 +36,24 @@
 					? { min_replicas: minR, max_replicas: Math.max(maxR, minR) }
 					: { replicas, max_replicas: 0 })
 			}),
-		onSuccess: invalidate
+		onSuccess: () => {
+			invalidate();
+			toast.success('Scaling applied');
+		}
 	}));
 	const health = createMutation(() => ({
 		mutationFn: () => setHealthPath(id, healthPath.trim()),
-		onSuccess: invalidate
+		onSuccess: () => {
+			invalidate();
+			toast.success('Health check saved');
+		}
 	}));
 	const toggleSuspend = createMutation(() => ({
 		mutationFn: () => (service.suspended ? resumeService(id) : suspendService(id)),
-		onSuccess: invalidate
+		onSuccess: () => {
+			invalidate();
+			toast.success(service.suspended ? 'Service resumed' : 'Service suspended');
+		}
 	}));
 </script>
 

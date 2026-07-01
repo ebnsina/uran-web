@@ -2,6 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import AppShell from '$lib/components/app/AppShell.svelte';
+	import Toaster from '$lib/components/ui/Toaster.svelte';
 
 	let { children }: { children: Snippet } = $props();
 
@@ -18,3 +19,5 @@
 		{@render children()}
 	</AppShell>
 </QueryClientProvider>
+
+<Toaster />

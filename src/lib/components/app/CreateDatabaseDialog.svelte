@@ -4,6 +4,7 @@
 	import { Button, TextField, Select, Slider, Checkbox, Dialog, Alert } from '$lib';
 	import { createDatabase, qk, type CreateDatabaseInput } from '$lib/query/resources';
 	import { DB_ENGINES, DB_TIERS, INSTANCE_SIZES, STORAGE_OPTIONS } from '$lib/api/resources';
+	import { toast } from '$lib/toast.svelte';
 
 	interface Props {
 		open: boolean;
@@ -54,6 +55,7 @@
 		onSuccess: () => {
 			client.invalidateQueries({ queryKey: qk.databases(projectId) });
 			open = false;
+			toast.success('Database provisioning started');
 		}
 	}));
 </script>

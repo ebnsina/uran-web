@@ -8,6 +8,7 @@
 	import ResourceList from '$lib/components/app/ResourceList.svelte';
 	import PageHead from '$lib/components/app/PageHead.svelte';
 	import MembersSection from '$lib/components/app/MembersSection.svelte';
+	import { toast } from '$lib/toast.svelte';
 
 	const orgId = $derived(Number(page.params.orgId));
 	const client = useQueryClient();
@@ -29,6 +30,7 @@
 			client.invalidateQueries({ queryKey: qk.projects(orgId) });
 			dialogOpen = false;
 			name = '';
+			toast.success('Project created');
 		}
 	}));
 </script>

@@ -5,6 +5,7 @@
 	import { Button, TextField, Select, Dialog, ConfirmDialog, Alert, StatusBadge } from '$lib';
 	import { getMembers, addMember, setMemberRole, removeMember, qk } from '$lib/query/resources';
 	import { ORG_ROLES } from '$lib/api/resources';
+	import { toast } from '$lib/toast.svelte';
 
 	let { orgId }: { orgId: number } = $props();
 	const client = useQueryClient();
@@ -28,15 +29,22 @@
 			dialogOpen = false;
 			email = '';
 			role = 'member';
+			toast.success('Member added');
 		}
 	}));
 	const changeRole = createMutation(() => ({
 		mutationFn: (v: { userId: number; role: string }) => setMemberRole(orgId, v.userId, v.role),
-		onSuccess: invalidate
+		onSuccess: () => {
+			invalidate();
+			toast.success('Role updated');
+		}
 	}));
 	const remove = createMutation(() => ({
 		mutationFn: (userId: number) => removeMember(orgId, userId),
-		onSuccess: invalidate
+		onSuccess: () => {
+			invalidate();
+			toast.success('Member removed');
+		}
 	}));
 	let confirmRemove = $state(false);
 	let removeTarget = $state<{ id: number; email: string } | null>(null);

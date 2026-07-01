@@ -5,6 +5,7 @@
 	import { Button, StatusBadge, Alert } from '$lib';
 	import { getDeploys, triggerDeploy, rollbackDeploy, qk } from '$lib/query/resources';
 	import type { Deploy } from '$lib/api/resources';
+	import { toast } from '$lib/toast.svelte';
 
 	let { serviceId }: { serviceId: number } = $props();
 	const client = useQueryClient();
@@ -19,11 +20,17 @@
 
 	const deploy = createMutation(() => ({
 		mutationFn: () => triggerDeploy(serviceId),
-		onSuccess: () => client.invalidateQueries({ queryKey: qk.deploys(serviceId) })
+		onSuccess: () => {
+			client.invalidateQueries({ queryKey: qk.deploys(serviceId) });
+			toast.success('Deploy started');
+		}
 	}));
 	const rollback = createMutation(() => ({
 		mutationFn: (id: number) => rollbackDeploy(id),
-		onSuccess: () => client.invalidateQueries({ queryKey: qk.deploys(serviceId) })
+		onSuccess: () => {
+			client.invalidateQueries({ queryKey: qk.deploys(serviceId) });
+			toast.success('Rollout started');
+		}
 	}));
 
 	function when(s: string) {

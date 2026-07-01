@@ -5,6 +5,7 @@
 	import { Building2, ArrowRight, Plus } from '@lucide/svelte';
 	import { Button, Reveal, motion, TextField, Dialog, Alert } from '$lib';
 	import { getMe, getOrgs, createOrg, keys } from '$lib/query/dashboard';
+	import { toast } from '$lib/toast.svelte';
 
 	const client = useQueryClient();
 	const me = createQuery(() => ({ queryKey: keys.me, queryFn: getMe, staleTime: 60_000 }));
@@ -21,6 +22,7 @@
 			client.invalidateQueries({ queryKey: keys.orgs });
 			dialogOpen = false;
 			name = '';
+			toast.success('Organization created');
 		}
 	}));
 </script>

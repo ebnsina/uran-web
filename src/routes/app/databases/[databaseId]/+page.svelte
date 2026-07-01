@@ -29,6 +29,7 @@
 		qk
 	} from '$lib/query/resources';
 	import { INSTANCE_SIZES, STORAGE_OPTIONS } from '$lib/api/resources';
+	import { toast } from '$lib/toast.svelte';
 	import PageHead from '$lib/components/app/PageHead.svelte';
 
 	const dbId = $derived(Number(page.params.databaseId));
@@ -81,15 +82,24 @@
 
 	const scale = createMutation(() => ({
 		mutationFn: () => scaleDatabase(dbId, { instances, size, storage }),
-		onSuccess: invalidate
+		onSuccess: () => {
+			invalidate();
+			toast.success('Scaling applied');
+		}
 	}));
 	const backup = createMutation(() => ({
 		mutationFn: () => triggerBackup(dbId),
-		onSuccess: () => client.invalidateQueries({ queryKey: qk.backups(dbId) })
+		onSuccess: () => {
+			client.invalidateQueries({ queryKey: qk.backups(dbId) });
+			toast.success('Backup requested');
+		}
 	}));
 	const remove = createMutation(() => ({
 		mutationFn: () => deleteDatabase(dbId),
-		onSuccess: () => goto(db.data ? `/app/projects/${db.data.project_id}` : '/app')
+		onSuccess: () => {
+			toast.success('Database deleted');
+			goto(db.data ? `/app/projects/${db.data.project_id}` : '/app');
+		}
 	}));
 
 	let confirmDelete = $state(false);
