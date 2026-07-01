@@ -8,6 +8,8 @@ import {
 	project,
 	orgMemberList,
 	orgMember,
+	registryCredList,
+	registryCred,
 	serviceList,
 	service,
 	serviceStatusList,
@@ -31,7 +33,8 @@ import {
 	type Database,
 	type DbConnection,
 	type ApiTokenCreated,
-	type OrgMember
+	type OrgMember,
+	type RegistryCred
 } from '$lib/api/resources';
 import { apiGet, apiPost, apiPatch, apiDelete } from './fetcher';
 
@@ -41,6 +44,7 @@ const v1 = '/api/v1';
 export const qk = {
 	projects: (orgId: number) => ['orgs', orgId, 'projects'] as const,
 	members: (orgId: number) => ['orgs', orgId, 'members'] as const,
+	registryCreds: (orgId: number) => ['orgs', orgId, 'registry-creds'] as const,
 	project: (id: number) => ['projects', id] as const,
 	services: (projectId: number) => ['projects', projectId, 'services'] as const,
 	projectStatus: (projectId: number) => ['projects', projectId, 'status'] as const,
@@ -71,6 +75,16 @@ export const setMemberRole = (orgId: number, userId: number, role: string) =>
 	apiPatch(`${v1}/orgs/${orgId}/members/${userId}`, { role });
 export const removeMember = (orgId: number, userId: number) =>
 	apiDelete(`${v1}/orgs/${orgId}/members/${userId}`);
+
+/* ── Registry credentials (private image pulls) ──────────────────────── */
+export const getRegistryCreds = (orgId: number) =>
+	apiGet(`${v1}/orgs/${orgId}/registry-credentials`, registryCredList);
+export const addRegistryCred = (
+	orgId: number,
+	body: { registry: string; username: string; password: string }
+): Promise<RegistryCred> => apiPost(`${v1}/orgs/${orgId}/registry-credentials`, body, registryCred);
+export const deleteRegistryCred = (orgId: number, credId: number) =>
+	apiDelete(`${v1}/orgs/${orgId}/registry-credentials/${credId}`);
 
 /* ── Services ────────────────────────────────────────────────────────── */
 export const getServices = (projectId: number) =>

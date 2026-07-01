@@ -8,6 +8,7 @@
 	import ResourceList from '$lib/components/app/ResourceList.svelte';
 	import PageHead from '$lib/components/app/PageHead.svelte';
 	import MembersSection from '$lib/components/app/MembersSection.svelte';
+	import RegistryCredsSection from '$lib/components/app/RegistryCredsSection.svelte';
 	import { toast } from '$lib/toast.svelte';
 
 	const orgId = $derived(Number(page.params.orgId));
@@ -69,6 +70,8 @@
 	</section>
 
 	<MembersSection {orgId} />
+
+	<RegistryCredsSection {orgId} />
 </div>
 
 <Dialog bind:open={dialogOpen} title="New project">

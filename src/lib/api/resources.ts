@@ -37,6 +37,14 @@ export const orgMember = z.object({
 export type OrgMember = z.infer<typeof orgMember>;
 export const orgMemberList = list(orgMember);
 
+export const registryCred = z.object({
+	id: z.number(),
+	registry: z.string(),
+	username: z.string()
+});
+export type RegistryCred = z.infer<typeof registryCred>;
+export const registryCredList = list(registryCred);
+
 /* ── Services ────────────────────────────────────────────────────────── */
 
 export const SERVICE_TYPES = ['web', 'static', 'worker', 'cron'] as const;
