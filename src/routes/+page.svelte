@@ -14,27 +14,10 @@
 		ShieldCheck,
 		Activity
 	} from '@lucide/svelte';
-	import {
-		siGit,
-		siGithub,
-		siDocker,
-		siKubernetes,
-		siPostgresql,
-		siRedis,
-		siGo,
-		siTraefikproxy,
-		siCloudflare,
-		siNginx,
-		siPrometheus,
-		siLetsencrypt,
-		siLinux,
-		siNodedotjs
-	} from 'simple-icons';
 	import { Button, Reveal } from '$lib';
 	import { smoothAnchor } from '$lib/scroll';
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
 	import HeroGlow from '$lib/components/site/HeroGlow.svelte';
-	import BrandIcon from '$lib/components/site/BrandIcon.svelte';
 	import SiteFooter from '$lib/components/site/SiteFooter.svelte';
 	import DashboardPreview from '$lib/components/site/DashboardPreview.svelte';
 	import type { PageData } from './$types';
@@ -110,22 +93,22 @@
 		{ t: 'Scale', c: '#4ade80', d: 'Add databases, replicas, domains.', icon: TrendingUp }
 	];
 
-	// Tech-stack logos for the marquee (the platform Uran is built on / integrates).
+	// Tech-stack word-marks for the marquee (what Uran is built on / integrates).
 	const brands = [
-		siGit,
-		siGithub,
-		siDocker,
-		siKubernetes,
-		siPostgresql,
-		siRedis,
-		siGo,
-		siTraefikproxy,
-		siCloudflare,
-		siNginx,
-		siPrometheus,
-		siLetsencrypt,
-		siLinux,
-		siNodedotjs
+		'Git',
+		'GitHub',
+		'Docker',
+		'Kubernetes',
+		'PostgreSQL',
+		'Redis',
+		'Go',
+		'Traefik',
+		'Cloudflare',
+		'NGINX',
+		'Prometheus',
+		"Let's Encrypt",
+		'Linux',
+		'Node.js'
 	];
 </script>
 
@@ -188,7 +171,7 @@
 	<section class="marquee" aria-hidden="true">
 		<div class="track">
 			{#each [...brands, ...brands] as brand, i (i)}
-				<BrandIcon icon={brand} />
+				<span class="wordmark">{brand}</span>
 			{/each}
 		</div>
 	</section>
@@ -441,6 +424,16 @@
 		gap: var(--space-2xl);
 		white-space: nowrap;
 		animation: drift 52s linear infinite;
+	}
+	.wordmark {
+		font-size: var(--step-1);
+		font-weight: 600;
+		letter-spacing: var(--tracking-tight);
+		color: var(--fg-subtle);
+		transition: color var(--dur-2) var(--ease-out);
+	}
+	.wordmark:hover {
+		color: var(--fg);
 	}
 	.marquee:hover .track {
 		animation-play-state: paused;
