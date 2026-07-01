@@ -1,17 +1,18 @@
 <!--
-  Static, on-brand mock of the Uran dashboard for the hero: a mini sidebar and a
-  services table with status pills and health bars. Decorative (aria-hidden);
-  styled entirely from tokens so it tracks the theme. Health bars ease in on
-  mount (respecting reduced-motion).
+  Static, on-brand mock of the Uran dashboard for the hero — mirrors the real
+  app: a grey canvas with a grey sidebar (blue active pill) and a white, rounded
+  content panel holding the services table. Decorative (aria-hidden); token-
+  styled so it tracks the theme. Health bars ease in on mount.
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { LayoutGrid, Boxes, Database, Settings } from '@lucide/svelte';
 
 	const nav = [
-		{ label: 'Overview', active: false },
-		{ label: 'Services', active: true },
-		{ label: 'Databases', active: false },
-		{ label: 'Settings', active: false }
+		{ label: 'Overview', icon: LayoutGrid, active: false },
+		{ label: 'Services', icon: Boxes, active: true },
+		{ label: 'Databases', icon: Database, active: false },
+		{ label: 'Settings', icon: Settings, active: false }
 	];
 
 	type Tone = 'ok' | 'accent' | 'warn';
@@ -43,15 +44,17 @@
 	<div class="body">
 		<aside class="side">
 			<span class="badge u-mono">A</span>
+			<div class="search u-mono">Search…</div>
 			<ul>
 				{#each nav as n (n.label)}
-					<li class:active={n.active}><span class="dot"></span>{n.label}</li>
+					{@const Icon = n.icon}
+					<li class:active={n.active}><Icon size={13} />{n.label}</li>
 				{/each}
 			</ul>
 		</aside>
 
-		<div class="main">
-			<div class="main-head">
+		<div class="panel">
+			<div class="panel-head">
 				<div class="tabs">
 					<span class="tab active">Services</span>
 					<span class="tab">Web</span>
@@ -89,7 +92,7 @@
 	.win {
 		width: 100%;
 		min-width: 32rem;
-		background: var(--surface);
+		background: var(--bg-elevated);
 		border: 1px solid var(--border-strong);
 		border-radius: var(--radius-2xl);
 		box-shadow: var(--shadow-3);
@@ -101,7 +104,6 @@
 		align-items: center;
 		gap: var(--space-s);
 		padding: var(--space-xs) var(--space-s);
-		background: var(--bg-elevated);
 		border-bottom: 1px solid var(--border);
 	}
 	.dots {
@@ -119,14 +121,18 @@
 		color: var(--fg-subtle);
 	}
 
+	/* Grey canvas with a grey sidebar + white content panel (like the real app) */
 	.body {
 		display: grid;
-		grid-template-columns: 8.5rem 1fr;
+		grid-template-columns: 8rem 1fr;
+		gap: var(--space-s);
+		padding: var(--space-s);
+		background: var(--canvas);
 	}
 	.side {
-		padding: var(--space-s);
-		border-right: 1px solid var(--border);
-		background: color-mix(in oklab, var(--surface-2) 50%, transparent);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2xs);
 	}
 	.badge {
 		display: grid;
@@ -137,7 +143,16 @@
 		background: var(--accent-soft);
 		color: var(--accent);
 		font-weight: 700;
-		margin-bottom: var(--space-s);
+		margin-bottom: var(--space-2xs);
+	}
+	.search {
+		padding: 0.35em 0.5em;
+		font-size: var(--step--2);
+		color: var(--fg-subtle);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+		margin-bottom: var(--space-2xs);
 	}
 	.side ul {
 		list-style: none;
@@ -156,23 +171,19 @@
 		color: var(--fg-muted);
 		font-size: var(--step--2);
 	}
-	.side li .dot {
-		width: 6px;
-		height: 6px;
-		border-radius: var(--radius-full);
-		background: currentColor;
-		opacity: 0.6;
-	}
 	.side li.active {
 		color: var(--accent-contrast);
 		background: var(--accent);
 	}
 
-	.main {
+	.panel {
 		min-width: 0;
 		padding: var(--space-s);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
 	}
-	.main-head {
+	.panel-head {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -184,7 +195,7 @@
 	}
 	.tab {
 		padding: 0.3em 0.7em;
-		border-radius: var(--radius-full);
+		border-radius: var(--radius-sm);
 		font-size: var(--step--2);
 		color: var(--fg-muted);
 		border: 1px solid transparent;
@@ -236,9 +247,10 @@
 		width: 1.5rem;
 		height: 1.5rem;
 		border-radius: var(--radius-sm);
-		background: var(--surface-2);
-		color: var(--fg-muted);
+		background: var(--accent-soft);
+		color: var(--accent);
 		font-size: var(--step--2);
+		font-weight: 600;
 	}
 	.region {
 		color: var(--fg-subtle);
