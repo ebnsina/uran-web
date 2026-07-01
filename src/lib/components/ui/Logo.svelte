@@ -1,21 +1,26 @@
 <!--
-  Uran wordmark: a clean paper-plane glyph (Uran = "to take flight") in a rounded
-  badge beside the name. Static and professional — a subtle badge hover only.
+  Uran wordmark: a custom paper-plane glyph (Uran = "to take flight") in a
+  rounded badge beside the name. The plane is two folded facets — a brighter top
+  wing and a shaded belly crease — for a professional, origami feel.
 -->
 <script lang="ts">
-	import { Send } from '@lucide/svelte';
-
 	interface Props {
 		size?: number;
 		href?: string | null;
 	}
 	let { size = 28, href = '/' }: Props = $props();
+	const glyph = $derived(Math.round(size * 0.6));
 </script>
 
 {#snippet mark()}
 	<span class="logo" style="--logo-size: {size}px">
 		<span class="badge" aria-hidden="true">
-			<Send size={Math.round(size * 0.52)} strokeWidth={2.2} />
+			<svg class="plane" width={glyph} height={glyph} viewBox="0 0 24 24" fill="none">
+				<!-- top wing (lit) -->
+				<path d="M21 3.2 6.2 10 11 12.7Z" fill="currentColor" />
+				<!-- belly fold (shaded), meeting the wing at the crease -->
+				<path d="M21 3.2 11 12.7 10.3 20.6Z" fill="currentColor" fill-opacity="0.5" />
+			</svg>
 		</span>
 		<span class="word">uran</span>
 	</span>
@@ -54,6 +59,9 @@
 		transition:
 			background var(--dur-2) var(--ease-out),
 			box-shadow var(--dur-2) var(--ease-out);
+	}
+	.plane {
+		transform: translate(-1%, 1%);
 	}
 	.link:hover .badge {
 		background: var(--accent-hover);
