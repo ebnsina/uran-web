@@ -1,21 +1,26 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import {
-		Link2,
-		ScanSearch,
-		Rocket,
-		TrendingUp,
-		ArrowUpRight,
 		ArrowRight,
-		GitBranch,
+		Check,
+		Terminal,
+		Boxes,
+		FileCode2,
+		Box,
+		HardDrive,
 		Database,
+		Radio,
 		Gauge,
-		GitPullRequestArrow,
 		ShieldCheck,
-		Activity
+		Network,
+		ShieldAlert,
+		BadgeCheck,
+		ScrollText,
+		Lock,
+		KeyRound,
+		Search
 	} from '@lucide/svelte';
-	import { Button, Reveal } from '$lib';
-	import { smoothAnchor } from '$lib/scroll';
+	import { Button, Reveal, Sparkline } from '$lib';
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
 	import HeroGlow from '$lib/components/site/HeroGlow.svelte';
 	import SiteFooter from '$lib/components/site/SiteFooter.svelte';
@@ -24,7 +29,6 @@
 
 	let { data }: { data: PageData } = $props();
 
-	// Hero email capture → carry the address into registration.
 	function startFree(event: SubmitEvent) {
 		event.preventDefault();
 		const form = event.currentTarget as HTMLFormElement;
@@ -32,7 +36,6 @@
 		goto(`/register${email ? `?email=${encodeURIComponent(email)}` : ''}`);
 	}
 
-	// Social-proof avatars (decorative initials, tinted).
 	const proof = [
 		{ i: 0, c: 'b', tint: 'var(--accent)' },
 		{ i: 1, c: 'm', tint: 'var(--ok)' },
@@ -40,60 +43,6 @@
 		{ i: 3, c: '+', tint: 'var(--surface-hover)' }
 	];
 
-	// Capabilities read as an index / spec sheet, not a card grid.
-	// Each icon carries its own colour for a livelier, scannable list.
-	const capabilities = [
-		{
-			icon: GitBranch,
-			c: '#38a8e6',
-			t: 'Push to live',
-			d: 'Connect a repo; every push builds, deploys, and routes itself — TLS and all.'
-		},
-		{
-			icon: Database,
-			c: '#2dd4bf',
-			t: 'Managed databases',
-			d: 'Postgres or Redis in a click. HA replicas, connection pooling, continuous backups + PITR.'
-		},
-		{
-			icon: Gauge,
-			c: '#fbbf24',
-			t: 'Autoscaling',
-			d: 'Scale on CPU between a floor and a ceiling, or pin a size from small to 2xlarge.'
-		},
-		{
-			icon: GitPullRequestArrow,
-			c: '#8b8cf7',
-			t: 'Preview environments',
-			d: 'Every pull request gets an isolated URL, torn down automatically when it merges.'
-		},
-		{
-			icon: ShieldCheck,
-			c: '#4ade80',
-			t: 'Automatic TLS',
-			d: 'Bring your domain; certificates are issued and renewed for you. HTTPS by default.'
-		},
-		{
-			icon: Activity,
-			c: '#fb7185',
-			t: 'Built-in observability',
-			d: 'Live logs, per-pod metrics, and usage metering — no agents to wire up.'
-		}
-	];
-
-	const flow = [
-		{ t: 'Connect', c: '#38a8e6', d: 'Link a repository and a branch.', icon: Link2 },
-		{
-			t: 'Detect',
-			c: '#22d3ee',
-			d: 'Read your Dockerfile, or auto-detect the stack.',
-			icon: ScanSearch
-		},
-		{ t: 'Deploy', c: '#fbbf24', d: 'Go live behind TLS, health-checked.', icon: Rocket },
-		{ t: 'Scale', c: '#4ade80', d: 'Add databases, replicas, domains.', icon: TrendingUp }
-	];
-
-	// Tech-stack word-marks for the marquee (what Uran is built on / integrates).
 	const brands = [
 		'Git',
 		'GitHub',
@@ -110,6 +59,121 @@
 		'Linux',
 		'Node.js'
 	];
+
+	// "Click, click, done" — three numbered moves.
+	const steps = [
+		{
+			n: 1,
+			t: 'Select a service',
+			d: 'Web service, static site, background worker, or cron — pick what you need to run.'
+		},
+		{
+			n: 2,
+			t: 'Deploy your code',
+			d: 'Connect a repo. Uran builds on the right runtime for your framework, or your Dockerfile.'
+		},
+		{
+			n: 3,
+			t: 'Uran does the rest',
+			d: 'Instant routing, TLS, autoscaling, preview environments, rollbacks, and monitoring.'
+		}
+	];
+
+	// Colourful primitive words for the zero-ops statement (on-brand hues).
+	const words = [
+		{ w: 'web services', c: '#38a8e6' },
+		{ w: 'Postgres', c: '#2dd4bf' },
+		{ w: 'databases', c: '#2dd4bf' },
+		{ w: 'cron jobs', c: '#fbbf24' },
+		{ w: 'workflows', c: '#8b8cf7' },
+		{ w: 'static sites', c: '#38bdf8' },
+		{ w: 'background workers', c: '#f59e0b' },
+		{ w: 'key value stores', c: '#fb7185' },
+		{ w: 'private services', c: '#4ade80' },
+		{ w: 'and more', c: 'var(--fg-subtle)' }
+	];
+
+	// "Designed for builders" primitives grid.
+	const primitives = [
+		{
+			icon: Boxes,
+			t: 'Native runtimes',
+			d: 'High-performance environments for nearly every popular framework.'
+		},
+		{
+			icon: FileCode2,
+			t: 'Deploy from Git',
+			d: 'Every push builds and ships itself — no YAML to babysit.'
+		},
+		{
+			icon: Box,
+			t: 'Isolated environments',
+			d: 'Preview and production stay cleanly, safely separated.'
+		},
+		{
+			icon: HardDrive,
+			t: 'Persistent disks',
+			d: 'Attach durable volumes to stateful services in a click.'
+		},
+		{
+			icon: Database,
+			t: 'Managed Postgres & Redis',
+			d: 'HA replicas, connection pooling, backups + PITR.'
+		},
+		{ icon: Radio, t: 'WebSockets', d: 'Long-lived, bi-directional streaming out of the box.' },
+		{
+			icon: Gauge,
+			t: 'Autoscaling',
+			d: 'Scale on CPU between a floor and a ceiling, automatically.'
+		},
+		{
+			icon: ShieldCheck,
+			t: 'Fully-managed TLS',
+			d: 'Free certificates for every domain, issued and renewed.'
+		}
+	];
+
+	// "Secure by default" grid.
+	const security = [
+		{
+			icon: Network,
+			t: 'Private networking',
+			d: 'Keep internal traffic off the public internet — no VPC wrangling.'
+		},
+		{
+			icon: ShieldAlert,
+			t: 'DDoS protection',
+			d: 'Every service is shielded from attacks without extra config.'
+		},
+		{
+			icon: BadgeCheck,
+			t: 'Managed compliance',
+			d: 'Encryption, controls, and audit trails built in from day one.'
+		},
+		{
+			icon: ScrollText,
+			t: 'Audit logging',
+			d: 'A built-in, queryable trail for every platform event.'
+		},
+		{
+			icon: Lock,
+			t: 'Encryption at rest',
+			d: 'Databases, backups, and secrets encrypted by default.'
+		},
+		{
+			icon: KeyRound,
+			t: 'Role-based access',
+			d: 'Control who can touch what with organization roles.'
+		}
+	];
+
+	const scaleSeries = [28, 34, 30, 46, 40, 62, 55, 84, 70, 96, 88, 120];
+	const logLines = [
+		{ t: '18:58:02', m: 'GET /healthz', s: '200' },
+		{ t: '18:58:03', m: 'POST /v1/deploys', s: '201' },
+		{ t: '18:58:05', m: 'GET /api/orders', s: '200' },
+		{ t: '18:58:07', m: 'build: image pushed', s: 'ok' }
+	];
 </script>
 
 <svelte:head>
@@ -122,16 +186,17 @@
 
 <SiteHeader user={data.user} />
 
-<main class="frame">
-	<!-- ── Hero: asymmetric, gutter-marked, panel breaks the grid ───────── -->
-	<section class="hero">
+<main>
+	<!-- ── Hero ─────────────────────────────────────────────────────────── -->
+	<section class="hero u-container">
 		<HeroGlow />
 		<div class="hero-body">
 			<p class="define u-mono">
 				uran <span class="phon">/uˈraːn/</span> · <em>verb</em> — to take flight
 			</p>
 			<h1 class="display">
-				Ship code,<br /><span class="thin">not</span> infrastructure.
+				Your fastest path<br />to production for
+				<span class="grad">every push.</span>
 			</h1>
 			<p class="lede">
 				Connect a repository and Uran turns every push into a running, routed, TLS-terminated
@@ -148,7 +213,6 @@
 				/>
 				<button class="u-squircle" type="submit">Start free</button>
 			</form>
-
 			<div class="proof">
 				<div class="avatars" aria-hidden="true">
 					{#each proof as p (p.i)}
@@ -157,209 +221,332 @@
 				</div>
 				<p>Join <strong>1,200+</strong> developers shipping on Uran</p>
 			</div>
-
-			<a class="browse" href="#index" onclick={smoothAnchor}>
-				Browse capabilities <ArrowRight size={15} />
-			</a>
 		</div>
+
 		<div class="hero-panel">
+			<span class="gitpush u-mono"><Terminal size={14} /> $ git push</span>
 			<DashboardPreview />
 		</div>
 	</section>
 
-	<!-- ── Marquee: full-bleed, slow drift ──────────────────────────────── -->
-	<section class="marquee" aria-hidden="true">
-		<div class="track">
-			{#each [...brands, ...brands] as brand, i (i)}
-				<span class="wordmark">{brand}</span>
-			{/each}
+	<!-- ── Works with your stack (marquee) ──────────────────────────────── -->
+	<section class="stack">
+		<p class="eyebrow u-mono">Works with your stack</p>
+		<div class="marquee" aria-hidden="true">
+			<div class="track">
+				{#each [...brands, ...brands] as brand, i (i)}
+					<span class="wordmark">{brand}</span>
+				{/each}
+			</div>
 		</div>
 	</section>
 
-	<!-- ── Capabilities: a numbered index, not a card grid ──────────────── -->
-	<section id="index" class="block">
-		<aside class="sticky">
-			<h2 class="block-title">Capabilities</h2>
-			<p class="block-note">Everything between <em>git push</em> and production.</p>
-		</aside>
-		<ol class="index">
-			{#each capabilities as c, i (c.t)}
-				{@const Icon = c.icon}
-				<Reveal delay={i * 50} y={16}>
-					<li class="row">
-						<span class="row-ico" style="--c: {c.c}"><Icon size={20} strokeWidth={1.75} /></span>
-						<div class="row-main">
-							<h3>{c.t}</h3>
-							<p>{c.d}</p>
-						</div>
-						<span class="row-arrow" aria-hidden="true"><ArrowUpRight size={18} /></span>
+	<!-- ── Click, click, done ───────────────────────────────────────────── -->
+	<section class="u-container block">
+		<Reveal><h2 class="display sm">Click, click, done.</h2></Reveal>
+		<ol class="steps">
+			{#each steps as s, i (s.n)}
+				<Reveal delay={i * 70} y={16}>
+					<li>
+						<span class="step-n u-mono">{s.n}</span>
+						<h3>{s.t}</h3>
+						<p>{s.d}</p>
 					</li>
 				</Reveal>
 			{/each}
 		</ol>
 	</section>
 
-	<!-- ── Workflow: a connected flow line, not step cards ──────────────── -->
-	<section id="workflow" class="block">
-		<aside class="sticky">
-			<h2 class="block-title">Workflow</h2>
-			<p class="block-note">Four moves. No YAML to babysit.</p>
-		</aside>
-		<ol class="flow">
-			{#each flow as step, i (step.t)}
-				{@const Icon = step.icon}
-				<Reveal delay={i * 80} y={14}>
-					<li class="step">
-						<span class="step-ico" style="--c: {step.c}"><Icon size={20} strokeWidth={1.75} /></span
-						>
-						<h3>{step.t}</h3>
-						<p>{step.d}</p>
-					</li>
-				</Reveal>
-			{/each}
-		</ol>
-	</section>
-
-	<!-- ── Closing: asymmetric statement, not a centered band ───────────── -->
-	<section class="closing">
-		<div class="closing-body">
+	<!-- ── Zero ops ─────────────────────────────────────────────────────── -->
+	<section class="u-container block">
+		<Reveal>
+			<h2 class="display sm">
+				Deploy apps and agents<br />with <span class="grad">zero ops.</span>
+			</h2>
+		</Reveal>
+		<div class="split">
 			<Reveal>
-				<h2 class="display closing-h">Your next deploy<br />is one push away.</h2>
-				<div class="closing-cta">
-					<Button href="/register" size="lg">Create your account</Button>
-					<span class="u-mono closing-meta">no credit card · minutes to live</span>
+				<p class="words">
+					Intuitive hosting and private networking for
+					{#each words as w, i (w.w)}<span style="color: {w.c}">{w.w}</span
+						>{#if i < words.length - 1},
+						{/if}{/each}.
+				</p>
+			</Reveal>
+			<Reveal delay={80}>
+				<div class="feature">
+					<h3>Full-stack previews for every pull request</h3>
+					<p>
+						Iterate quickly with ephemeral previews of your entire application for every change.
+					</p>
+					<a class="doclink" href="/docs">Preview environment docs <ArrowRight size={15} /></a>
+					<div class="mock preview">
+						<div class="preview-pr">
+							<span class="pr u-mono">PR #128</span>
+							<span class="open u-mono">Open preview →</span>
+						</div>
+						<span class="branch u-mono">feature/database</span>
+						<span class="checks"><Check size={13} /> Checks passed</span>
+						<ul class="env">
+							{#each ['web', 'api', 'database', 'workflow'] as e (e)}
+								<li>
+									<span class="led"></span><span class="u-mono">{e}</span><span class="avail"
+										>Available</span
+									>
+								</li>
+							{/each}
+						</ul>
+					</div>
 				</div>
 			</Reveal>
 		</div>
+	</section>
+
+	<!-- ── Autoscaling ──────────────────────────────────────────────────── -->
+	<section class="u-container block">
+		<div class="split top">
+			<Reveal>
+				<div class="feature">
+					<h2 class="head">Load-based autoscaling that handles 100× traffic bursts and beyond</h2>
+					<p>
+						Keep your workloads running smoothly through viral moments, seasonal spikes, and launch
+						days.
+					</p>
+					<a class="doclink" href="/docs">Autoscaling docs <ArrowRight size={15} /></a>
+				</div>
+			</Reveal>
+			<Reveal delay={80}>
+				<div class="mock chart">
+					<span class="chip u-mono">INSTANCE TYPE<br />64 CPU · 512GB</span>
+					<Sparkline data={scaleSeries} height={120} />
+				</div>
+			</Reveal>
+		</div>
+		<div class="split">
+			<Reveal>
+				<div class="feature">
+					<h3>Durable, long-running workflows as code</h3>
+					<p>
+						Run reliable agents and background processes at scale — without wiring up queues,
+						workers, and retry logic.
+					</p>
+					<a class="doclink" href="/docs">Workflow docs <ArrowRight size={15} /></a>
+				</div>
+			</Reveal>
+			<Reveal delay={80}>
+				<div class="feature">
+					<h3>Enterprise-grade Postgres databases</h3>
+					<p>
+						Fully-managed databases with point-in-time recovery, read replicas, and high
+						availability.
+					</p>
+					<a class="doclink" href="/docs">Postgres docs <ArrowRight size={15} /></a>
+				</div>
+			</Reveal>
+		</div>
+	</section>
+
+	<!-- ── Observability ────────────────────────────────────────────────── -->
+	<section class="u-container block">
+		<div class="split top">
+			<Reveal>
+				<div class="feature">
+					<h2 class="head">Integrated logs and monitoring for builds, deploys and live services</h2>
+					<p>
+						See critical metrics for all of your Uran infrastructure from day zero, and stream
+						telemetry to external tools.
+					</p>
+					<a class="doclink" href="/docs">Observability docs <ArrowRight size={15} /></a>
+				</div>
+			</Reveal>
+			<Reveal delay={80}>
+				<div class="mock logs">
+					<div class="logs-head">
+						<span class="u-mono">All logs</span>
+						<span class="logs-search"><Search size={12} /> Search</span>
+					</div>
+					{#each logLines as l (l.t)}
+						<div class="logrow u-mono">
+							<span class="lt">{l.t}</span>
+							<span class="lm">{l.m}</span>
+							<span class="ls" class:ok={l.s === '200' || l.s === 'ok'}>{l.s}</span>
+						</div>
+					{/each}
+				</div>
+			</Reveal>
+		</div>
+	</section>
+
+	<!-- ── Primitives grid ──────────────────────────────────────────────── -->
+	<section class="u-container block">
+		<Reveal
+			><h2 class="display sm">Intuitive infrastructure,<br />designed for builders.</h2></Reveal
+		>
+		<Reveal delay={60}
+			><p class="sub">Ship software faster with integrated primitives that just work.</p></Reveal
+		>
+		<div class="grid4">
+			{#each primitives as p, i (p.t)}
+				{@const Icon = p.icon}
+				<Reveal delay={i * 40} y={14}>
+					<div class="cell">
+						<span class="cell-ico"><Icon size={20} strokeWidth={1.75} /></span>
+						<h3>{p.t}</h3>
+						<p>{p.d}</p>
+					</div>
+				</Reveal>
+			{/each}
+		</div>
+	</section>
+
+	<!-- ── Security ─────────────────────────────────────────────────────── -->
+	<section class="u-container block">
+		<Reveal><h2 class="display sm">Stay secure and<br />resilient by default.</h2></Reveal>
+		<Reveal delay={60}><p class="sub">Build products, not compliance.</p></Reveal>
+		<div class="grid3">
+			{#each security as s, i (s.t)}
+				{@const Icon = s.icon}
+				<Reveal delay={i * 40} y={14}>
+					<div class="cell">
+						<span class="cell-ico accent"><Icon size={20} strokeWidth={1.75} /></span>
+						<h3>{s.t}</h3>
+						<p>{s.d}</p>
+					</div>
+				</Reveal>
+			{/each}
+		</div>
+	</section>
+
+	<!-- ── CTA ──────────────────────────────────────────────────────────── -->
+	<section class="cta u-container">
+		<div class="cta-orbit" aria-hidden="true">
+			{#each brands.slice(0, 10) as b, i (b)}
+				<span class="orbit-word u-mono" style="--i: {i}">{b}</span>
+			{/each}
+		</div>
+		<Reveal>
+			<div class="cta-card">
+				<h2 class="display sm">Start building with Uran.</h2>
+				<p>Zero ops, zero surprises.</p>
+				<Button href="/register" size="lg">Deploy your app for free <ArrowRight size={16} /></Button
+				>
+			</div>
+		</Reveal>
 	</section>
 </main>
 
 <SiteFooter />
 
 <style>
-	/* Editorial spec-sheet layout: hairline rules + a sticky label column. */
-	.frame {
-		width: min(100% - 2 * var(--space-m), var(--container-wide));
-		margin-inline: auto;
-		/* Clip the hero preview where it bleeds toward the edge (clip, not hidden,
-		   so sticky children keep working). The clip-margin lets focus glows /
-		   shadows paint just past the edge so they aren't sliced off. */
+	main {
 		overflow-x: clip;
-		overflow-clip-margin: 2rem;
 	}
 
-	/* Shared display type — oversized, tight. */
 	.display {
-		font-size: clamp(2.2rem, 1.5rem + 3.4vw, 4rem);
-		line-height: 1;
-		letter-spacing: -0.035em;
+		font-size: clamp(2.6rem, 6vw, 4.6rem);
+		line-height: 0.98;
+		letter-spacing: var(--tracking-tight);
+		font-weight: 680;
 	}
-	.display .thin {
-		color: var(--fg-subtle);
-		font-weight: 400;
+	.display.sm {
+		font-size: clamp(2rem, 4.4vw, 3.2rem);
+	}
+	.grad {
+		background: linear-gradient(100deg, var(--blue-300), var(--accent) 55%, #7bd4ff);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+	.block {
+		padding-block: clamp(var(--space-2xl), 9vw, var(--space-3xl));
+	}
+	.sub {
+		margin-top: var(--space-s);
+		max-width: 40rem;
+		color: var(--fg-muted);
+		font-size: var(--step-1);
+	}
+	.doclink {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+		margin-top: var(--space-s);
+		color: var(--accent);
+		font-size: var(--step--1);
+		font-weight: 500;
+	}
+	.doclink:hover {
+		text-decoration: underline;
 	}
 
-	/* ── Hero ─────────────────────────────────────────────────────────── */
+	/* ── Hero ──────────────────────────────────────────────────────────── */
 	.hero {
 		position: relative;
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--space-m);
-		padding-block: var(--space-2xl) var(--space-xl);
-		border-bottom: 1px solid var(--border);
-	}
-	/* Lift hero content above the decorative glow layer. */
-	.hero > :not(:global(.glow)) {
-		position: relative;
-		z-index: 1;
+		gap: var(--space-2xl);
+		align-items: center;
+		padding-block: clamp(var(--space-2xl), 8vw, var(--space-3xl));
 	}
 	.define {
 		font-size: var(--step--1);
-		color: var(--fg-muted);
-	}
-	.define .phon {
 		color: var(--fg-subtle);
+		margin-bottom: var(--space-m);
 	}
 	.define em {
-		font-style: normal;
-		color: var(--accent);
+		font-style: italic;
+		color: var(--fg-muted);
 	}
-	.hero-body {
-		max-width: 38rem;
-	}
-	.display {
-		margin-top: var(--space-m);
+	.phon {
+		color: var(--fg-muted);
 	}
 	.lede {
 		margin-top: var(--space-l);
 		max-width: 34rem;
-		font-size: var(--step-1);
 		color: var(--fg-muted);
+		font-size: var(--step-1);
+		line-height: var(--leading-normal);
 	}
-	/* Email capture pill — the hero's primary action, so it carries weight. */
 	.capture {
 		display: flex;
-		align-items: center;
-		gap: var(--space-2xs);
+		gap: 0.35rem;
 		margin-top: var(--space-l);
-		max-width: 34rem;
-		padding: 0.5rem 0.5rem 0.5rem 1.25rem;
-		background: color-mix(in oklab, var(--surface) 82%, transparent);
-		backdrop-filter: blur(12px);
+		max-width: 27rem;
+		padding: 0.35rem;
+		background: var(--surface);
 		border: 1px solid var(--border-strong);
-		border-radius: 1.6rem; /* squircle via .u-squircle utility */
-		box-shadow: var(--shadow-2);
-		transition:
-			border-color var(--dur-2) var(--ease-out),
-			box-shadow var(--dur-2) var(--ease-out);
-	}
-	.capture:focus-within {
-		border-color: var(--accent);
-		box-shadow: 0 0 0 3px var(--accent-soft);
+		border-radius: var(--radius-lg);
 	}
 	.capture input {
 		flex: 1;
-		min-width: 0;
-		background: transparent;
 		border: none;
+		background: transparent;
 		color: var(--fg);
-		font-size: var(--step-1);
-	}
-	.capture input::placeholder {
-		color: var(--fg-subtle);
-	}
-	.capture input:focus {
+		padding: 0 0.7rem;
+		font-size: var(--step-0);
 		outline: none;
 	}
 	.capture button {
-		flex-shrink: 0;
-		padding: 0.7em 1.35em;
-		font-size: var(--step-0);
-		font-weight: 600;
-		color: var(--accent-contrast);
+		padding: 0.6rem 1.1rem;
 		background: var(--accent);
+		color: var(--accent-contrast);
 		border: none;
-		border-radius: 1.15rem; /* squircle via .u-squircle utility */
+		border-radius: var(--radius-md);
+		font-weight: 600;
 		cursor: pointer;
-		transition:
-			background var(--dur-2) var(--ease-out),
-			box-shadow var(--dur-2) var(--ease-out),
-			transform var(--dur-1) var(--ease-out);
+		white-space: nowrap;
+		transition: filter var(--dur-2) var(--ease-out);
 	}
 	.capture button:hover {
-		background: var(--accent-hover);
-		transform: translateY(-1px);
+		filter: brightness(1.06);
 	}
-	.capture button:active {
-		transform: translateY(0) scale(0.98);
-	}
-
-	/* Social proof */
 	.proof {
 		display: flex;
 		align-items: center;
 		gap: var(--space-s);
-		margin-top: var(--space-m);
+		margin-top: var(--space-l);
+		font-size: var(--step--1);
+		color: var(--fg-muted);
 	}
 	.avatars {
 		display: flex;
@@ -367,56 +554,53 @@
 	.avatar {
 		display: grid;
 		place-items: center;
-		width: 1.85rem;
-		height: 1.85rem;
-		margin-left: -0.55rem;
+		width: 1.9rem;
+		height: 1.9rem;
+		margin-right: -0.5rem;
 		border-radius: var(--radius-full);
-		border: 2px solid var(--bg);
-		background: color-mix(in oklab, var(--tint) 28%, var(--surface-2));
-		color: var(--fg);
-		font-family: var(--font-mono);
+		background: var(--tint);
+		color: #fff;
 		font-size: var(--step--2);
-		font-weight: 600;
-	}
-	.avatar:first-child {
-		margin-left: 0;
-	}
-	.proof p {
-		font-size: var(--step--1);
-		color: var(--fg-muted);
-	}
-	.proof strong {
-		color: var(--fg);
-		font-weight: 600;
-	}
-
-	.browse {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.4em;
-		margin-top: var(--space-m);
-		font-size: var(--step--1);
-		color: var(--fg-muted);
-		transition:
-			color var(--dur-2) var(--ease-out),
-			gap var(--dur-2) var(--ease-out);
-	}
-	.browse:hover {
-		color: var(--accent);
-		gap: 0.6em;
+		font-weight: 700;
+		border: 2px solid var(--bg);
 	}
 
 	.hero-panel {
-		margin-top: var(--space-l);
+		position: relative;
+		min-width: 0;
+	}
+	.gitpush {
+		position: absolute;
+		top: -1.1rem;
+		left: 1rem;
+		z-index: 2;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45em;
+		padding: 0.4em 0.7em;
+		background: var(--surface);
+		border: 1px solid var(--border-strong);
+		border-radius: 8px;
+		box-shadow: var(--shadow-2);
+		font-size: var(--step--1);
 	}
 
-	/* ── Marquee ──────────────────────────────────────────────────────── */
+	/* ── Stack marquee ─────────────────────────────────────────────────── */
+	.stack {
+		padding-block: var(--space-xl);
+		text-align: center;
+	}
+	.eyebrow {
+		font-size: var(--step--2);
+		letter-spacing: var(--tracking-wide);
+		text-transform: uppercase;
+		color: var(--fg-subtle);
+		margin-bottom: var(--space-l);
+	}
 	.marquee {
 		overflow: hidden;
-		padding-block: var(--space-l);
-		border-bottom: 1px solid var(--border);
-		-webkit-mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
-		mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+		-webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+		mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
 	}
 	.track {
 		display: inline-flex;
@@ -425,18 +609,14 @@
 		white-space: nowrap;
 		animation: drift 52s linear infinite;
 	}
+	.marquee:hover .track {
+		animation-play-state: paused;
+	}
 	.wordmark {
 		font-size: var(--step-1);
 		font-weight: 600;
 		letter-spacing: var(--tracking-tight);
 		color: var(--fg-subtle);
-		transition: color var(--dur-2) var(--ease-out);
-	}
-	.wordmark:hover {
-		color: var(--fg);
-	}
-	.marquee:hover .track {
-		animation-play-state: paused;
 	}
 	@keyframes drift {
 		to {
@@ -444,192 +624,277 @@
 		}
 	}
 
-	/* ── Block scaffold (gutter marker + content) ─────────────────────── */
-	.block {
+	/* ── Steps ─────────────────────────────────────────────────────────── */
+	.steps {
+		list-style: none;
+		margin: var(--space-2xl) 0 0;
+		padding: 0;
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--space-l);
-		padding-block: var(--space-2xl);
-		border-bottom: 1px solid var(--border);
-		/* clear the sticky header when scrolled to via in-page nav */
-		scroll-margin-top: calc(var(--header-h) + var(--space-s));
+		gap: var(--space-xl);
 	}
-	.block-title {
-		margin-top: var(--space-xs);
-		font-size: var(--step-2);
-	}
-	.block-note {
-		margin-top: var(--space-2xs);
-		max-width: 18rem;
-		color: var(--fg-muted);
+	.step-n {
+		display: inline-grid;
+		place-items: center;
+		width: 1.9rem;
+		height: 1.9rem;
+		border-radius: 7px;
+		background: var(--accent);
+		color: var(--accent-contrast);
+		font-weight: 700;
 		font-size: var(--step--1);
+		margin-bottom: var(--space-s);
 	}
-	.block-note em {
-		font-style: normal;
-		font-family: var(--font-mono);
-		color: var(--accent);
-		font-size: 0.9em;
+	.steps h3 {
+		font-size: var(--step-2);
+		margin-bottom: var(--space-2xs);
+	}
+	.steps p {
+		color: var(--fg-muted);
+		max-width: 22rem;
+		line-height: var(--leading-normal);
 	}
 
-	/* ── Index list ───────────────────────────────────────────────────── */
-	.index {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		border-bottom: 1px solid var(--border);
+	/* ── Split feature rows ────────────────────────────────────────────── */
+	.split {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-xl);
+		margin-top: var(--space-xl);
 	}
-	.row {
+	.split.top {
+		align-items: start;
+	}
+	.feature h2.head {
+		font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+		line-height: 1.05;
+		letter-spacing: var(--tracking-tight);
+	}
+	.feature h3 {
+		font-size: var(--step-2);
+		line-height: 1.15;
+	}
+	.feature > p {
+		margin-top: var(--space-s);
+		color: var(--fg-muted);
+		max-width: 32rem;
+		line-height: var(--leading-normal);
+	}
+	.words {
+		font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+		line-height: 1.25;
+		letter-spacing: var(--tracking-tight);
+		font-weight: 600;
+		color: var(--fg);
+	}
+	.words span {
+		font-weight: 680;
+	}
+
+	/* ── Mocks ─────────────────────────────────────────────────────────── */
+	.mock {
+		margin-top: var(--space-l);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		padding: var(--space-m);
+	}
+	.preview-pr {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.preview .pr {
+		font-weight: 700;
+	}
+	.preview .open {
+		color: var(--accent);
+		font-size: var(--step--2);
+	}
+	.preview .branch {
+		display: block;
+		margin-top: var(--space-2xs);
+		font-size: var(--step--2);
+		color: var(--fg-subtle);
+	}
+	.preview .checks {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+		margin-top: var(--space-2xs);
+		font-size: var(--step--2);
+		color: var(--ok);
+	}
+	.preview .env {
+		list-style: none;
+		margin: var(--space-s) 0 0;
+		padding: var(--space-s) 0 0;
+		border-top: 1px solid var(--border);
+		display: grid;
+		gap: var(--space-2xs);
+	}
+	.preview .env li {
 		display: grid;
 		grid-template-columns: auto 1fr auto;
-		align-items: start;
-		gap: var(--space-m);
-		padding: var(--space-m) var(--space-2xs);
-		border-top: 1px solid var(--border);
-		transition:
-			background var(--dur-2) var(--ease-out),
-			padding-left var(--dur-2) var(--ease-out);
+		align-items: center;
+		gap: var(--space-s);
+		font-size: var(--step--1);
 	}
-	.row:hover {
-		background: var(--surface);
-		padding-left: var(--space-s);
+	.preview .led {
+		width: 7px;
+		height: 7px;
+		border-radius: var(--radius-full);
+		background: var(--ok);
 	}
-	.row-ico {
+	.preview .avail {
+		font-size: var(--step--2);
+		color: var(--fg-subtle);
+	}
+
+	.chart {
+		position: relative;
+		padding-top: var(--space-xl);
+	}
+	.chart .chip {
+		position: absolute;
+		top: var(--space-s);
+		left: var(--space-m);
+		font-size: var(--step--2);
+		color: var(--fg-subtle);
+		line-height: 1.4;
+	}
+
+	.logs .logs-head {
+		display: flex;
+		align-items: center;
+		gap: var(--space-s);
+		padding-bottom: var(--space-s);
+		border-bottom: 1px solid var(--border);
+		font-size: var(--step--2);
+		color: var(--fg-subtle);
+	}
+	.logs-search {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35em;
+		margin-left: auto;
+		padding: 0.2em 0.6em;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+	}
+	.logrow {
 		display: grid;
+		grid-template-columns: auto 1fr auto;
+		gap: var(--space-s);
+		padding: 0.4em 0;
+		font-size: var(--step--2);
+		color: var(--fg-muted);
+	}
+	.logrow .lt {
+		color: var(--fg-subtle);
+	}
+	.logrow .ls {
+		color: var(--warn);
+	}
+	.logrow .ls.ok {
+		color: var(--ok);
+	}
+
+	/* ── Feature grids ─────────────────────────────────────────────────── */
+	.grid4,
+	.grid3 {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-xl);
+		margin-top: var(--space-2xl);
+	}
+	.cell-ico {
+		display: inline-grid;
 		place-items: center;
 		width: 2.4rem;
 		height: 2.4rem;
-		color: var(--c, var(--accent));
-		background: color-mix(in oklab, var(--c, var(--accent)) 13%, transparent);
-		border: 1px solid color-mix(in oklab, var(--c, var(--accent)) 28%, transparent);
-		border-radius: var(--radius-md);
-		transition: background var(--dur-2) var(--ease-out);
-	}
-	.row:hover .row-ico {
-		background: color-mix(in oklab, var(--c, var(--accent)) 22%, transparent);
-	}
-	.row-main h3 {
-		font-size: var(--step-1);
-	}
-	.row-main p {
-		margin-top: var(--space-3xs);
-		max-width: 40rem;
-		color: var(--fg-muted);
-		font-size: var(--step-0);
-	}
-	.row-arrow {
-		display: inline-flex;
-		align-self: center;
-		color: var(--fg-subtle);
-		opacity: 0;
-		transform: translate(-6px, 6px);
-		transition:
-			opacity var(--dur-2) var(--ease-out),
-			transform var(--dur-2) var(--ease-out),
-			color var(--dur-2) var(--ease-out);
-	}
-	.row:hover .row-arrow {
-		opacity: 1;
-		transform: none;
-		color: var(--accent);
-	}
-
-	/* ── Workflow steps (icon-led) ────────────────────────────────────── */
-	.flow {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-l);
-	}
-	.step-ico {
-		display: grid;
-		place-items: center;
-		width: 2.6rem;
-		height: 2.6rem;
+		border-radius: var(--radius-sm);
+		color: var(--ok);
+		border: 1px solid color-mix(in oklab, var(--ok) 40%, transparent);
 		margin-bottom: var(--space-s);
-		color: var(--c, var(--accent));
-		background: color-mix(in oklab, var(--c, var(--accent)) 13%, transparent);
-		border: 1px solid color-mix(in oklab, var(--c, var(--accent)) 28%, transparent);
-		border-radius: var(--radius-md);
 	}
-	.step h3 {
-		font-size: var(--step-1);
+	.cell-ico.accent {
+		color: var(--accent);
+		border-color: color-mix(in oklab, var(--accent) 40%, transparent);
+		background: var(--accent-soft);
 	}
-	.step p {
-		margin-top: var(--space-3xs);
+	.cell h3 {
+		font-size: var(--step-0);
+		margin-bottom: var(--space-3xs);
+	}
+	.cell p {
 		color: var(--fg-muted);
 		font-size: var(--step--1);
+		line-height: var(--leading-normal);
 	}
 
-	/* ── Closing ──────────────────────────────────────────────────────── */
-	.closing {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-m);
-		padding-block: var(--space-3xl);
+	/* ── CTA ───────────────────────────────────────────────────────────── */
+	.cta {
+		position: relative;
+		padding-block: clamp(var(--space-3xl), 12vw, var(--space-3xl));
 	}
-	.closing-cta {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: var(--space-m);
-		margin-top: var(--space-l);
+	.cta-orbit {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+		pointer-events: none;
 	}
-	.closing-meta {
-		font-size: var(--step--1);
-		color: var(--fg-subtle);
+	.orbit-word {
+		position: absolute;
+		font-size: var(--step-1);
+		font-weight: 600;
+		color: color-mix(in oklab, var(--fg) 12%, transparent);
+		top: calc(8% + (var(--i) * 8.5%));
+		left: calc(2% + (var(--i) * 9%) + (var(--i) * var(--i) * -0.4%));
+	}
+	.orbit-word:nth-child(even) {
+		top: calc(70% - (var(--i) * 5%));
+	}
+	.cta-card {
+		position: relative;
+		z-index: 1;
+		max-width: 40rem;
+		margin: 0 auto;
+		padding: var(--space-2xl);
+		text-align: center;
+		background: color-mix(in oklab, var(--surface) 78%, transparent);
+		backdrop-filter: blur(6px);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-2xl);
+	}
+	.cta-card p {
+		margin: var(--space-s) 0 var(--space-l);
+		color: var(--fg-muted);
+		font-size: var(--step-1);
 	}
 
-	/* ── Editorial layout kicks in at wider widths ────────────────────── */
-	@media (min-width: 60rem) {
+	/* ── Responsive ────────────────────────────────────────────────────── */
+	@media (min-width: 52rem) {
 		.hero {
-			grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-			column-gap: var(--space-xl);
+			grid-template-columns: 1.05fr 1fr;
+		}
+		.steps {
+			grid-template-columns: repeat(3, 1fr);
+		}
+		.split {
+			grid-template-columns: 1fr 1fr;
 			align-items: center;
-			padding-block: var(--space-3xl) var(--space-2xl);
 		}
-		.hero-body {
-			grid-column: 1;
-		}
-		/* Panel sits in the right column, vertically centred with the copy. */
-		.hero-panel {
-			grid-column: 2;
-			justify-self: start;
-			min-width: 0;
-			margin-top: 0;
-			z-index: 1;
-		}
-		.hero-panel :global(.win) {
-			width: 44rem;
-			/* Dissolve the right edge into the background for a soft, premium
-			   blend rather than a hard rectangular cut. */
-			-webkit-mask-image: linear-gradient(90deg, #000 60%, transparent 96%);
-			mask-image: linear-gradient(90deg, #000 60%, transparent 96%);
-		}
-
-		.block {
-			grid-template-columns: 16rem 1fr;
-			column-gap: var(--space-xl);
-		}
-		.sticky {
-			position: sticky;
-			top: calc(var(--header-h) + var(--space-m));
-			align-self: start;
-		}
-		.flow {
+		.grid4 {
 			grid-template-columns: repeat(4, 1fr);
-			gap: var(--space-l);
 		}
-
-		.closing {
-			grid-template-columns: 1fr;
+		.grid3 {
+			grid-template-columns: repeat(3, 1fr);
 		}
 	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.track {
-			animation: none;
+	@media (min-width: 72rem) {
+		.hero-panel :global(.win) {
+			min-width: 40rem;
 		}
 	}
 </style>
