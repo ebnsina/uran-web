@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Rocket, Terminal, Boxes, Database, KeyRound, Globe, Gauge, Zap } from '@lucide/svelte';
+	import { Rocket, Terminal, Boxes, Database, KeyRound, Globe, Gauge } from '@lucide/svelte';
+	import { Callout } from '$lib';
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
 	import SiteFooter from '$lib/components/site/SiteFooter.svelte';
 	import { smoothAnchor } from '$lib/scroll';
@@ -64,10 +65,9 @@
 					image, and rolls it out behind TLS.
 				</li>
 			</ol>
-			<p class="note">
-				<span class="note-ico"><Zap size={16} /></span>
+			<Callout>
 				Every push to the connected branch triggers a new build and a health-checked rollout.
-			</p>
+			</Callout>
 		</section>
 
 		<section id="services">
@@ -211,6 +211,9 @@ uran env set --service 12 KEY=value</pre>
 		line-height: var(--leading-normal);
 		margin-top: var(--space-s);
 	}
+	section :global(.callout) {
+		margin-top: var(--space-m);
+	}
 	.steps,
 	.defs {
 		margin-top: var(--space-s);
@@ -242,26 +245,6 @@ uran env set --service 12 KEY=value</pre>
 		font-size: var(--step--1);
 		line-height: 1.7;
 		overflow-x: auto;
-	}
-	.note {
-		display: flex;
-		align-items: center;
-		gap: var(--space-s);
-		margin-top: var(--space-m);
-		padding: var(--space-s) var(--space-m);
-		background: var(--accent-soft);
-		border-radius: var(--radius);
-		color: var(--fg);
-	}
-	.note-ico {
-		display: grid;
-		place-items: center;
-		width: 1.9rem;
-		height: 1.9rem;
-		flex-shrink: 0;
-		color: #fff;
-		background: var(--accent);
-		border-radius: var(--radius-full);
 	}
 
 	@media (min-width: 56rem) {
