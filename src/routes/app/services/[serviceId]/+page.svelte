@@ -293,10 +293,11 @@
 		color: var(--accent);
 	}
 	.sub {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
 		gap: 0.5em;
 		font-size: var(--step-1);
+		margin-top: var(--space-xl);
 		margin-bottom: var(--space-s);
 	}
 	.muted {
