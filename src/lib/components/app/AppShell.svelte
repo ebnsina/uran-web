@@ -62,6 +62,42 @@
 
 {#if me.isSuccess}
 	<div class="layout">
+		<!-- Mobile top bar (replaces the sidebar below the breakpoint) -->
+		<header class="topbar">
+			<Logo size={24} />
+			<nav class="topnav">
+				{#each nav as item (item.href)}
+					<a
+						href={item.href}
+						class="tnav"
+						class:active={isActive(item.href)}
+						aria-current={isActive(item.href) ? 'page' : undefined}
+					>
+						{item.label}
+					</a>
+				{/each}
+			</nav>
+			<div class="tact">
+				<button
+					class="ticon"
+					type="button"
+					aria-label="Search"
+					onclick={() => (palette.open = true)}
+				>
+					<Search size={17} />
+				</button>
+				<button
+					class="ticon"
+					type="button"
+					aria-label="Log out"
+					disabled={logout.isPending}
+					onclick={() => logout.mutate()}
+				>
+					<LogOut size={17} />
+				</button>
+			</div>
+		</header>
+
 		<aside class="side">
 			<div class="side-top"><Logo /></div>
 			<button class="search" type="button" onclick={() => (palette.open = true)}>
@@ -118,6 +154,60 @@
 		min-height: 100dvh;
 		background: var(--canvas);
 	}
+	/* Mobile top bar — shown below the sidebar breakpoint. */
+	.topbar {
+		display: flex;
+		align-items: center;
+		gap: var(--space-s);
+		padding: var(--space-2xs) var(--space-s);
+		position: sticky;
+		top: 0;
+		z-index: 20;
+		background: var(--canvas);
+		border-bottom: 1px solid var(--border);
+	}
+	.topnav {
+		display: flex;
+		gap: var(--space-3xs);
+		flex: 1;
+		overflow-x: auto;
+		scrollbar-width: none;
+	}
+	.topnav::-webkit-scrollbar {
+		display: none;
+	}
+	.tnav {
+		padding: 0.4em 0.7em;
+		border-radius: var(--radius-sm);
+		color: var(--fg-muted);
+		font-size: var(--step--1);
+		font-weight: 500;
+		white-space: nowrap;
+	}
+	.tnav.active {
+		color: var(--accent-contrast);
+		background: var(--accent);
+	}
+	.tact {
+		display: flex;
+		gap: 2px;
+	}
+	.ticon {
+		display: grid;
+		place-items: center;
+		width: 2.2rem;
+		height: 2.2rem;
+		border: none;
+		background: transparent;
+		color: var(--fg-muted);
+		border-radius: var(--radius-sm);
+		cursor: pointer;
+	}
+	.ticon:hover {
+		color: var(--fg);
+		background: var(--surface-2);
+	}
+
 	/* Sidebar sits on the grey canvas (no panel/border) — active item is brand. */
 	.side {
 		display: none;
@@ -282,6 +372,9 @@
 	@media (min-width: 56rem) {
 		.layout {
 			grid-template-columns: 16rem minmax(0, 1fr);
+		}
+		.topbar {
+			display: none;
 		}
 		.side {
 			display: flex;

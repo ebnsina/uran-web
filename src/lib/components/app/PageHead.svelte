@@ -36,8 +36,9 @@
 		display: flex;
 		align-items: flex-end;
 		justify-content: space-between;
-		gap: var(--space-m);
-		padding: var(--space-l) var(--space-l) var(--space-m);
+		flex-wrap: wrap;
+		gap: var(--space-s) var(--space-m);
+		padding: var(--space-m) var(--space-m) var(--space-s);
 		/* subtle hairline, lighter than the standard border */
 		border-bottom: 1px solid color-mix(in oklab, var(--fg) 6%, transparent);
 	}
