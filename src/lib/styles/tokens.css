@@ -150,7 +150,7 @@
 	   soft accent halo so it reads clearly on any surface. */
 	--focus-ring:
 		0 0 0 2px var(--surface), 0 0 0 5px var(--accent),
-		0 0 0 8px color-mix(in oklab, var(--accent) 28%, transparent);
+		0 0 0 11px color-mix(in oklab, var(--accent) 28%, transparent);
 }
 
 /*
