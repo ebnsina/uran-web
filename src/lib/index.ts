@@ -11,6 +11,7 @@ export { default as Select } from './components/ui/Select.svelte';
 export { default as Checkbox } from './components/ui/Checkbox.svelte';
 export { default as Slider } from './components/ui/Slider.svelte';
 export { default as Sparkline } from './components/ui/Sparkline.svelte';
+export { default as UsageChart } from './components/ui/UsageChart.svelte';
 export { default as EmptyState } from './components/ui/EmptyState.svelte';
 export { default as Callout } from './components/ui/Callout.svelte';
 export { default as RollingNumber } from './components/ui/RollingNumber.svelte';

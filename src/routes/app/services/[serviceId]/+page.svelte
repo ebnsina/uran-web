@@ -13,7 +13,7 @@
 		Activity,
 		ChartSpline
 	} from '@lucide/svelte';
-	import { StatusBadge, Alert, Sparkline, RollingNumber } from '$lib';
+	import { StatusBadge, Alert, UsageChart, RollingNumber } from '$lib';
 	import { getService, getDeploys, getMetrics, getUsage, qk } from '$lib/query/resources';
 	import type { Deploy } from '$lib/api/resources';
 	import PageHead from '$lib/components/app/PageHead.svelte';
@@ -181,11 +181,11 @@
 						<div class="charts">
 							<div class="chart">
 								<span class="chart-label">CPU (millicores)</span>
-								<Sparkline data={cpuSeries} />
+								<UsageChart data={cpuSeries} unit="m" />
 							</div>
 							<div class="chart">
 								<span class="chart-label">Memory (MiB)</span>
-								<Sparkline data={memSeries} color="var(--ok)" />
+								<UsageChart data={memSeries} color="var(--ok)" />
 							</div>
 						</div>
 					</div>
