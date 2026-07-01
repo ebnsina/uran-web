@@ -489,7 +489,7 @@
 		line-height: 1.15;
 		letter-spacing: 0;
 		font-weight: 600;
-		font-stretch: expanded; /* Mona Sans width axis — the Dribbble hero look */
+		font-stretch: 112%; /* Mona Sans width axis — subtle expanded, Dribbble hero look */
 		text-wrap: balance;
 		font-optical-sizing: auto;
 	}
