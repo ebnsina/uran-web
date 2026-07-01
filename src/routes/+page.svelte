@@ -621,7 +621,7 @@
 			),
 			radial-gradient(
 				40% 40% at 28% 82%,
-				color-mix(in oklab, var(--blue-300) 16%, transparent),
+				color-mix(in oklab, var(--accent-2) 16%, transparent),
 				transparent 70%
 			);
 		filter: blur(36px);

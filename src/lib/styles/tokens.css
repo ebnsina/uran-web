@@ -32,11 +32,6 @@
 	--paper-300: #9a978f;
 	--paper-500: #6a6760;
 
-	--blue-300: #3aa6de; /* light / hover */
-	--blue-400: #007fbf; /* signal — Honolulu Blue */
-	--blue-500: #0069a0; /* press */
-	--blue-600: #00527e; /* deep */
-
 	/* Pink accent ramp (Dribbble-style magenta) */
 	--pink-300: #f27aa8; /* light */
 	--pink-400: #ea4c89; /* signal */
@@ -139,7 +134,6 @@
 
 	--accent: var(--pink-400);
 	--accent-hover: var(--pink-500);
-	--accent-press: var(--pink-600);
 	--accent-contrast: #ffffff; /* text on an accent surface — white on pink */
 	--accent-soft: color-mix(in oklab, var(--pink-400) 15%, transparent);
 
