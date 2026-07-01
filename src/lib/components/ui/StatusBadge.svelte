@@ -36,7 +36,7 @@
 		padding: 0.25em 0.6em;
 		font-size: var(--step--1);
 		font-family: var(--font-mono);
-		border-radius: var(--radius);
+		border-radius: var(--radius-full);
 		border: 1px solid var(--border);
 		text-transform: capitalize;
 		white-space: nowrap;

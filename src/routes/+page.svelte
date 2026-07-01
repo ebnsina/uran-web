@@ -730,7 +730,7 @@
 		place-items: center;
 		width: 1.9rem;
 		height: 1.9rem;
-		border-radius: 7px;
+		border-radius: var(--radius-xs);
 		background: var(--accent);
 		color: var(--accent-contrast);
 		font-weight: 700;
