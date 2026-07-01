@@ -182,7 +182,6 @@
 		stroke: currentColor;
 		stroke-width: 3;
 		stroke-linecap: round;
-		filter: drop-shadow(0 0 4px color-mix(in oklab, currentColor 70%, transparent));
 		transition: stroke-dashoffset var(--dur-3) var(--ease-out);
 	}
 	.pct {

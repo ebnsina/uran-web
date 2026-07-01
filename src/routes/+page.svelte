@@ -780,8 +780,9 @@
 		display: flex;
 		align-items: center;
 		height: var(--ih);
-		font-size: clamp(1.6rem, 4.6vw, 3rem);
-		font-weight: 680;
+		font-family: var(--font-mono);
+		font-size: clamp(1.4rem, 4vw, 2.6rem);
+		font-weight: 600;
 		letter-spacing: var(--tracking-tight);
 		color: var(--fg-subtle);
 		opacity: 0.25;
