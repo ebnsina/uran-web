@@ -1,10 +1,12 @@
 <!--
   Area chart for a time series of metric samples, built on LayerChart: a y-axis
-  with gridlines, a smooth filled area, and a hover highlight. Pass a plain
-  number[] (oldest → newest); styling comes from design tokens.
+  with gridlines and a smooth filled area. Pass a plain number[] (oldest →
+  newest). Colours come from design tokens via CSS — LayerChart applies fill/
+  stroke as SVG presentation attributes, which don't support var(), so we style
+  the generated .path-area / .path-line classes instead.
 -->
 <script lang="ts">
-	import { Chart, Svg, Axis, Area, Highlight } from 'layerchart';
+	import { Chart, Svg, Axis, Area } from 'layerchart';
 	import { scaleLinear } from 'd3-scale';
 	import { curveMonotoneX } from 'd3-shape';
 
@@ -20,7 +22,7 @@
 	const fmt = (v: number) => `${v}${unit}`;
 </script>
 
-<div class="uc">
+<div class="uc" style="--uc-color: {color}">
 	{#if points.length > 1}
 		<Chart
 			data={points}
@@ -31,7 +33,6 @@
 			yDomain={[0, null]}
 			yNice
 			padding={{ top: 10, right: 10, bottom: 8, left: 40 }}
-			tooltip
 		>
 			<Svg>
 				<Axis
@@ -41,13 +42,7 @@
 					grid={{ class: 'uc-grid' }}
 					classes={{ tickLabel: 'uc-tl' }}
 				/>
-				<Area
-					curve={curveMonotoneX}
-					line={{ stroke: color, strokeWidth: 2 }}
-					fill={color}
-					fillOpacity={0.14}
-				/>
-				<Highlight points={{ fill: color, r: 3 }} lines={{ class: 'uc-hl' }} />
+				<Area curve={curveMonotoneX} line />
 			</Svg>
 		</Chart>
 	{:else}
@@ -66,11 +61,19 @@
 		color: var(--fg-subtle);
 		font-size: var(--step--1);
 	}
+	/* LayerChart-generated elements — styled here so var() colours apply. */
+	.uc :global(.path-area) {
+		fill: var(--uc-color);
+		fill-opacity: 0.15;
+		stroke: none;
+	}
+	.uc :global(.path-line) {
+		fill: none;
+		stroke: var(--uc-color);
+		stroke-width: 2;
+	}
 	.uc :global(.uc-grid) {
 		stroke: color-mix(in oklab, var(--fg) 8%, transparent);
-	}
-	.uc :global(.uc-hl) {
-		stroke: color-mix(in oklab, var(--fg) 20%, transparent);
 	}
 	.uc :global(.uc-tl) {
 		fill: var(--fg-subtle);
