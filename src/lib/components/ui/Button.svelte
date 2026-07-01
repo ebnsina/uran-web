@@ -71,19 +71,15 @@
 		border: 1px solid var(--_border);
 		background: var(--_bg);
 		color: var(--_fg);
-		border-radius: var(--radius);
+		border-radius: var(--radius-full);
 		transition:
 			transform var(--dur-1) var(--ease-out),
 			background var(--dur-2) var(--ease-out),
 			border-color var(--dur-2) var(--ease-out),
-			box-shadow var(--dur-2) var(--ease-out),
 			color var(--dur-2) var(--ease-out);
 	}
-	.btn:hover {
-		transform: translateY(-1px);
-	}
 	.btn:active {
-		transform: translateY(0) scale(0.985);
+		transform: scale(0.97);
 	}
 	.btn:disabled {
 		cursor: not-allowed;
@@ -108,24 +104,15 @@
 		font-size: var(--step-1);
 	}
 
-	/* Variants */
+	/* Variants — flat, pill-shaped (Dribbble style: no shadow, no gradient) */
 	.primary {
 		--_bg: var(--accent);
 		--_fg: var(--accent-contrast);
 		--_border: transparent;
 		font-weight: 600;
-		background-image: var(--accent-gradient);
-		box-shadow:
-			var(--glow-accent),
-			inset 0 1px 0 rgb(255 255 255 / 0.22);
 	}
 	.primary:hover {
-		box-shadow:
-			0 14px 34px -10px rgb(0 127 191 / 0.6),
-			inset 0 1px 0 rgb(255 255 255 / 0.28);
-	}
-	.primary:active {
-		box-shadow: var(--glow-accent);
+		--_bg: var(--accent-hover);
 	}
 
 	.secondary {

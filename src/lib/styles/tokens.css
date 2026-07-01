@@ -93,11 +93,9 @@
 	--shadow-1: 0 2px 8px -2px rgb(0 0 0 / 0.4);
 	--shadow-2: 0 14px 40px -14px rgb(0 0 0 / 0.5);
 	--shadow-3: 0 34px 80px -28px rgb(0 0 0 / 0.62);
-	--glow-accent: 0 10px 34px -8px rgb(234 76 137 / 0.5);
 
-	/* Accent gradient partner + gradient for primary surfaces */
+	/* Accent gradient partner (used for soft halos) */
 	--accent-2: var(--pink-300);
-	--accent-gradient: linear-gradient(135deg, var(--pink-400), var(--pink-500));
 
 	/* Motion — one place to tune the whole feel */
 	--dur-1: 120ms;
@@ -174,5 +172,4 @@
 	--shadow-1: 0 2px 10px -3px rgb(13 12 34 / 0.07);
 	--shadow-2: 0 16px 44px -16px rgb(13 12 34 / 0.12);
 	--shadow-3: 0 34px 80px -26px rgb(13 12 34 / 0.16);
-	--accent-gradient: linear-gradient(135deg, var(--pink-400), var(--pink-500));
 }
