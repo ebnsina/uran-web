@@ -58,7 +58,7 @@
 	--step-6: clamp(2.4375rem, 2.1rem + 1.68vw, 3.4375rem);
 
 	/* Heading sizes (DESIGN.md — Dribbble Minimal). Fixed max = spec size. */
-	--h-display: clamp(2.4rem, 4.5vw + 1rem, 3rem); /* 48 */
+	--h-display: clamp(2.4rem, 4.5vw + 1rem, 3.25rem); /* 52 — Dribbble hero */
 	--h-lg: clamp(1.85rem, 3.4vw, 2.1875rem); /* 35 */
 	--h-md: clamp(1.45rem, 2.6vw, 1.625rem); /* 26 */
 	--h-sm: 1.1875rem; /* 19 */
