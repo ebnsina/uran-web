@@ -102,37 +102,49 @@
 	const primitives = [
 		{
 			icon: Boxes,
+			c: '#38a8e6',
 			t: 'Native runtimes',
 			d: 'High-performance environments for nearly every popular framework.'
 		},
 		{
 			icon: FileCode2,
+			c: '#4ade80',
 			t: 'Deploy from Git',
 			d: 'Every push builds and ships itself — no YAML to babysit.'
 		},
 		{
 			icon: Box,
+			c: '#8b8cf7',
 			t: 'Isolated environments',
 			d: 'Preview and production stay cleanly, safely separated.'
 		},
 		{
 			icon: HardDrive,
+			c: '#fbbf24',
 			t: 'Persistent disks',
 			d: 'Attach durable volumes to stateful services in a click.'
 		},
 		{
 			icon: Database,
+			c: '#2dd4bf',
 			t: 'Managed Postgres & Redis',
 			d: 'HA replicas, connection pooling, backups + PITR.'
 		},
-		{ icon: Radio, t: 'WebSockets', d: 'Long-lived, bi-directional streaming out of the box.' },
+		{
+			icon: Radio,
+			c: '#fb7185',
+			t: 'WebSockets',
+			d: 'Long-lived, bi-directional streaming out of the box.'
+		},
 		{
 			icon: Gauge,
+			c: '#38bdf8',
 			t: 'Autoscaling',
 			d: 'Scale on CPU between a floor and a ceiling, automatically.'
 		},
 		{
 			icon: ShieldCheck,
+			c: '#f59e0b',
 			t: 'Fully-managed TLS',
 			d: 'Free certificates for every domain, issued and renewed.'
 		}
@@ -142,31 +154,37 @@
 	const security = [
 		{
 			icon: Network,
+			c: '#38a8e6',
 			t: 'Private networking',
 			d: 'Keep internal traffic off the public internet — no VPC wrangling.'
 		},
 		{
 			icon: ShieldAlert,
+			c: '#fb7185',
 			t: 'DDoS protection',
 			d: 'Every service is shielded from attacks without extra config.'
 		},
 		{
 			icon: BadgeCheck,
+			c: '#4ade80',
 			t: 'Managed compliance',
 			d: 'Encryption, controls, and audit trails built in from day one.'
 		},
 		{
 			icon: ScrollText,
+			c: '#fbbf24',
 			t: 'Audit logging',
 			d: 'A built-in, queryable trail for every platform event.'
 		},
 		{
 			icon: Lock,
+			c: '#8b8cf7',
 			t: 'Encryption at rest',
 			d: 'Databases, backups, and secrets encrypted by default.'
 		},
 		{
 			icon: KeyRound,
+			c: '#2dd4bf',
 			t: 'Role-based access',
 			d: 'Control who can touch what with organization roles.'
 		}
@@ -398,7 +416,7 @@
 				{@const Icon = p.icon}
 				<Reveal delay={i * 40} y={14}>
 					<div class="cell">
-						<span class="cell-ico"><Icon size={20} strokeWidth={1.75} /></span>
+						<span class="cell-ico" style="--c: {p.c}"><Icon size={20} strokeWidth={1.75} /></span>
 						<h3>{p.t}</h3>
 						<p>{p.d}</p>
 					</div>
@@ -416,7 +434,7 @@
 				{@const Icon = s.icon}
 				<Reveal delay={i * 40} y={14}>
 					<div class="cell">
-						<span class="cell-ico accent"><Icon size={20} strokeWidth={1.75} /></span>
+						<span class="cell-ico" style="--c: {s.c}"><Icon size={20} strokeWidth={1.75} /></span>
 						<h3>{s.t}</h3>
 						<p>{s.d}</p>
 					</div>
@@ -481,7 +499,7 @@
 		--stroke: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%2022'%20preserveAspectRatio='none'%3E%3Cpath%20d='M4%2012%20C%2070%203%20150%2020%20220%2010%20C%20260%205%20285%209%20296%2013'%20fill='none'%20stroke='%23000'%20stroke-width='5'%20stroke-linecap='round'/%3E%3C/svg%3E");
 	}
 	.block {
-		padding-block: clamp(var(--space-2xl), 9vw, var(--space-3xl));
+		padding-block: clamp(var(--space-xl), 5vw, var(--space-2xl));
 	}
 	.sub {
 		margin-top: var(--space-s);
@@ -633,11 +651,24 @@
 	/* ── Steps ─────────────────────────────────────────────────────────── */
 	.steps {
 		list-style: none;
-		margin: var(--space-2xl) 0 0;
+		margin: var(--space-xl) 0 0;
 		padding: 0;
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--space-xl);
+		gap: var(--space-m);
+	}
+	.steps li {
+		padding: var(--space-l);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		transition:
+			border-color var(--dur-2) var(--ease-out),
+			transform var(--dur-2) var(--ease-out);
+	}
+	.steps li:hover {
+		border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
+		transform: translateY(-2px);
 	}
 	.step-n {
 		display: inline-grid;
@@ -649,15 +680,14 @@
 		color: var(--accent-contrast);
 		font-weight: 700;
 		font-size: var(--step--1);
-		margin-bottom: var(--space-s);
+		margin-bottom: var(--space-m);
 	}
 	.steps h3 {
-		font-size: var(--step-2);
+		font-size: var(--step-1);
 		margin-bottom: var(--space-2xs);
 	}
 	.steps p {
 		color: var(--fg-muted);
-		max-width: 22rem;
 		line-height: var(--leading-normal);
 	}
 
@@ -885,14 +915,10 @@
 		width: 2.4rem;
 		height: 2.4rem;
 		border-radius: var(--radius-sm);
-		color: var(--ok);
-		border: 1px solid color-mix(in oklab, var(--ok) 40%, transparent);
+		color: var(--c);
+		border: 1px solid color-mix(in oklab, var(--c) 42%, transparent);
+		background: color-mix(in oklab, var(--c) 12%, transparent);
 		margin-bottom: var(--space-s);
-	}
-	.cell-ico.accent {
-		color: var(--accent);
-		border-color: color-mix(in oklab, var(--accent) 40%, transparent);
-		background: var(--accent-soft);
 	}
 	.cell h3 {
 		font-size: var(--step-0);
