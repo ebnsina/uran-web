@@ -21,8 +21,10 @@
 	// Fetch the project directly so name + org_id are available on a deep link
 	// (falling back to any cached copy for an instant title).
 	const cachedProject = $derived.by(() => {
+		// Only match project-list caches: the ['orgs'] prefix also covers the org
+		// list, whose items share the id space but have no org_id — guard for it.
 		for (const [, data] of client.getQueriesData<Project[]>({ queryKey: ['orgs'] })) {
-			const p = data?.find?.((x) => x.id === projectId);
+			const p = data?.find?.((x) => x.id === projectId && 'org_id' in x);
 			if (p) return p;
 		}
 		return undefined;
