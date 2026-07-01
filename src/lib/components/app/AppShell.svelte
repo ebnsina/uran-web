@@ -116,7 +116,7 @@
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
 		min-height: 100dvh;
-		background: var(--bg);
+		background: var(--canvas);
 	}
 	/* Sidebar sits on the grey canvas (no panel/border) — active item is brand. */
 	.side {

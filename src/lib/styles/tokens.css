@@ -116,6 +116,9 @@
 	--surface: var(--ink-700);
 	--surface-2: var(--ink-600);
 	--surface-hover: var(--ink-500);
+	/* Dashboard app canvas (behind the white content panel). Same as --bg in
+	   dark; a distinct grey in light. The marketing site uses --bg, not this. */
+	--canvas: var(--bg);
 
 	--fg: var(--paper-50);
 	--fg-muted: var(--paper-300);
@@ -146,10 +149,10 @@
 :root[data-theme='light'] {
 	color-scheme: light;
 
-	/* Gray page, white cards (neutral, no warm tint): the content area sits on a
-	   clearly grey canvas while surfaces/cards are white, rounded, with a defined
-	   grey border. */
-	--bg: #e9ebef;
+	/* Light theme. The marketing site is white (--bg); the dashboard puts its
+	   white content panel on a distinct grey canvas (--canvas). */
+	--bg: #ffffff;
+	--canvas: #e9ebef;
 	--bg-elevated: #ffffff;
 	--surface: #ffffff;
 	--surface-2: #f1f2f4;
