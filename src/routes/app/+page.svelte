@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
-	import { fly } from 'svelte/transition';
-	import { expoOut } from 'svelte/easing';
-	import { Building2, ArrowRight, Plus } from '@lucide/svelte';
-	import { Button, Reveal, motion, TextField, Dialog, Alert } from '$lib';
+	import { Building2, ArrowRight, Plus, Activity, FolderGit2, History } from '@lucide/svelte';
+	import { Button, TextField, Dialog, Alert, StatusBadge, EmptyState } from '$lib';
 	import { getMe, getOrgs, createOrg, keys } from '$lib/query/dashboard';
+	import { getAudit, qk } from '$lib/query/resources';
+	import PageHead from '$lib/components/app/PageHead.svelte';
 	import { toast } from '$lib/toast.svelte';
 
 	const client = useQueryClient();
 	const me = createQuery(() => ({ queryKey: keys.me, queryFn: getMe, staleTime: 60_000 }));
 	const orgs = createQuery(() => ({ queryKey: keys.orgs, queryFn: getOrgs }));
+	const audit = createQuery(() => ({ queryKey: qk.audit, queryFn: getAudit }));
 
 	const firstName = $derived((me.data?.name || '').split(/\s+/)[0] || 'there');
-	const skeletons = [0, 1, 2];
 
 	let dialogOpen = $state(false);
 	let name = $state('');
@@ -25,65 +25,107 @@
 			toast.success('Organization created');
 		}
 	}));
+
+	function badge(o: { slug: string; name: string }) {
+		return (o.name || o.slug).slice(0, 2).toUpperCase();
+	}
+	const fmt = (s: string) => new Date(s).toLocaleString();
+	const fmtDate = (s: string) => new Date(s).toLocaleDateString();
 </script>
 
 <svelte:head><title>Overview · Uran</title></svelte:head>
 
-<header class="topbar">
-	<div>
-		<p class="u-eyebrow">Overview</p>
-		<h1>Welcome back, {firstName}.</h1>
-	</div>
+<PageHead crumbs={[{ label: 'Overview' }]} title="Welcome back, {firstName}.">
 	<Button size="sm" onclick={() => (dialogOpen = true)}><Plus size={16} /> New organization</Button>
-</header>
+</PageHead>
 
-<section class="body">
-	{#if orgs.isPending}
-		<div class="skeleton-grid">
-			{#each skeletons as i (i)}
-				<div class="skeleton"></div>
-			{/each}
-		</div>
-	{:else if orgs.isError}
-		<div class="state">
-			<h2>Couldn't load your organizations</h2>
-			<p>{orgs.error.message}</p>
-			<Button onclick={() => orgs.refetch()}>Try again</Button>
-		</div>
-	{:else if orgs.data.length === 0}
-		<Reveal>
-			<div class="empty">
-				<div class="empty-mark" aria-hidden="true"><Building2 size={28} strokeWidth={1.75} /></div>
-				<h2>Create your first organization</h2>
-				<p>
-					Organizations hold your projects, services, and databases. Create one to get started —
-					then add a project and deploy.
-				</p>
-				<div class="empty-cta">
-					<Button onclick={() => (dialogOpen = true)}>New organization</Button>
-					<Button href="/docs" variant="secondary">Read the docs</Button>
-				</div>
+<div class="body">
+	<!-- Stats -->
+	<div class="stats">
+		<div class="stat">
+			<span class="stat-ico"><Building2 size={17} /></span>
+			<div>
+				<b>{orgs.data?.length ?? '—'}</b>
+				<span>Organizations</span>
 			</div>
-		</Reveal>
-	{:else}
-		<div class="org-grid">
-			{#each orgs.data as org, i (org.id)}
-				<a
-					href="/app/orgs/{org.id}"
-					class="org"
-					in:fly={{ y: 14, delay: motion.stagger(i), duration: 360, easing: expoOut }}
-				>
-					<div class="org-head">
-						<span class="org-badge u-mono">{org.slug.slice(0, 2).toUpperCase()}</span>
-						<span class="org-arrow" aria-hidden="true"><ArrowRight size={16} /></span>
-					</div>
-					<h3>{org.name}</h3>
-					<p class="u-mono">{org.slug}</p>
-				</a>
-			{/each}
 		</div>
-	{/if}
-</section>
+		<div class="stat">
+			<span class="stat-ico"><History size={17} /></span>
+			<div>
+				<b>{audit.data?.length ?? '—'}</b>
+				<span>Recent actions</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="cols">
+		<!-- Organizations table -->
+		<section>
+			<h2 class="sec-title"><Building2 size={16} /> Organizations</h2>
+			{#if orgs.isPending}
+				<p class="muted">Loading…</p>
+			{:else if orgs.isError}
+				<Alert>{orgs.error.message}</Alert>
+			{:else if orgs.data.length === 0}
+				<EmptyState
+					icon={Building2}
+					title="Create your first organization"
+					hint="Organizations hold your projects, services and databases."
+				>
+					<Button size="sm" onclick={() => (dialogOpen = true)}>
+						<Plus size={16} /> New organization
+					</Button>
+				</EmptyState>
+			{:else}
+				<div class="table" role="table">
+					<div class="thead u-mono" role="row">
+						<span>Organization</span>
+						<span>Slug</span>
+						<span>Created</span>
+						<span></span>
+					</div>
+					{#each orgs.data as o (o.id)}
+						<a class="trow" href="/app/orgs/{o.id}" role="row">
+							<span class="org">
+								<span class="badge u-mono">{badge(o)}</span>
+								<b>{o.name}</b>
+							</span>
+							<span class="u-mono muted">{o.slug}</span>
+							<span class="muted">{fmtDate(o.created_at)}</span>
+							<span class="arrow"><ArrowRight size={16} /></span>
+						</a>
+					{/each}
+				</div>
+			{/if}
+		</section>
+
+		<!-- Recent activity -->
+		<section>
+			<h2 class="sec-title"><Activity size={16} /> Recent activity</h2>
+			{#if audit.isPending}
+				<p class="muted">Loading…</p>
+			{:else if audit.isError}
+				<Alert>{audit.error.message}</Alert>
+			{:else if audit.data.length === 0}
+				<div class="quiet">
+					<span class="quiet-ico"><FolderGit2 size={18} /></span>
+					<p>No activity yet. Create a project and deploy to see it here.</p>
+				</div>
+			{:else}
+				<ul class="feed">
+					{#each audit.data.slice(0, 8) as a (a.id)}
+						<li>
+							<span class="method u-mono">{a.method}</span>
+							<span class="path u-mono">{a.path}</span>
+							<StatusBadge status={String(a.status)} />
+							<span class="when">{fmt(a.created_at)}</span>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</section>
+	</div>
+</div>
 
 <Dialog bind:open={dialogOpen} title="New organization">
 	<form
@@ -101,149 +143,211 @@
 </Dialog>
 
 <style>
-	.topbar {
-		display: flex;
-		align-items: flex-end;
-		justify-content: space-between;
-		gap: var(--space-m);
-		padding: var(--space-l) var(--space-l) var(--space-m);
-		border-bottom: 1px solid var(--border);
-	}
-	.topbar h1 {
-		margin-top: var(--space-3xs);
-		font-size: var(--step-2);
-	}
 	.body {
 		padding: var(--space-l);
-	}
-
-	/* Loading skeleton */
-	.skeleton-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-		gap: var(--space-m);
-	}
-	.skeleton {
-		height: 9rem;
-		border: 1px solid var(--border);
-		border-radius: var(--radius-md);
-		background: linear-gradient(
-			100deg,
-			var(--surface) 30%,
-			var(--surface-2) 50%,
-			var(--surface) 70%
-		);
-		background-size: 200% 100%;
-		animation: shimmer 1.3s ease-in-out infinite;
-	}
-	@keyframes shimmer {
-		to {
-			background-position: -200% 0;
-		}
+		gap: var(--space-l);
 	}
 
-	.state {
-		max-width: 28rem;
-		margin: var(--space-2xl) auto;
-		text-align: center;
-	}
-	.state h2 {
-		font-size: var(--step-1);
-	}
-	.state p {
-		margin: var(--space-s) 0 var(--space-l);
-		color: var(--fg-muted);
-	}
-
-	.empty {
-		max-width: 32rem;
-		margin: var(--space-2xl) auto;
-		text-align: center;
-		padding: var(--space-2xl) var(--space-l);
-		background:
-			radial-gradient(120% 130% at 50% 0%, var(--accent-soft), transparent 60%), var(--surface);
-		border: 1px solid var(--border-strong);
-		border-radius: var(--radius-lg);
-	}
-	.empty-mark {
+	/* Stat cards */
+	.stats {
 		display: grid;
-		place-items: center;
-		width: 3.2rem;
-		height: 3.2rem;
-		margin: 0 auto;
-		color: var(--accent);
-		background: var(--accent-soft);
-		border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
-		border-radius: var(--radius-md);
-	}
-	.empty h2 {
-		margin-top: var(--space-s);
-		font-size: var(--step-2);
-	}
-	.empty p {
-		margin: var(--space-s) auto var(--space-l);
-		max-width: 26rem;
-		color: var(--fg-muted);
-	}
-	.empty-cta {
-		display: flex;
-		flex-wrap: wrap;
+		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
 		gap: var(--space-s);
-		justify-content: center;
 	}
-
-	.org-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-		gap: var(--space-m);
-	}
-	.org {
-		display: block;
+	.stat {
+		display: flex;
+		align-items: center;
+		gap: var(--space-s);
 		padding: var(--space-m);
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: var(--radius-md);
-		transition:
-			transform var(--dur-2) var(--ease-out),
-			border-color var(--dur-2) var(--ease-out);
 	}
-	.org:hover {
-		transform: translateY(-3px);
-		border-color: var(--accent);
-	}
-	.org-head {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	.org-badge {
+	.stat-ico {
 		display: grid;
 		place-items: center;
-		width: 2.2rem;
-		height: 2.2rem;
+		width: 2.6rem;
+		height: 2.6rem;
+		flex-shrink: 0;
+		color: var(--accent);
+		background: var(--accent-soft);
+		border-radius: var(--radius-sm);
+	}
+	.stat b {
+		display: block;
+		font-size: var(--step-3);
+		line-height: 1;
+		font-family: var(--font-mono);
+	}
+	.stat span {
+		font-size: var(--step--1);
+		color: var(--fg-subtle);
+	}
+
+	.cols {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-xl);
+		align-items: start;
+	}
+	.sec-title {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+		font-size: var(--step-1);
+		margin-bottom: var(--space-m);
+	}
+	.muted {
+		color: var(--fg-muted);
+		font-size: var(--step--1);
+	}
+
+	/* Table */
+	.table {
+		border: 1px solid var(--border);
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		background: var(--surface);
+	}
+	.thead,
+	.trow {
+		display: grid;
+		grid-template-columns: 2fr 1fr 1fr auto;
+		align-items: center;
+		gap: var(--space-s);
+		padding: var(--space-s) var(--space-m);
+	}
+	.thead {
+		font-size: var(--step--2);
+		text-transform: uppercase;
+		letter-spacing: var(--tracking-wide);
+		color: var(--fg-subtle);
+		border-bottom: 1px solid var(--border);
+	}
+	.trow {
+		border-top: 1px solid var(--border);
+		color: var(--fg);
+		transition: background var(--dur-2) var(--ease-out);
+	}
+	.trow:first-of-type {
+		border-top: none;
+	}
+	.trow:hover {
+		background: var(--surface-2);
+	}
+	.org {
+		display: flex;
+		align-items: center;
+		gap: var(--space-s);
+		min-width: 0;
+	}
+	.badge {
+		display: grid;
+		place-items: center;
+		width: 2rem;
+		height: 2rem;
+		flex-shrink: 0;
 		border-radius: var(--radius-sm);
 		background: var(--accent-soft);
 		color: var(--accent);
+		font-size: var(--step--2);
 		font-weight: 700;
 	}
-	.org-arrow {
+	.org b {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.arrow {
 		display: inline-flex;
 		color: var(--fg-subtle);
-		transition:
-			transform var(--dur-2) var(--ease-out),
-			color var(--dur-2) var(--ease-out);
+		transition: transform var(--dur-2) var(--ease-out);
 	}
-	.org:hover .org-arrow {
-		transform: translateX(4px);
+	.trow:hover .arrow {
+		transform: translateX(3px);
 		color: var(--accent);
 	}
-	.org h3 {
-		margin-top: var(--space-s);
-		font-size: var(--step-1);
+
+	/* Activity feed */
+	.feed {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-md);
+		background: var(--surface);
+		overflow: hidden;
 	}
-	.org p {
-		margin-top: var(--space-3xs);
+	.feed li {
+		display: grid;
+		grid-template-columns: 3.2rem 1fr auto auto;
+		align-items: center;
+		gap: var(--space-s);
+		padding: var(--space-s) var(--space-m);
+		border-top: 1px solid var(--border);
 		font-size: var(--step--1);
+	}
+	.feed li:first-child {
+		border-top: none;
+	}
+	.method {
+		color: var(--accent);
+		font-size: var(--step--2);
+	}
+	.path {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		color: var(--fg-muted);
+	}
+	.when {
+		font-size: var(--step--2);
 		color: var(--fg-subtle);
+		white-space: nowrap;
+	}
+	.quiet {
+		display: flex;
+		align-items: center;
+		gap: var(--space-s);
+		padding: var(--space-l);
+		background: var(--surface);
+		border: 1px dashed var(--border-strong);
+		border-radius: var(--radius-md);
+		color: var(--fg-muted);
+		font-size: var(--step--1);
+	}
+	.quiet-ico {
+		display: grid;
+		place-items: center;
+		width: 2.4rem;
+		height: 2.4rem;
+		flex-shrink: 0;
+		color: var(--fg-subtle);
+		background: var(--surface-2);
+		border-radius: var(--radius-sm);
+	}
+
+	@media (min-width: 60rem) {
+		.cols {
+			grid-template-columns: 1.3fr 1fr;
+		}
+	}
+	@media (max-width: 40rem) {
+		.thead,
+		.trow {
+			grid-template-columns: 1fr auto;
+		}
+		.thead span:nth-child(2),
+		.thead span:nth-child(3),
+		.trow > .muted {
+			display: none;
+		}
+		.feed li {
+			grid-template-columns: 3rem 1fr auto;
+		}
+		.feed .when {
+			display: none;
+		}
 	}
 </style>
