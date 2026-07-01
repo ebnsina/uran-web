@@ -104,15 +104,16 @@
 		font-size: var(--step-1);
 	}
 
-	/* Variants — flat, pill-shaped (Dribbble style: no shadow, no gradient) */
+	/* Variants — flat, pill-shaped (Dribbble Minimal). Primary is the dark ink
+	   fill; the pink accent is reserved for emphasis/active states elsewhere. */
 	.primary {
-		--_bg: var(--accent);
-		--_fg: var(--accent-contrast);
+		--_bg: var(--fg);
+		--_fg: var(--bg);
 		--_border: transparent;
 		font-weight: 600;
 	}
 	.primary:hover {
-		--_bg: var(--accent-hover);
+		--_bg: color-mix(in oklab, var(--fg) 86%, var(--bg));
 	}
 
 	.secondary {

@@ -32,15 +32,16 @@
 	--paper-300: #9a978f;
 	--paper-500: #6a6760;
 
-	/* Pink accent ramp (Dribbble-style magenta) */
-	--pink-300: #f27aa8; /* light */
-	--pink-400: #ea4c89; /* signal */
+	/* Pink accent ramp (Dribbble Minimal — tertiary) */
+	--pink-200: #fde9f1; /* tertiary-90 — pale wash */
+	--pink-300: #f7a1c4; /* tertiary-60 — light */
+	--pink-400: #ea4c89; /* tertiary — signal */
 	--pink-500: #d83a76; /* press */
 	--pink-600: #bd2e64; /* deep */
 
 	/* Status hues, distinct from the accent. */
 	--danger-400: #ff7a93;
-	--danger-500: #f5375f; /* rose-red error */
+	--danger-500: #e5484d; /* error */
 	--warn-400: #ffc24b;
 	--ok-400: #4ec77f;
 
@@ -70,13 +71,13 @@
 	/* Radii — ONE consistent rounded-xl radius for every rectangular surface
 	   (buttons, inputs, cards, panels, dialogs all match). Only tiny chips (xs)
 	   are tighter and pills use --radius-full. Retune everything via --radius. */
-	--radius: 18px;
-	--radius-xs: 12px;
+	--radius: 16px; /* lg — cards, panels */
+	--radius-xs: 8px; /* md — small chips */
 	--radius-sm: var(--radius);
 	--radius-md: var(--radius);
 	--radius-lg: var(--radius);
-	--radius-2xl: 24px;
-	--radius-full: 999px;
+	--radius-2xl: 24px; /* xl — hero/large surfaces */
+	--radius-full: 9999px; /* pill — buttons, inputs, chips */
 
 	/* Typography families */
 	--font-sans: 'Mona Sans Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -154,20 +155,20 @@
 	/* Light theme. The marketing site is white (--bg); the dashboard puts its
 	   white content panel on a distinct grey canvas (--canvas). */
 	--bg: #ffffff;
-	--canvas: #f4f3f1;
+	--canvas: #f3f3f4; /* neutral */
 	--bg-elevated: #ffffff;
 	--surface: #ffffff;
-	--surface-2: #f7f6f4;
-	--surface-hover: #efedea;
+	--surface-2: #f3f3f4; /* neutral — fields, chips, muted surfaces */
+	--surface-hover: #ececee;
 
-	--fg: #0d0c22; /* Dribbble near-black ink */
-	--fg-muted: #44434d;
-	--fg-subtle: #82818e;
+	--fg: #0d0c22; /* primary / on-surface ink */
+	--fg-muted: #6e6d7a; /* secondary */
+	--fg-subtle: #9c9ba5;
 
-	--border: color-mix(in oklab, #0d0c22 10%, transparent);
-	--border-strong: color-mix(in oklab, #0d0c22 16%, transparent);
+	--border: #e7e7eb; /* primary-90 */
+	--border-strong: #d7d7dd;
 
-	--accent-soft: color-mix(in oklab, var(--pink-400) 12%, transparent);
+	--accent-soft: var(--pink-200); /* tertiary-90 wash */
 
 	--shadow-1: 0 2px 10px -3px rgb(13 12 34 / 0.07);
 	--shadow-2: 0 16px 44px -16px rgb(13 12 34 / 0.12);

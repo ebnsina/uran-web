@@ -59,11 +59,11 @@
 	}
 	input {
 		width: 100%;
-		padding: 0.7em 0.85em;
+		padding: 0.85em 1.15em;
 		background: var(--surface-2);
 		color: var(--fg);
-		border: 1px solid var(--border-strong);
-		border-radius: var(--radius-sm);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-full);
 		transition:
 			border-color var(--dur-2) var(--ease-out),
 			box-shadow var(--dur-2) var(--ease-out),
