@@ -41,18 +41,23 @@
 		pointer-events: auto;
 		display: flex;
 		align-items: center;
-		gap: var(--space-2xs);
-		padding: 0.7em 0.8em;
-		background: var(--surface);
-		border: 1px solid var(--border-strong);
-		border-left: 3px solid var(--_tone);
-		border-radius: var(--radius-md);
+		gap: var(--space-s);
+		padding: 0.7em 0.85em;
+		background: color-mix(in oklab, var(--_tone) 12%, var(--surface));
+		border: 1px solid color-mix(in oklab, var(--_tone) 22%, var(--border));
+		border-radius: var(--radius);
 		box-shadow: var(--shadow-3);
 		font-size: var(--step--1);
 	}
 	.ico {
-		display: inline-flex;
-		color: var(--_tone);
+		display: grid;
+		place-items: center;
+		width: 1.9rem;
+		height: 1.9rem;
+		flex-shrink: 0;
+		color: #fff;
+		background: var(--_tone);
+		border-radius: var(--radius-full);
 	}
 	.msg {
 		flex: 1;
