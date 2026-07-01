@@ -8,11 +8,10 @@
 		<script>
 			(function () {
 				try {
-					var t = localStorage.getItem('uran-theme');
-					if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+					var t = localStorage.getItem('uran-theme') || 'light';
 					document.documentElement.dataset.theme = t;
 				} catch (e) {
-					document.documentElement.dataset.theme = 'dark';
+					document.documentElement.dataset.theme = 'light';
 				}
 			})();
 		</script>

@@ -475,14 +475,15 @@
 	}
 
 	.display {
-		font-size: clamp(2.2rem, 4.6vw, 3.4rem);
-		line-height: 1.04;
-		letter-spacing: var(--tracking-tight);
-		font-weight: 660;
+		font-size: var(--h-display);
+		line-height: 1.08;
+		letter-spacing: 0;
+		font-weight: 600;
 		text-wrap: balance;
 	}
 	.display.sm {
-		font-size: clamp(1.9rem, 4vw, 2.9rem);
+		font-size: var(--h-lg);
+		line-height: 1.2;
 	}
 	.hero-h {
 		max-width: 15ch;
@@ -707,7 +708,8 @@
 		margin-bottom: var(--space-m);
 	}
 	.steps h3 {
-		font-size: var(--step-1);
+		font-size: var(--h-sm);
+		font-weight: 600;
 		margin-bottom: var(--space-2xs);
 	}
 	.steps p {
@@ -726,13 +728,14 @@
 		align-items: start;
 	}
 	.feature h2.head {
-		font-size: clamp(1.7rem, 3.2vw, 2.4rem);
-		line-height: 1.05;
-		letter-spacing: var(--tracking-tight);
+		font-size: var(--h-md);
+		line-height: 1.19;
+		font-weight: 600;
 	}
 	.feature h3 {
-		font-size: var(--step-2);
-		line-height: 1.15;
+		font-size: var(--h-sm);
+		line-height: 1.21;
+		font-weight: 600;
 	}
 	.feature > p {
 		margin-top: var(--space-s);
@@ -982,7 +985,8 @@
 		border-radius: var(--radius-full);
 	}
 	.cell h3 {
-		font-size: var(--step-1);
+		font-size: var(--h-sm);
+		font-weight: 600;
 		margin-bottom: var(--space-2xs);
 	}
 	.cell p {

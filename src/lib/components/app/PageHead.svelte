@@ -60,7 +60,9 @@
 	}
 	h1 {
 		margin-top: var(--space-3xs);
-		font-size: var(--step-2);
+		font-size: var(--h-md);
+		font-weight: 600;
+		line-height: 1.19;
 	}
 	.actions {
 		display: flex;
