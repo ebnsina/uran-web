@@ -151,7 +151,7 @@
 		place-items: center;
 		width: 1.5rem;
 		height: 1.5rem;
-		border-radius: var(--radius-sm);
+		border-radius: 6px;
 		background: var(--accent);
 		color: var(--accent-contrast);
 	}
@@ -164,13 +164,13 @@
 		color: var(--fg-subtle);
 		background: var(--surface);
 		border: 1px solid var(--border);
-		border-radius: var(--radius-sm);
+		border-radius: 7px;
 		margin-bottom: var(--space-2xs);
 	}
 	.search .kbd {
 		font-size: var(--step--2);
 		border: 1px solid var(--border);
-		border-radius: var(--radius-xs);
+		border-radius: 4px;
 		padding: 0 0.3em;
 	}
 	.side ul {
@@ -186,7 +186,7 @@
 		display: flex;
 		align-items: center;
 		padding: 0.4em 0.5em;
-		border-radius: var(--radius-sm);
+		border-radius: 7px;
 		color: var(--fg-muted);
 		font-size: var(--step--2);
 	}
@@ -222,7 +222,7 @@
 		padding: var(--space-s);
 		background: var(--surface);
 		border: 1px solid var(--border);
-		border-radius: var(--radius-lg);
+		border-radius: 10px;
 	}
 	.panel-head {
 		display: flex;
@@ -274,7 +274,7 @@
 		place-items: center;
 		width: 1.5rem;
 		height: 1.5rem;
-		border-radius: var(--radius-sm);
+		border-radius: 5px;
 		background: var(--accent-soft);
 		color: var(--accent);
 		font-size: var(--step--2);
