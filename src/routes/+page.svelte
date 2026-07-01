@@ -454,16 +454,25 @@
 	.hero-h {
 		max-width: 15ch;
 	}
-	/* Decorative accent underline (marker style), follows line wraps. */
+	/* Decorative hand-drawn accent underline: a curved brush stroke, masked so
+	   it picks up --accent, with a slight casual tilt. */
 	.hl {
+		position: relative;
 		color: var(--fg);
-		background-image: linear-gradient(var(--accent), var(--accent));
-		background-repeat: no-repeat;
-		background-position: 0 92%;
-		background-size: 100% 0.14em;
-		padding-bottom: 0.04em;
-		-webkit-box-decoration-break: clone;
-		box-decoration-break: clone;
+		white-space: nowrap;
+	}
+	.hl::after {
+		content: '';
+		position: absolute;
+		left: -0.05em;
+		right: -0.05em;
+		bottom: -0.18em;
+		height: 0.42em;
+		background: var(--accent);
+		-webkit-mask: var(--stroke) no-repeat center / 100% 100%;
+		mask: var(--stroke) no-repeat center / 100% 100%;
+		transform: rotate(-1.4deg);
+		--stroke: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%2022'%20preserveAspectRatio='none'%3E%3Cpath%20d='M4%2012%20C%2070%203%20150%2020%20220%2010%20C%20260%205%20285%209%20296%2013'%20fill='none'%20stroke='%23000'%20stroke-width='5'%20stroke-linecap='round'/%3E%3C/svg%3E");
 	}
 	.block {
 		padding-block: clamp(var(--space-2xl), 9vw, var(--space-3xl));
