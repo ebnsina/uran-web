@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Rocket, Terminal, Boxes, Database, KeyRound, Globe, Gauge } from '@lucide/svelte';
+	import { Rocket, Terminal, Boxes, Database, KeyRound, Globe, Gauge, Zap } from '@lucide/svelte';
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
 	import SiteFooter from '$lib/components/site/SiteFooter.svelte';
 	import { smoothAnchor } from '$lib/scroll';
@@ -65,6 +65,7 @@
 				</li>
 			</ol>
 			<p class="note">
+				<span class="note-ico"><Zap size={16} /></span>
 				Every push to the connected branch triggers a new build and a health-checked rollout.
 			</p>
 		</section>
@@ -243,12 +244,24 @@ uran env set --service 12 KEY=value</pre>
 		overflow-x: auto;
 	}
 	.note {
+		display: flex;
+		align-items: center;
+		gap: var(--space-s);
 		margin-top: var(--space-m);
 		padding: var(--space-s) var(--space-m);
-		border-left: 3px solid var(--accent);
 		background: var(--accent-soft);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius);
 		color: var(--fg);
+	}
+	.note-ico {
+		display: grid;
+		place-items: center;
+		width: 1.9rem;
+		height: 1.9rem;
+		flex-shrink: 0;
+		color: #fff;
+		background: var(--accent);
+		border-radius: var(--radius-full);
 	}
 
 	@media (min-width: 56rem) {
