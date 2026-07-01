@@ -227,10 +227,20 @@
 			<h1 class="display hero-h">
 				Your fastest path to production for <span class="hl">every push.</span>
 			</h1>
-			<p class="lede">
-				Connect a repository and Uran turns every push into a running, routed, TLS-terminated
-				service — with managed databases, autoscaling, and preview environments built in.
-			</p>
+			<ul class="hero-checks">
+				<li>
+					<span class="tick"><Check size={13} strokeWidth={3.2} /></span>
+					Every push builds, deploys, and routes itself
+				</li>
+				<li>
+					<span class="tick"><Check size={13} strokeWidth={3.2} /></span>
+					Managed Postgres &amp; Redis, autoscaling, and TLS
+				</li>
+				<li>
+					<span class="tick"><Check size={13} strokeWidth={3.2} /></span>
+					Preview environments for every pull request
+				</li>
+			</ul>
 			<div class="hero-cta">
 				<Button href="/register" size="lg">Start free <ArrowRight size={16} /></Button>
 				<Button href="/docs" variant="secondary" size="lg">Read the docs</Button>
@@ -487,6 +497,8 @@
 	}
 	.hero-h {
 		max-width: 15ch;
+		font-weight: 720;
+		letter-spacing: -0.015em;
 	}
 	/* Decorative hand-drawn accent underline: a curved brush stroke, masked so
 	   it picks up --accent, with a slight casual tilt. */
@@ -566,12 +578,30 @@
 	.phon {
 		color: var(--fg-muted);
 	}
-	.lede {
-		margin-top: var(--space-l);
+	.hero-checks {
+		list-style: none;
+		margin: var(--space-l) 0 0;
+		padding: 0;
+		display: grid;
+		gap: var(--space-s);
 		max-width: 34rem;
-		color: var(--fg-muted);
-		font-size: var(--step-1);
-		line-height: var(--leading-normal);
+	}
+	.hero-checks li {
+		display: flex;
+		align-items: center;
+		gap: var(--space-s);
+		font-size: var(--step-0);
+		color: var(--fg);
+	}
+	.tick {
+		display: grid;
+		place-items: center;
+		width: 1.4rem;
+		height: 1.4rem;
+		flex-shrink: 0;
+		border-radius: var(--radius-full);
+		background: var(--accent-soft);
+		color: var(--accent);
 	}
 	.hero-cta {
 		display: flex;
