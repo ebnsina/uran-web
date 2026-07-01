@@ -16,7 +16,7 @@
 			role="status"
 			transition:fly={{ y: 12, duration: 260, easing: expoOut }}
 		>
-			<span class="ico"><Icon size={17} /></span>
+			<span class="ico"><Icon size={16} /></span>
 			<span class="msg">{t.message}</span>
 			<button class="close" type="button" aria-label="Dismiss" onclick={() => dismissToast(t.id)}>
 				<X size={14} />
@@ -52,12 +52,8 @@
 	.ico {
 		display: grid;
 		place-items: center;
-		width: 1.9rem;
-		height: 1.9rem;
 		flex-shrink: 0;
-		color: #fff;
-		background: var(--_tone);
-		border-radius: var(--radius-full);
+		color: var(--_tone);
 	}
 	.msg {
 		flex: 1;

@@ -72,6 +72,13 @@ export const qk = {
 export const getProjects = (orgId: number) => apiGet(`${v1}/orgs/${orgId}/projects`, projectList);
 export const createProject = (orgId: number, name: string): Promise<Project> =>
 	apiPost(`${v1}/orgs/${orgId}/projects`, { name }, project);
+export const renameProject = (id: number, name: string): Promise<Project> =>
+	apiPatch(`${v1}/projects/${id}`, { name }, project);
+export const deleteProject = (id: number) => apiDelete(`${v1}/projects/${id}`);
+
+/* ── Orgs ────────────────────────────────────────────────────────────── */
+export const renameOrg = (orgId: number, name: string) => apiPatch(`${v1}/orgs/${orgId}`, { name });
+export const deleteOrg = (orgId: number) => apiDelete(`${v1}/orgs/${orgId}`);
 
 /* ── Org members ─────────────────────────────────────────────────────── */
 export const getMembers = (orgId: number) => apiGet(`${v1}/orgs/${orgId}/members`, orgMemberList);

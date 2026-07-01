@@ -1,15 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
-	import { Plus, Box, Database as DbIcon, ArrowRight } from '@lucide/svelte';
-	import { Button, StatusBadge, Alert, EmptyState } from '$lib';
+	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
+	import { Plus, Box, Database as DbIcon, ArrowRight, Pencil, Trash2 } from '@lucide/svelte';
+	import { goto } from '$app/navigation';
+	import { Button, StatusBadge, Alert, EmptyState, Dialog, TextField, ConfirmDialog } from '$lib';
 	import {
 		getServices,
 		getProject,
+		renameProject,
+		deleteProject,
 		getProjectStatus,
 		getDatabases,
 		qk
 	} from '$lib/query/resources';
+	import { toast } from '$lib/toast.svelte';
 	import type { Project } from '$lib/api/resources';
 	import PageHead from '$lib/components/app/PageHead.svelte';
 	import CreateServiceDialog from '$lib/components/app/CreateServiceDialog.svelte';
@@ -56,6 +60,32 @@
 	let svcDialog = $state(false);
 	let dbDialog = $state(false);
 	const skeletons = [0, 1, 2];
+
+	let renameOpen = $state(false);
+	let deleteOpen = $state(false);
+	let renameName = $state('');
+
+	const rename = createMutation(() => ({
+		mutationFn: () => renameProject(projectId, renameName.trim()),
+		onSuccess: (p) => {
+			client.invalidateQueries({ queryKey: qk.project(projectId) });
+			if (project?.org_id) client.invalidateQueries({ queryKey: qk.projects(project.org_id) });
+			renameOpen = false;
+			toast.success('Project renamed');
+			void p;
+		}
+	}));
+
+	const remove = createMutation(() => ({
+		mutationFn: () => deleteProject(projectId),
+		onSuccess: async () => {
+			const org = project?.org_id;
+			if (org) client.invalidateQueries({ queryKey: qk.projects(org) });
+			deleteOpen = false;
+			toast.success('Project deleted');
+			await goto(org ? `/app/orgs/${org}` : '/app');
+		}
+	}));
 </script>
 
 <svelte:head><title>{project?.name ?? 'Project'} · Uran</title></svelte:head>
@@ -63,7 +93,21 @@
 <PageHead
 	crumbs={[{ label: 'Overview', href: '/app' }, { label: project?.name ?? 'Project' }]}
 	title={project?.name ?? 'Project'}
-/>
+>
+	<Button
+		size="sm"
+		variant="ghost"
+		onclick={() => {
+			renameName = project?.name ?? '';
+			renameOpen = true;
+		}}
+	>
+		<Pencil size={15} /> Rename
+	</Button>
+	<Button size="sm" variant="ghost" onclick={() => (deleteOpen = true)}>
+		<Trash2 size={15} /> Delete
+	</Button>
+</PageHead>
 
 <div class="body">
 	<!-- Services -->
@@ -158,6 +202,31 @@
 
 <CreateServiceDialog bind:open={svcDialog} {projectId} orgId={project?.org_id} />
 <CreateDatabaseDialog bind:open={dbDialog} {projectId} />
+
+<Dialog bind:open={renameOpen} title="Rename project">
+	<form
+		class="u-stack"
+		style="--flow: var(--space-m)"
+		onsubmit={(e) => {
+			e.preventDefault();
+			if (renameName.trim()) rename.mutate();
+		}}
+	>
+		{#if rename.isError}<Alert>{rename.error.message}</Alert>{/if}
+		<TextField label="Name" name="rename" bind:value={renameName} required />
+		<Button type="submit" full loading={rename.isPending}>Save</Button>
+	</form>
+</Dialog>
+
+<ConfirmDialog
+	bind:open={deleteOpen}
+	title="Delete project?"
+	message="This permanently deletes {project?.name ??
+		'this project'} and all its services and databases. This cannot be undone."
+	confirmLabel="Delete project"
+	loading={remove.isPending}
+	onconfirm={() => remove.mutate()}
+/>
 
 <style>
 	.body {
