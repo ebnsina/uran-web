@@ -151,9 +151,9 @@
 
 <style>
 	.body {
-		padding: var(--space-l);
+		padding: var(--space-m);
 		display: grid;
-		gap: var(--space-l);
+		gap: var(--space-m);
 	}
 
 	/* Stat cards */
@@ -165,8 +165,8 @@
 	.stat {
 		display: flex;
 		align-items: center;
-		gap: var(--space-m);
-		padding: var(--space-l);
+		gap: var(--space-s);
+		padding: var(--space-m);
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: var(--radius-md);
@@ -195,7 +195,7 @@
 	.cols {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--space-xl);
+		gap: var(--space-l);
 		align-items: start;
 	}
 	.sec-title {
@@ -223,7 +223,7 @@
 		grid-template-columns: 2fr 1fr 1fr auto;
 		align-items: center;
 		gap: var(--space-s);
-		padding: var(--space-m);
+		padding: var(--space-xs) var(--space-m);
 	}
 	.thead {
 		font-size: var(--step--2);

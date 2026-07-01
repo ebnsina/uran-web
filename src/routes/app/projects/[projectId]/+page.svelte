@@ -146,9 +146,9 @@
 
 <style>
 	.body {
-		padding: var(--space-l);
+		padding: var(--space-m);
 		display: grid;
-		gap: var(--space-2xl);
+		gap: var(--space-xl);
 	}
 	.sec-head {
 		display: flex;
@@ -174,7 +174,7 @@
 		grid-template-columns: var(--cols);
 		align-items: center;
 		gap: var(--space-s);
-		padding: var(--space-m);
+		padding: var(--space-xs) var(--space-m);
 	}
 	.thead {
 		font-size: var(--step--2);

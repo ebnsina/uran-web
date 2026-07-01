@@ -165,7 +165,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-s);
-		padding: var(--space-l);
+		padding: var(--space-m);
 		background: var(--surface);
 		border: 1px solid var(--border);
 		border-radius: var(--radius-md);

@@ -27,7 +27,7 @@
 		justify-items: center;
 		gap: var(--space-2xs);
 		max-width: 26rem;
-		margin: var(--space-2xl) auto;
+		margin: var(--space-l) auto;
 		text-align: center;
 	}
 	.mark {

@@ -82,19 +82,10 @@ pre {
 	font-variant-numeric: tabular-nums;
 }
 
+/* Universal ring-2 offset-2 focus (keeps each element's own radius). */
 :focus-visible {
 	outline: none;
 	box-shadow: var(--focus-ring);
-	border-radius: var(--radius-xs);
-}
-
-/* Form fields provide their own focus styling (their container or border),
-   so they opt out of the generic ring to avoid an ugly double border. */
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-	box-shadow: none;
-	border-radius: revert;
 }
 
 ::selection {

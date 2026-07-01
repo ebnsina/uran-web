@@ -79,13 +79,15 @@
 		outline: none;
 		background: var(--surface);
 		border-color: var(--accent);
-		box-shadow: 0 0 0 3px var(--accent-soft);
+		box-shadow: var(--focus-ring);
 	}
 	.has-error input {
 		border-color: var(--danger);
 	}
 	.has-error input:focus {
-		box-shadow: 0 0 0 3px color-mix(in oklab, var(--danger) 22%, transparent);
+		box-shadow:
+			0 0 0 2px var(--surface),
+			0 0 0 4px var(--danger);
 	}
 	.msg {
 		font-size: var(--step--1);

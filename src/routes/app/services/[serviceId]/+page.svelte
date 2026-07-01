@@ -231,7 +231,7 @@
 		border-bottom-color: var(--accent);
 	}
 	.content {
-		padding: var(--space-l);
+		padding: var(--space-m);
 	}
 	.info {
 		display: grid;
