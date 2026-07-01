@@ -10,6 +10,8 @@ import {
 	orgMember,
 	registryCredList,
 	registryCred,
+	githubStatus,
+	githubRepoList,
 	serviceList,
 	service,
 	serviceStatusList,
@@ -46,6 +48,8 @@ export const qk = {
 	projects: (orgId: number) => ['orgs', orgId, 'projects'] as const,
 	members: (orgId: number) => ['orgs', orgId, 'members'] as const,
 	registryCreds: (orgId: number) => ['orgs', orgId, 'registry-creds'] as const,
+	github: (orgId: number) => ['orgs', orgId, 'github'] as const,
+	githubRepos: (orgId: number) => ['orgs', orgId, 'github-repos'] as const,
 	project: (id: number) => ['projects', id] as const,
 	services: (projectId: number) => ['projects', projectId, 'services'] as const,
 	projectStatus: (projectId: number) => ['projects', projectId, 'status'] as const,
@@ -87,6 +91,15 @@ export const addRegistryCred = (
 ): Promise<RegistryCred> => apiPost(`${v1}/orgs/${orgId}/registry-credentials`, body, registryCred);
 export const deleteRegistryCred = (orgId: number, credId: number) =>
 	apiDelete(`${v1}/orgs/${orgId}/registry-credentials/${credId}`);
+
+/* ── GitHub connect (OAuth) — list repos for service creation ────────── */
+export const getGithubStatus = (orgId: number) =>
+	apiGet(`${v1}/orgs/${orgId}/github`, githubStatus);
+export const connectGithub = (orgId: number, code: string) =>
+	apiPost(`${v1}/orgs/${orgId}/github/connect`, { code });
+export const getGithubRepos = (orgId: number) =>
+	apiGet(`${v1}/orgs/${orgId}/github/repos`, githubRepoList);
+export const disconnectGithub = (orgId: number) => apiDelete(`${v1}/orgs/${orgId}/github`);
 
 /* ── Services ────────────────────────────────────────────────────────── */
 export const getServices = (projectId: number) =>

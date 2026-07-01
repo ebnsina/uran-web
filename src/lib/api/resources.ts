@@ -45,6 +45,22 @@ export const registryCred = z.object({
 export type RegistryCred = z.infer<typeof registryCred>;
 export const registryCredList = list(registryCred);
 
+export const githubStatus = z.object({
+	enabled: z.boolean(),
+	connected: z.boolean(),
+	account: z.string().optional(),
+	authorize_url: z.string().optional()
+});
+export type GithubStatus = z.infer<typeof githubStatus>;
+export const githubRepo = z.object({
+	full_name: z.string(),
+	clone_url: z.string(),
+	default_branch: z.string(),
+	private: z.boolean()
+});
+export type GithubRepo = z.infer<typeof githubRepo>;
+export const githubRepoList = list(githubRepo);
+
 /* ── Services ────────────────────────────────────────────────────────── */
 
 export const SERVICE_TYPES = ['web', 'static', 'worker', 'cron'] as const;

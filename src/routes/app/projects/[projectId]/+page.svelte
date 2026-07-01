@@ -141,7 +141,7 @@
 	</section>
 </div>
 
-<CreateServiceDialog bind:open={svcDialog} {projectId} />
+<CreateServiceDialog bind:open={svcDialog} {projectId} orgId={project?.org_id} />
 <CreateDatabaseDialog bind:open={dbDialog} {projectId} />
 
 <style>
