@@ -490,15 +490,18 @@
 		letter-spacing: 0;
 		font-weight: 600;
 		text-wrap: balance;
+		font-optical-sizing: auto;
 	}
 	.display.sm {
 		font-size: var(--h-lg);
 		line-height: 1.2;
 	}
 	.hero-h {
-		max-width: 15ch;
-		font-weight: 720;
-		letter-spacing: -0.015em;
+		max-width: 20ch;
+		font-weight: 800;
+		line-height: 1;
+		letter-spacing: -0.03em;
+		text-wrap: pretty;
 	}
 	/* Decorative hand-drawn accent underline: a curved brush stroke, masked so
 	   it picks up --accent, with a slight casual tilt. */
