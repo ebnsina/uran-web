@@ -37,6 +37,12 @@
 	--blue-500: #0069a0; /* press */
 	--blue-600: #00527e; /* deep */
 
+	/* Pink accent ramp (Dribbble-style magenta) */
+	--pink-300: #f27aa8; /* light */
+	--pink-400: #ea4c89; /* signal */
+	--pink-500: #d83a76; /* press */
+	--pink-600: #bd2e64; /* deep */
+
 	/* Status hues, distinct from the accent. */
 	--danger-400: #ff7a93;
 	--danger-500: #f5375f; /* rose-red error */
@@ -92,11 +98,11 @@
 	--shadow-1: 0 2px 8px -2px rgb(0 0 0 / 0.4);
 	--shadow-2: 0 14px 40px -14px rgb(0 0 0 / 0.5);
 	--shadow-3: 0 34px 80px -28px rgb(0 0 0 / 0.62);
-	--glow-accent: 0 10px 34px -8px rgb(0 127 191 / 0.5);
+	--glow-accent: 0 10px 34px -8px rgb(234 76 137 / 0.5);
 
 	/* Accent gradient partner + gradient for primary surfaces */
-	--accent-2: var(--blue-300);
-	--accent-gradient: linear-gradient(135deg, var(--blue-300), var(--blue-500));
+	--accent-2: var(--pink-300);
+	--accent-gradient: linear-gradient(135deg, var(--pink-400), var(--pink-500));
 
 	/* Motion — one place to tune the whole feel */
 	--dur-1: 120ms;
@@ -131,11 +137,11 @@
 	--border: color-mix(in oklab, var(--paper-50) 9%, transparent);
 	--border-strong: color-mix(in oklab, var(--paper-50) 18%, transparent);
 
-	--accent: var(--blue-400);
-	--accent-hover: var(--blue-300);
-	--accent-press: var(--blue-500);
-	--accent-contrast: #ffffff; /* text on an accent surface — white on blue */
-	--accent-soft: color-mix(in oklab, var(--blue-400) 14%, transparent);
+	--accent: var(--pink-400);
+	--accent-hover: var(--pink-500);
+	--accent-press: var(--pink-600);
+	--accent-contrast: #ffffff; /* text on an accent surface — white on pink */
+	--accent-soft: color-mix(in oklab, var(--pink-400) 15%, transparent);
 
 	--danger: var(--danger-500);
 	--warn: var(--warn-400);
@@ -156,23 +162,23 @@
 	/* Light theme. The marketing site is white (--bg); the dashboard puts its
 	   white content panel on a distinct grey canvas (--canvas). */
 	--bg: #ffffff;
-	--canvas: #e9ebef;
+	--canvas: #f4f3f1;
 	--bg-elevated: #ffffff;
 	--surface: #ffffff;
-	--surface-2: #f1f2f4;
-	--surface-hover: #e7e9ed;
+	--surface-2: #f7f6f4;
+	--surface-hover: #efedea;
 
-	--fg: #18181b;
-	--fg-muted: #52525b;
-	--fg-subtle: #8a8a93;
+	--fg: #0d0c22; /* Dribbble near-black ink */
+	--fg-muted: #44434d;
+	--fg-subtle: #82818e;
 
-	--border: color-mix(in oklab, #18181b 9%, transparent);
-	--border-strong: color-mix(in oklab, #18181b 15%, transparent);
+	--border: color-mix(in oklab, #0d0c22 10%, transparent);
+	--border-strong: color-mix(in oklab, #0d0c22 16%, transparent);
 
-	--accent-soft: color-mix(in oklab, var(--blue-400) 13%, transparent);
+	--accent-soft: color-mix(in oklab, var(--pink-400) 12%, transparent);
 
-	--shadow-1: 0 2px 10px -3px rgb(24 24 27 / 0.08);
-	--shadow-2: 0 16px 44px -16px rgb(24 24 27 / 0.14);
-	--shadow-3: 0 34px 80px -26px rgb(24 24 27 / 0.18);
-	--accent-gradient: linear-gradient(135deg, var(--blue-300), var(--blue-500));
+	--shadow-1: 0 2px 10px -3px rgb(13 12 34 / 0.07);
+	--shadow-2: 0 16px 44px -16px rgb(13 12 34 / 0.12);
+	--shadow-3: 0 34px 80px -26px rgb(13 12 34 / 0.16);
+	--accent-gradient: linear-gradient(135deg, var(--pink-400), var(--pink-500));
 }
