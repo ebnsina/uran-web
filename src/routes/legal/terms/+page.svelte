@@ -22,5 +22,5 @@
 		running, but don’t yet offer a formal SLA.
 	</p>
 	<h2>Contact</h2>
-	<p>Questions about these terms? Email <a href="mailto:legal@uran.app">legal@uran.app</a>.</p>
+	<p>Questions about these terms? Email <a href="mailto:legal@uran.sh">legal@uran.sh</a>.</p>
 </MarketingShell>

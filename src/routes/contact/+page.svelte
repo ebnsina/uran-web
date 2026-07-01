@@ -14,8 +14,8 @@
 >
 	<h2>Support</h2>
 	<p>
-		<a href="mailto:support@uran.app">support@uran.app</a> — for anything about your account or deployments.
+		<a href="mailto:support@uran.sh">support@uran.sh</a> — for anything about your account or deployments.
 	</p>
 	<h2>Sales</h2>
-	<p><a href="mailto:hello@uran.app">hello@uran.app</a> — for teams evaluating Uran.</p>
+	<p><a href="mailto:hello@uran.sh">hello@uran.sh</a> — for teams evaluating Uran.</p>
 </MarketingShell>

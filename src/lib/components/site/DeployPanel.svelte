@@ -15,10 +15,10 @@
 	const script: { phase: Phase; text: string }[] = [
 		{ phase: 'build', text: '→ detected Dockerfile' },
 		{ phase: 'build', text: '→ building image  ▸ cache hit 12/14 layers' },
-		{ phase: 'build', text: '✓ pushed registry.uran.app/web:9f3c1a' },
+		{ phase: 'build', text: '✓ pushed registry.uran.sh/web:9f3c1a' },
 		{ phase: 'deploy', text: '→ rolling out  ▸ 1/1 healthy' },
-		{ phase: 'deploy', text: '→ routing  ▸ TLS issued for web.uran.app' },
-		{ phase: 'live', text: '✓ live at https://web.uran.app  ·  142ms' }
+		{ phase: 'deploy', text: '→ routing  ▸ TLS issued for web.uran.sh' },
+		{ phase: 'live', text: '✓ live at https://web.uran.sh  ·  142ms' }
 	];
 
 	let lines = $state<{ phase: Phase; text: string }[]>([]);

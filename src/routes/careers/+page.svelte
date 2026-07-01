@@ -14,7 +14,7 @@
 >
 	<h2>Get in touch</h2>
 	<p>
-		Think you'd be a fit? Email us at <a href="mailto:careers@uran.app">careers@uran.app</a> with what
-		you'd love to work on.
+		Think you'd be a fit? Email us at <a href="mailto:careers@uran.sh">careers@uran.sh</a> with what you'd
+		love to work on.
 	</p>
 </MarketingShell>

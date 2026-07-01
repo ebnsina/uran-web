@@ -22,5 +22,5 @@
 		data.
 	</p>
 	<h2>Contact</h2>
-	<p>Privacy questions? Email <a href="mailto:privacy@uran.app">privacy@uran.app</a>.</p>
+	<p>Privacy questions? Email <a href="mailto:privacy@uran.sh">privacy@uran.sh</a>.</p>
 </MarketingShell>
