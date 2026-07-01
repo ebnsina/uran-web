@@ -5,6 +5,7 @@
 -->
 <script lang="ts">
 	import { Logo, Button } from '$lib';
+	import { LayoutDashboard } from '@lucide/svelte';
 	import ThemeToggle from '$lib/components/ui/ThemeToggle.svelte';
 	import { smoothAnchor } from '$lib/scroll';
 	import { goto } from '$app/navigation';
@@ -56,7 +57,9 @@
 		<div class="actions">
 			<ThemeToggle />
 			{#if user}
-				<Button href="/app" size="sm">Dashboard</Button>
+				<Button href="/app" variant="secondary" size="sm">
+					<LayoutDashboard size={15} /> Dashboard
+				</Button>
 			{:else}
 				<Button href="/login" variant="ghost" size="sm">Log in</Button>
 				<Button href="/register" size="sm">Get started</Button>
