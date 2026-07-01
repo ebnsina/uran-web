@@ -3,7 +3,13 @@
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
 	import { Plus, Box, Database as DbIcon, ArrowRight } from '@lucide/svelte';
 	import { Button, StatusBadge, Alert, EmptyState } from '$lib';
-	import { getServices, getProjectStatus, getDatabases, qk } from '$lib/query/resources';
+	import {
+		getServices,
+		getProject,
+		getProjectStatus,
+		getDatabases,
+		qk
+	} from '$lib/query/resources';
 	import type { Project } from '$lib/api/resources';
 	import PageHead from '$lib/components/app/PageHead.svelte';
 	import CreateServiceDialog from '$lib/components/app/CreateServiceDialog.svelte';
@@ -12,13 +18,20 @@
 	const projectId = $derived(Number(page.params.projectId));
 	const client = useQueryClient();
 
-	const project = $derived.by(() => {
+	// Fetch the project directly so name + org_id are available on a deep link
+	// (falling back to any cached copy for an instant title).
+	const cachedProject = $derived.by(() => {
 		for (const [, data] of client.getQueriesData<Project[]>({ queryKey: ['orgs'] })) {
 			const p = data?.find?.((x) => x.id === projectId);
 			if (p) return p;
 		}
 		return undefined;
 	});
+	const projectQuery = createQuery(() => ({
+		queryKey: qk.project(projectId),
+		queryFn: () => getProject(projectId)
+	}));
+	const project = $derived(projectQuery.data ?? cachedProject);
 
 	const services = createQuery(() => ({
 		queryKey: qk.services(projectId),

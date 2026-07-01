@@ -101,6 +101,8 @@ export const getGithubRepos = (orgId: number) =>
 	apiGet(`${v1}/orgs/${orgId}/github/repos`, githubRepoList);
 export const disconnectGithub = (orgId: number) => apiDelete(`${v1}/orgs/${orgId}/github`);
 
+export const getProject = (id: number) => apiGet(`${v1}/projects/${id}`, project);
+
 /* ── Services ────────────────────────────────────────────────────────── */
 export const getServices = (projectId: number) =>
 	apiGet(`${v1}/projects/${projectId}/services`, serviceList);
