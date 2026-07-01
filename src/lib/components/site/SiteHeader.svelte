@@ -78,13 +78,13 @@
 		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
 		gap: var(--space-m);
-		width: min(100%, var(--container-wide));
+		width: min(100%, var(--container));
 		margin-inline: auto;
 		padding: 0.45rem 0.45rem 0.45rem 1rem;
 		background: color-mix(in oklab, var(--surface) 72%, transparent);
 		backdrop-filter: blur(14px);
 		border: 1px solid var(--border);
-		border-radius: var(--radius-full);
+		border-radius: var(--radius-lg);
 		transition:
 			background var(--dur-2) var(--ease-out),
 			border-color var(--dur-2) var(--ease-out),
