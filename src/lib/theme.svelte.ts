@@ -1,5 +1,5 @@
 /**
- * Theme state (light default + dark). The current theme is applied to
+ * Theme state (dark default + light). The current theme is applied to
  * <html data-theme> pre-paint by the inline script in app.html; this module
  * keeps a reactive mirror for the UI and persists changes to localStorage.
  */
@@ -9,8 +9,8 @@ export type Theme = 'dark' | 'light';
 const STORAGE_KEY = 'uran-theme';
 
 function initial(): Theme {
-	if (!browser) return 'light';
-	return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+	if (!browser) return 'dark';
+	return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
 }
 
 let current = $state<Theme>(initial());
