@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { Building2, ArrowRight, Plus, Activity, FolderGit2, History } from '@lucide/svelte';
-	import { Button, TextField, Dialog, Alert, StatusBadge, EmptyState } from '$lib';
+	import { Button, TextField, Dialog, Alert, StatusBadge, EmptyState, RollingNumber } from '$lib';
 	import { getMe, getOrgs, createOrg, keys } from '$lib/query/dashboard';
 	import { getAudit, qk } from '$lib/query/resources';
 	import PageHead from '$lib/components/app/PageHead.svelte';
@@ -45,14 +45,18 @@
 		<div class="stat">
 			<span class="stat-ico"><Building2 size={17} /></span>
 			<div>
-				<b>{orgs.data?.length ?? '—'}</b>
+				<b
+					>{#if orgs.data}<RollingNumber value={orgs.data.length} />{:else}—{/if}</b
+				>
 				<span>Organizations</span>
 			</div>
 		</div>
 		<div class="stat">
 			<span class="stat-ico"><History size={17} /></span>
 			<div>
-				<b>{audit.data?.length ?? '—'}</b>
+				<b
+					>{#if audit.data}<RollingNumber value={audit.data.length} />{:else}—{/if}</b
+				>
 				<span>Recent actions</span>
 			</div>
 		</div>

@@ -12,7 +12,7 @@
 		Activity,
 		ChartSpline
 	} from '@lucide/svelte';
-	import { StatusBadge, Alert, Sparkline } from '$lib';
+	import { StatusBadge, Alert, Sparkline, RollingNumber } from '$lib';
 	import { getService, getDeploys, getMetrics, getUsage, qk } from '$lib/query/resources';
 	import type { Deploy } from '$lib/api/resources';
 	import PageHead from '$lib/components/app/PageHead.svelte';
@@ -142,9 +142,15 @@
 					<p class="muted">No running pods.</p>
 				{:else}
 					<div class="metrics">
-						<div class="metric"><span>Pods</span><b>{metrics.data?.length}</b></div>
-						<div class="metric"><span>CPU</span><b>{totalCpu}m</b></div>
-						<div class="metric"><span>Memory</span><b>{mib(totalMem)} MiB</b></div>
+						<div class="metric">
+							<span>Pods</span><b><RollingNumber value={metrics.data?.length ?? 0} /></b>
+						</div>
+						<div class="metric">
+							<span>CPU</span><b><RollingNumber value={totalCpu} />m</b>
+						</div>
+						<div class="metric">
+							<span>Memory</span><b><RollingNumber value={mib(totalMem)} /> MiB</b>
+						</div>
 					</div>
 				{/if}
 
@@ -156,10 +162,16 @@
 					<div class="usage">
 						<div class="usage-stats">
 							<div class="metric">
-								<span>CPU-seconds</span><b>{u.cpu_core_seconds.toFixed(1)}</b>
+								<span>CPU-seconds</span><b
+									><RollingNumber value={u.cpu_core_seconds.toFixed(1)} /></b
+								>
 							</div>
-							<div class="metric"><span>Avg memory</span><b>{u.avg_memory_mb} MiB</b></div>
-							<div class="metric"><span>Samples</span><b>{u.sample_count}</b></div>
+							<div class="metric">
+								<span>Avg memory</span><b><RollingNumber value={u.avg_memory_mb} /> MiB</b>
+							</div>
+							<div class="metric">
+								<span>Samples</span><b><RollingNumber value={u.sample_count} /></b>
+							</div>
 						</div>
 						<div class="charts">
 							<div class="chart">

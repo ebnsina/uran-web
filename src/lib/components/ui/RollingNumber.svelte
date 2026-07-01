@@ -3,12 +3,20 @@
   value changes. Inherits font/colour from its context. Respects reduced-motion.
 -->
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	interface Props {
 		value: number | string;
 	}
 	let { value }: Props = $props();
 
-	const chars = $derived(String(value).split(''));
+	// Roll up from zeros on first paint, then to the real value.
+	let ready = $state(false);
+	onMount(() => {
+		ready = true;
+	});
+	const target = $derived(String(value));
+	const chars = $derived((ready ? target : target.replace(/[0-9]/g, '0')).split(''));
 	const rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 	const isDigit = (c: string) => c >= '0' && c <= '9';
 </script>

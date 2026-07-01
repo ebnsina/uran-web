@@ -18,7 +18,7 @@
 		KeyRound,
 		Search
 	} from '@lucide/svelte';
-	import { Button, Reveal, Sparkline } from '$lib';
+	import { Button, Reveal, Sparkline, RollingNumber } from '$lib';
 	import SiteHeader from '$lib/components/site/SiteHeader.svelte';
 	import HeroGlow from '$lib/components/site/HeroGlow.svelte';
 	import SiteFooter from '$lib/components/site/SiteFooter.svelte';
@@ -241,7 +241,7 @@
 						<span class="avatar" style="--tint: {p.tint}">{p.c}</span>
 					{/each}
 				</div>
-				<p>Join <strong>1,200+</strong> developers shipping on Uran</p>
+				<p>Join <strong><RollingNumber value="1,200" />+</strong> developers shipping on Uran</p>
 			</div>
 		</div>
 
