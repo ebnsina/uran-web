@@ -6,13 +6,12 @@
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { LayoutGrid, Boxes, Database, Settings } from '@lucide/svelte';
+	import { Send } from '@lucide/svelte';
 
 	const nav = [
-		{ label: 'Overview', icon: LayoutGrid, active: false },
-		{ label: 'Services', icon: Boxes, active: true },
-		{ label: 'Databases', icon: Database, active: false },
-		{ label: 'Settings', icon: Settings, active: false }
+		{ label: 'Overview', active: true },
+		{ label: 'Settings', active: false },
+		{ label: 'Docs', active: false }
 	];
 
 	type Tone = 'ok' | 'accent' | 'warn';
@@ -43,23 +42,28 @@
 
 	<div class="body">
 		<aside class="side">
-			<span class="badge u-mono">A</span>
-			<div class="search u-mono">Search…</div>
+			<span class="logo">
+				<span class="logo-badge"><Send size={11} strokeWidth={2.2} /></span>
+				<b>uran</b>
+			</span>
+			<div class="search">
+				Search
+				<span class="kbd u-mono">⌘K</span>
+			</div>
 			<ul>
 				{#each nav as n (n.label)}
-					{@const Icon = n.icon}
-					<li class:active={n.active}><Icon size={13} />{n.label}</li>
+					<li class:active={n.active}>{n.label}</li>
 				{/each}
 			</ul>
+			<div class="user">
+				<span class="uavatar u-mono">A</span>
+				<span class="uname">ada</span>
+			</div>
 		</aside>
 
 		<div class="panel">
 			<div class="panel-head">
-				<div class="tabs">
-					<span class="tab active">Services</span>
-					<span class="tab">Web</span>
-					<span class="tab">Workers</span>
-				</div>
+				<b class="panel-title">Services</b>
 				<span class="new u-mono">+ New</span>
 			</div>
 
@@ -134,19 +138,28 @@
 		flex-direction: column;
 		gap: var(--space-2xs);
 	}
-	.badge {
-		display: grid;
-		place-items: center;
-		width: 1.6rem;
-		height: 1.6rem;
-		border-radius: var(--radius-sm);
-		background: var(--accent-soft);
-		color: var(--accent);
-		font-weight: 700;
+	.logo {
+		display: flex;
+		align-items: center;
+		gap: 0.4em;
+		font-weight: 600;
+		color: var(--fg);
 		margin-bottom: var(--space-2xs);
 	}
+	.logo-badge {
+		display: grid;
+		place-items: center;
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: var(--radius-sm);
+		background: var(--accent);
+		color: var(--accent-contrast);
+	}
 	.search {
-		padding: 0.35em 0.5em;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.4em 0.5em;
 		font-size: var(--step--2);
 		color: var(--fg-subtle);
 		background: var(--surface);
@@ -154,10 +167,17 @@
 		border-radius: var(--radius-sm);
 		margin-bottom: var(--space-2xs);
 	}
+	.search .kbd {
+		font-size: var(--step--2);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-xs);
+		padding: 0 0.3em;
+	}
 	.side ul {
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		flex: 1;
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
@@ -165,7 +185,6 @@
 	.side li {
 		display: flex;
 		align-items: center;
-		gap: 0.5em;
 		padding: 0.4em 0.5em;
 		border-radius: var(--radius-sm);
 		color: var(--fg-muted);
@@ -174,6 +193,28 @@
 	.side li.active {
 		color: var(--accent-contrast);
 		background: var(--accent);
+	}
+	.user {
+		display: flex;
+		align-items: center;
+		gap: 0.4em;
+		margin-top: var(--space-2xs);
+	}
+	.uavatar {
+		display: grid;
+		place-items: center;
+		width: 1.4rem;
+		height: 1.4rem;
+		flex-shrink: 0;
+		border-radius: var(--radius-full);
+		background: var(--accent-soft);
+		color: var(--accent);
+		font-size: var(--step--2);
+		font-weight: 700;
+	}
+	.uname {
+		font-size: var(--step--2);
+		color: var(--fg-muted);
 	}
 
 	.panel {
@@ -189,21 +230,8 @@
 		justify-content: space-between;
 		margin-bottom: var(--space-s);
 	}
-	.tabs {
-		display: flex;
-		gap: var(--space-2xs);
-	}
-	.tab {
-		padding: 0.3em 0.7em;
-		border-radius: var(--radius-sm);
-		font-size: var(--step--2);
-		color: var(--fg-muted);
-		border: 1px solid transparent;
-	}
-	.tab.active {
-		color: var(--fg);
-		background: var(--surface-2);
-		border-color: var(--border);
+	.panel-title {
+		font-size: var(--step-0);
 	}
 	.new {
 		font-size: var(--step--2);
