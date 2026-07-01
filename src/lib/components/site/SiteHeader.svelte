@@ -96,17 +96,16 @@
 	.nav {
 		display: none;
 		align-items: center;
-		gap: var(--space-xs);
+		gap: var(--space-l);
 	}
 	.nav a {
-		padding: 0.4em 0.6em;
-		border-radius: var(--radius-sm);
-		font-size: var(--step--1);
-		color: var(--fg-muted);
+		font-size: var(--step-0);
+		font-weight: 600;
+		color: var(--fg);
 		transition: color var(--dur-2) var(--ease-out);
 	}
 	.nav a:hover {
-		color: var(--fg);
+		color: var(--accent);
 	}
 	.actions {
 		display: flex;

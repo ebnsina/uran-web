@@ -63,7 +63,7 @@
 		justify-content: center;
 		gap: 0.5em;
 		font-family: var(--font-sans);
-		font-weight: 500;
+		font-weight: 600;
 		letter-spacing: var(--tracking-normal);
 		white-space: nowrap;
 		text-align: center;
@@ -90,18 +90,18 @@
 		width: 100%;
 	}
 
-	/* Sizes */
+	/* Sizes — compact height, generous width (Dribbble pill proportions). */
 	.sm {
-		padding: 0.4em 0.8em;
+		padding: 0.42em 1.05em;
 		font-size: var(--step--1);
 	}
 	.md {
-		padding: 0.62em 1.1em;
-		font-size: var(--step-0);
+		padding: 0.5em 1.35em;
+		font-size: var(--step--1);
 	}
 	.lg {
-		padding: 0.85em 1.5em;
-		font-size: var(--step-1);
+		padding: 0.6em 1.75em;
+		font-size: var(--step-0);
 	}
 
 	/* Variants — flat, pill-shaped (Dribbble Minimal). Primary is the dark ink
