@@ -132,6 +132,23 @@ export const podMetric = z.object({
 export type PodMetric = z.infer<typeof podMetric>;
 export const metricsList = list(podMetric);
 
+export const usageSample = z.object({
+	cpu_millicores: z.number(),
+	memory_bytes: z.number(),
+	sampled_at: z.string()
+});
+export const usage = z.object({
+	samples: z
+		.array(usageSample)
+		.nullable()
+		.transform((v) => v ?? []),
+	sample_count: z.number(),
+	window_seconds: z.number(),
+	cpu_core_seconds: z.number(),
+	avg_memory_mb: z.number()
+});
+export type Usage = z.infer<typeof usage>;
+
 /* ── Databases ───────────────────────────────────────────────────────── */
 
 export const DB_ENGINES = ['postgres', 'redis'] as const;

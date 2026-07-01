@@ -19,6 +19,7 @@ import {
 	domainList,
 	domain,
 	metricsList,
+	usage,
 	databaseList,
 	database,
 	dbConnection,
@@ -54,6 +55,7 @@ export const qk = {
 	env: (serviceId: number) => ['services', serviceId, 'env'] as const,
 	domains: (serviceId: number) => ['services', serviceId, 'domains'] as const,
 	metrics: (serviceId: number) => ['services', serviceId, 'metrics'] as const,
+	usage: (serviceId: number) => ['services', serviceId, 'usage'] as const,
 	databases: (projectId: number) => ['projects', projectId, 'databases'] as const,
 	database: (id: number) => ['databases', id] as const,
 	dbConnection: (id: number) => ['databases', id, 'connection'] as const,
@@ -146,6 +148,7 @@ export const deleteDomain = (serviceId: number, d: string) =>
 /* ── Observability ───────────────────────────────────────────────────── */
 export const getMetrics = (serviceId: number) =>
 	apiGet(`${v1}/services/${serviceId}/metrics`, metricsList);
+export const getUsage = (serviceId: number) => apiGet(`${v1}/services/${serviceId}/usage`, usage);
 
 /* ── Databases ───────────────────────────────────────────────────────── */
 export const getDatabases = (projectId: number) =>

@@ -9,10 +9,11 @@
 		Gauge,
 		FolderGit2,
 		Globe,
-		Activity
+		Activity,
+		ChartSpline
 	} from '@lucide/svelte';
-	import { StatusBadge, Alert } from '$lib';
-	import { getService, getDeploys, getMetrics, qk } from '$lib/query/resources';
+	import { StatusBadge, Alert, Sparkline } from '$lib';
+	import { getService, getDeploys, getMetrics, getUsage, qk } from '$lib/query/resources';
 	import type { Deploy } from '$lib/api/resources';
 	import PageHead from '$lib/components/app/PageHead.svelte';
 	import DeploysTab from '$lib/components/app/service/DeploysTab.svelte';
@@ -40,6 +41,16 @@
 		refetchInterval: 10_000,
 		retry: false
 	}));
+	const usage = createQuery(() => ({
+		queryKey: qk.usage(serviceId),
+		queryFn: () => getUsage(serviceId),
+		refetchInterval: 60_000,
+		retry: false
+	}));
+	const cpuSeries = $derived((usage.data?.samples ?? []).map((s) => s.cpu_millicores));
+	const memSeries = $derived(
+		(usage.data?.samples ?? []).map((s) => Math.round(s.memory_bytes / (1024 * 1024)))
+	);
 
 	const status = $derived(
 		svc.data?.suspended ? 'suspended' : (deploys.data?.[0]?.status ?? 'none')
@@ -134,6 +145,32 @@
 						<div class="metric"><span>Pods</span><b>{metrics.data?.length}</b></div>
 						<div class="metric"><span>CPU</span><b>{totalCpu}m</b></div>
 						<div class="metric"><span>Memory</span><b>{mib(totalMem)} MiB</b></div>
+					</div>
+				{/if}
+
+				{#if usage.data && usage.data.sample_count > 0}
+					{@const u = usage.data}
+					<h3 class="sub">
+						<ChartSpline size={16} /> Usage · last {Math.round(u.window_seconds / 60)} min
+					</h3>
+					<div class="usage">
+						<div class="usage-stats">
+							<div class="metric">
+								<span>CPU-seconds</span><b>{u.cpu_core_seconds.toFixed(1)}</b>
+							</div>
+							<div class="metric"><span>Avg memory</span><b>{u.avg_memory_mb} MiB</b></div>
+							<div class="metric"><span>Samples</span><b>{u.sample_count}</b></div>
+						</div>
+						<div class="charts">
+							<div class="chart">
+								<span class="chart-label">CPU (millicores)</span>
+								<Sparkline data={cpuSeries} />
+							</div>
+							<div class="chart">
+								<span class="chart-label">Memory (MiB)</span>
+								<Sparkline data={memSeries} color="var(--ok)" />
+							</div>
+						</div>
 					</div>
 				{/if}
 			{/if}
@@ -262,5 +299,31 @@
 	.metric b {
 		font-size: var(--step-2);
 		font-family: var(--font-mono);
+	}
+	.usage {
+		display: grid;
+		gap: var(--space-m);
+	}
+	.usage-stats {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+		gap: var(--space-s);
+	}
+	.charts {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: var(--space-m);
+	}
+	.chart {
+		padding: var(--space-m);
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+	}
+	.chart-label {
+		display: block;
+		margin-bottom: var(--space-2xs);
+		font-size: var(--step--2);
+		color: var(--fg-subtle);
 	}
 </style>

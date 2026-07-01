@@ -10,5 +10,6 @@ export { default as ConfirmDialog } from './components/ui/ConfirmDialog.svelte';
 export { default as Select } from './components/ui/Select.svelte';
 export { default as Checkbox } from './components/ui/Checkbox.svelte';
 export { default as Slider } from './components/ui/Slider.svelte';
+export { default as Sparkline } from './components/ui/Sparkline.svelte';
 
 export * as motion from './motion/transitions';
